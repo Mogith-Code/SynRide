@@ -7,6 +7,7 @@ import 'features/passenger/presentation/screens/passenger_home_screen.dart';
 import 'features/passenger/presentation/screens/live_map_screen.dart';
 import 'features/passenger/presentation/screens/route_recommendation_screen.dart';
 import 'features/passenger/presentation/screens/bus_details_screen.dart';
+import 'features/passenger/presentation/screens/live_occupancy_screen.dart';
 import 'features/passenger/presentation/screens/passenger_pass_screen.dart';
 import 'features/conductor/presentation/screens/conductor_home_screen.dart';
 import 'features/conductor/presentation/screens/ticket_issuance_screen.dart';
@@ -34,6 +35,7 @@ class SyncRideApp extends StatelessWidget {
         '/passenger/map': (context) => const LiveMapScreen(),
         '/passenger/recommendations': (context) => const RouteRecommendationScreen(),
         '/passenger/bus-details': (context) => const BusDetailsScreen(),
+        '/passenger/occupancy': (context) => const LiveOccupancyScreen(),
         '/passenger/pass': (context) => const PassengerPassScreen(),
         '/conductor': (context) => const ConductorHomeScreen(),
         '/conductor/issue-ticket': (context) => const TicketIssuanceScreen(),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 
-class BusDetailsScreen extends StatelessWidget {
-  const BusDetailsScreen({super.key});
+class LiveOccupancyScreen extends StatelessWidget {
+  const LiveOccupancyScreen({super.key});
 
   void _showHubRoleSelector(BuildContext context) {
     showModalBottomSheet(
@@ -80,6 +80,22 @@ class BusDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Data points for Today's Occupancy Trend Chart
+    final trendData = [
+      {'time': '6AM', 'height': 24.0},
+      {'time': '7AM', 'height': 42.0},
+      {'time': '8AM', 'height': 68.0},
+      {'time': '9AM', 'height': 56.0},
+      {'time': '10AM', 'height': 38.0},
+      {'time': '11AM', 'height': 45.0},
+      {'time': '12PM', 'height': 58.0},
+      {'time': '1PM', 'height': 62.0},
+      {'time': '2PM', 'height': 42.0},
+      {'time': '3PM', 'height': 48.0},
+      {'time': '4PM', 'height': 54.0},
+      {'time': '5PM', 'height': 72.0},
+    ];
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -220,38 +236,23 @@ class BusDetailsScreen extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                             color: Colors.white,
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconButton(
                                   icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF0F172A)),
                                   onPressed: () => Navigator.pop(context),
                                 ),
-                                const Text(
-                                  'Bus 177',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF0F172A),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Bus 177 tracking link copied to clipboard.'),
-                                        backgroundColor: AppColors.primary,
-                                      ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    'Share',
+                                const Expanded(
+                                  child: Text(
+                                    'Live Occupancy',
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xFF2563EB),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF0F172A),
                                     ),
                                   ),
                                 ),
+                                const SizedBox(width: 48), // Balance title centering
                               ],
                             ),
                           ),
@@ -262,158 +263,101 @@ class BusDetailsScreen extends StatelessWidget {
                               physics: const BouncingScrollPhysics(),
                               padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Top Bus Summary Hero Card
-                                  Container(
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.all(18),
-                                    decoration: BoxDecoration(
-                                      gradient: const LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [
-                                          Color(0xFF2563EB),
-                                          Color(0xFF0EA5E9),
-                                          Color(0xFF0D9488),
-                                        ],
-                                      ),
-                                      borderRadius: BorderRadius.circular(22),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color(0xFF2563EB).withOpacity(0.3),
-                                          blurRadius: 16,
-                                          offset: const Offset(0, 6),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        // Header Row inside hero card
-                                        Row(
-                                          children: [
-                                            Container(
-                                              width: 44,
-                                              height: 44,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white.withOpacity(0.2),
-                                                borderRadius: BorderRadius.circular(12),
-                                              ),
-                                              child: const Icon(
-                                                Icons.directions_bus_rounded,
-                                                color: Colors.white,
-                                                size: 22,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 12),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: const [
-                                                  Text(
-                                                    'Bus 177',
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  SizedBox(height: 2),
-                                                  Text(
-                                                    'City Center → Airport',
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.white70,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                  const SizedBox(height: 8),
 
-                                            // Status Badge
+                                  // Circular Occupancy Gauge Widget
+                                  SizedBox(
+                                    width: 140,
+                                    height: 140,
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        // Circular Progress Indicator Ring
+                                        SizedBox(
+                                          width: 130,
+                                          height: 130,
+                                          child: CircularProgressIndicator(
+                                            value: 0.45,
+                                            strokeWidth: 12,
+                                            backgroundColor: const Color(0xFFF1F5F9),
+                                            valueColor: const AlwaysStoppedAnimation<Color>(
+                                              Color(0xFFF59E0B),
+                                            ),
+                                          ),
+                                        ),
+                                        // Inner Text Column
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            const Text(
+                                              '45%',
+                                              style: TextStyle(
+                                                fontSize: 28,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFF0F172A),
+                                                letterSpacing: -0.5,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2),
                                             Container(
-                                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                               decoration: BoxDecoration(
-                                                color: Colors.white.withOpacity(0.22),
-                                                borderRadius: BorderRadius.circular(12),
+                                                color: const Color(0xFFFEF3C7),
+                                                borderRadius: BorderRadius.circular(10),
                                               ),
                                               child: const Text(
-                                                'Approaching',
+                                                'Medium',
                                                 style: TextStyle(
-                                                  fontSize: 11,
+                                                  fontSize: 10,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
+                                                  color: Color(0xFFD97706),
                                                 ),
                                               ),
                                             ),
                                           ],
                                         ),
-
-                                        const Divider(color: Colors.white24, height: 24),
-
-                                        // 3 Stat Columns Row
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                          children: [
-                                            _buildHeroStat('ETA', '3 min', Colors.white),
-                                            Container(width: 1, height: 24, color: Colors.white24),
-                                            _buildHeroStat('Speed', '32 km/h', Colors.white),
-                                            Container(width: 1, height: 24, color: Colors.white24),
-                                            _buildHeroStat('Delay', 'On Time', const Color(0xFF00E5FF)),
-                                          ],
-                                        ),
                                       ],
                                     ),
                                   ),
 
-                                  const SizedBox(height: 16),
+                                  const SizedBox(height: 24),
 
-                                  // 2x2 Quick Info Grid Cards
+                                  // 3 Stat Metric Cards Row (Passengers, Available, Standing)
                                   Row(
                                     children: [
                                       Expanded(
-                                        child: _buildInfoCard(
-                                          icon: Icons.person_outline_rounded,
-                                          label: 'Driver',
-                                          value: 'Rahul Kumar',
-                                        ),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        child: _buildInfoCard(
-                                          icon: Icons.location_on_outlined,
-                                          label: 'Next Stop',
-                                          value: 'Main Station',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
-                                  const SizedBox(height: 12),
-
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: _buildInfoCard(
-                                          icon: Icons.near_me_outlined,
-                                          label: 'Distance',
-                                          value: '1.2 km',
-                                        ),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        child: _buildInfoCard(
+                                        child: _buildMetricCard(
                                           icon: Icons.groups_outlined,
-                                          label: 'Occupancy',
-                                          value: '45%',
+                                          iconColor: const Color(0xFF2563EB),
+                                          value: '23',
+                                          label: 'Passengers',
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: _buildMetricCard(
+                                          icon: Icons.check_circle_outline_rounded,
+                                          iconColor: const Color(0xFF16A34A),
+                                          value: '22',
+                                          label: 'Available',
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: _buildMetricCard(
+                                          icon: Icons.align_vertical_bottom_rounded,
+                                          iconColor: const Color(0xFFD97706),
+                                          value: '8',
+                                          label: 'Standing',
                                         ),
                                       ),
                                     ],
                                   ),
 
-                                  const SizedBox(height: 16),
+                                  const SizedBox(height: 18),
 
-                                  // Current Occupancy Card
+                                  // Capacity Usage Card
                                   Container(
                                     width: double.infinity,
                                     padding: const EdgeInsets.all(16),
@@ -424,7 +368,7 @@ class BusDetailsScreen extends StatelessWidget {
                                       boxShadow: [
                                         BoxShadow(
                                           color: Colors.black.withOpacity(0.02),
-                                          blurRadius: 10,
+                                          blurRadius: 8,
                                           offset: const Offset(0, 2),
                                         ),
                                       ],
@@ -434,28 +378,20 @@ class BusDetailsScreen extends StatelessWidget {
                                       children: [
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Text(
-                                              'Current Occupancy',
+                                          children: const [
+                                            Text(
+                                              'Capacity Usage',
                                               style: TextStyle(
                                                 fontSize: 13,
                                                 fontWeight: FontWeight.bold,
                                                 color: Color(0xFF0F172A),
                                               ),
                                             ),
-                                            Container(
-                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xFFFEF3C7),
-                                                borderRadius: BorderRadius.circular(10),
-                                              ),
-                                              child: const Text(
-                                                'Medium 45%',
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFFD97706),
-                                                ),
+                                            Text(
+                                              '45/50 passengers',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF64748B),
                                               ),
                                             ),
                                           ],
@@ -463,7 +399,7 @@ class BusDetailsScreen extends StatelessWidget {
 
                                         const SizedBox(height: 12),
 
-                                        // Progress Bar
+                                        // Capacity Multi-Color Bar
                                         Container(
                                           height: 10,
                                           width: double.infinity,
@@ -479,8 +415,9 @@ class BusDetailsScreen extends StatelessWidget {
                                                   decoration: BoxDecoration(
                                                     gradient: const LinearGradient(
                                                       colors: [
-                                                        Color(0xFFF59E0B),
-                                                        Color(0xFFD97706),
+                                                        Color(0xFF22C55E),
+                                                        Color(0xFFEAB308),
+                                                        Color(0xFFF97316),
                                                       ],
                                                     ),
                                                     borderRadius: BorderRadius.circular(5),
@@ -497,17 +434,18 @@ class BusDetailsScreen extends StatelessWidget {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: const [
                                             Text(
-                                              '0 seats',
+                                              'Empty',
                                               style: TextStyle(
                                                 fontSize: 11,
                                                 color: Color(0xFF94A3B8),
                                               ),
                                             ),
                                             Text(
-                                              '50 seats',
+                                              'Full',
                                               style: TextStyle(
                                                 fontSize: 11,
-                                                color: Color(0xFF94A3B8),
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFFEF4444),
                                               ),
                                             ),
                                           ],
@@ -516,128 +454,128 @@ class BusDetailsScreen extends StatelessWidget {
                                     ),
                                   ),
 
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 18),
 
-                                  // Primary Track Live Action Button
-                                  SizedBox(
+                                  // Today's Occupancy Trend Chart Card
+                                  Container(
                                     width: double.infinity,
-                                    height: 50,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pushNamed(context, '/passenger/map');
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        padding: EdgeInsets.zero,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(14),
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(18),
+                                      border: Border.all(color: const Color(0xFFF1F5F9)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.02),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 2),
                                         ),
-                                        elevation: 4,
-                                        shadowColor: const Color(0xFF0D9488).withOpacity(0.35),
-                                      ),
-                                      child: Ink(
-                                        decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
-                                            colors: [
-                                              Color(0xFF2563EB),
-                                              Color(0xFF0D9488),
-                                            ],
+                                      ],
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          "Today's Occupancy Trend",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF0F172A),
                                           ),
-                                          borderRadius: BorderRadius.circular(14),
                                         ),
-                                        child: Container(
-                                          alignment: Alignment.center,
+                                        const SizedBox(height: 16),
+
+                                        // Bar Chart Row
+                                        SizedBox(
+                                          height: 85,
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: const [
-                                              Icon(Icons.map_outlined, color: Colors.white, size: 20),
-                                              SizedBox(width: 8),
-                                              Text(
-                                                'Track Live',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                  letterSpacing: 0.2,
-                                                ),
-                                              ),
-                                            ],
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            children: trendData.map((item) {
+                                              final height = item['height'] as double;
+                                              final time = item['time'] as String;
+                                              return Column(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                children: [
+                                                  Container(
+                                                    width: 14,
+                                                    height: height,
+                                                    decoration: BoxDecoration(
+                                                      color: const Color(0xFF2563EB),
+                                                      borderRadius: const BorderRadius.vertical(
+                                                        top: Radius.circular(4),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 6),
+                                                  Text(
+                                                    time,
+                                                    style: const TextStyle(
+                                                      fontSize: 8.5,
+                                                      color: Color(0xFF94A3B8),
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            }).toList(),
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     ),
                                   ),
 
-                                  const SizedBox(height: 12),
+                                  const SizedBox(height: 18),
 
-                                  // Secondary Dual Buttons (Occupancy & AI Suggest)
-                                  Row(
-                                    children: [
-                                      // Occupancy Button
-                                      Expanded(
-                                        child: OutlinedButton(
-                                          onPressed: () {
-                                            Navigator.pushNamed(context, '/passenger/occupancy');
-                                          },
-                                          style: OutlinedButton.styleFrom(
-                                            padding: const EdgeInsets.symmetric(vertical: 12),
-                                            backgroundColor: const Color(0xFFECFDF5),
-                                            side: const BorderSide(color: Color(0xFFA7F3D0)),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(14),
+                                  // AI Prediction Banner Card
+                                  Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFF0F9FF),
+                                      borderRadius: BorderRadius.circular(18),
+                                      border: Border.all(color: const Color(0xFFBAE6FD)),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Icon(
+                                              Icons.memory_rounded,
+                                              color: Color(0xFF0284C7),
+                                              size: 18,
                                             ),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: const [
-                                              Icon(Icons.groups_outlined, color: Color(0xFF0D9488), size: 18),
-                                              SizedBox(width: 6),
-                                              Text(
-                                                'Occupancy',
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF0D9488),
-                                                ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              'AI Prediction',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFF0284C7),
                                               ),
-                                            ],
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 8),
+                                        const Text(
+                                          'In 10 minutes: ~68% full',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF0F172A),
                                           ),
                                         ),
-                                      ),
-
-                                      const SizedBox(width: 12),
-
-                                      // AI Suggest Button
-                                      Expanded(
-                                        child: OutlinedButton(
-                                          onPressed: () {
-                                            Navigator.pushNamed(context, '/passenger/recommendations');
-                                          },
-                                          style: OutlinedButton.styleFrom(
-                                            padding: const EdgeInsets.symmetric(vertical: 12),
-                                            backgroundColor: const Color(0xFFEEF2FF),
-                                            side: const BorderSide(color: Color(0xFFC7D2FE)),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(14),
-                                            ),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: const [
-                                              Icon(Icons.bolt_rounded, color: Color(0xFF2563EB), size: 18),
-                                              SizedBox(width: 6),
-                                              Text(
-                                                'AI Suggest',
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF2563EB),
-                                                ),
-                                              ),
-                                            ],
+                                        const SizedBox(height: 2),
+                                        const Text(
+                                          'Bus will get busier — board now for comfortable ride',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF64748B),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
 
                                   const SizedBox(height: 20),
@@ -658,36 +596,14 @@ class BusDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeroStat(String label, String value, Color valueColor) {
-    return Column(
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 10,
-            color: Colors.white70,
-          ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-            color: valueColor,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildInfoCard({
+  Widget _buildMetricCard({
     required IconData icon,
-    required String label,
+    required Color iconColor,
     required String value,
+    required String label,
   }) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -695,35 +611,29 @@ class BusDetailsScreen extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.02),
-            blurRadius: 8,
+            blurRadius: 6,
             offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(icon, color: const Color(0xFF2563EB), size: 16),
-              const SizedBox(width: 6),
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 11,
-                  color: Color(0xFF94A3B8),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
+          Icon(icon, color: iconColor, size: 20),
           const SizedBox(height: 6),
           Text(
             value,
             style: const TextStyle(
-              fontSize: 14,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Color(0xFF0F172A),
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 11,
+              color: Color(0xFF94A3B8),
             ),
           ),
         ],
