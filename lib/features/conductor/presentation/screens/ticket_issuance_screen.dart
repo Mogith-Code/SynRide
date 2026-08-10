@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../data/repositories/ticket_repository.dart';
 import '../widgets/digital_receipt_dialog.dart';
 
@@ -13,38 +12,61 @@ class TicketIssuanceScreen extends StatefulWidget {
 class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
   final TicketRepository _repository = TicketRepository();
 
-  late String _selectedOrigin;
-  late String _selectedDestination;
-  String _passengerType = 'Adult';
-  String _paymentMethod = 'Cash';
-  int _passengerCount = 1;
+  String? _selectedTicketType;
 
-  final List<String> _passengerTypes = ['Adult', 'Child', 'Student', 'Senior'];
-  final List<String> _paymentMethods = ['Cash', 'SyncPass QR', 'Contactless Card'];
+  // Ticket Options Data matching UI spec
+  final List<Map<String, dynamic>> _ticketOptions = [
+    {
+      'type': 'Adult',
+      'price': 25,
+      'priceDisplay': '₹25',
+      'color': const Color(0xFF2563EB), // Blue
+    },
+    {
+      'type': 'Child',
+      'price': 15,
+      'priceDisplay': '₹15',
+      'color': const Color(0xFF10B981), // Teal/Green
+    },
+    {
+      'type': 'Student',
+      'price': 12,
+      'priceDisplay': '₹12',
+      'color': const Color(0xFF10B981), // Green
+    },
+    {
+      'type': 'Senior',
+      'price': 10,
+      'priceDisplay': '₹10',
+      'color': const Color(0xFFF59E0B), // Amber/Orange
+    },
+  ];
 
-  @override
-  void initState() {
-    super.initState();
-    final shift = _repository.activeShift;
-    _selectedOrigin = shift.currentStop;
-    _selectedDestination = shift.stops.last;
-  }
-
-  double get _calculatedFare => _repository.calculateFare(
-        origin: _selectedOrigin,
-        destination: _selectedDestination,
-        passengerType: _passengerType,
-        passengerCount: _passengerCount,
+  void _handleIssueTicket() async {
+    if (_selectedTicketType == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a ticket type first.'),
+          backgroundColor: Color(0xFFF59E0B),
+        ),
       );
+      return;
+    }
 
-  void _onIssueTicketPressed() async {
+    final selectedOpt = _ticketOptions.firstWhere(
+      (opt) => opt['type'] == _selectedTicketType,
+    );
+
+    final shift = _repository.activeShift;
+
+    // Issue ticket in repository
     final ticket = await _repository.issueTicket(
-      originStop: _selectedOrigin,
-      destinationStop: _selectedDestination,
-      passengerType: _passengerType,
-      paymentMethod: _paymentMethod,
-      passengerCount: _passengerCount,
-      fareAmount: _calculatedFare,
+      originStop: shift.currentStop,
+      destinationStop: shift.nextStop,
+      passengerType: selectedOpt['type'],
+      paymentMethod: 'Cash',
+      passengerCount: 1,
+      fareAmount: (selectedOpt['price'] as int).toDouble(),
     );
 
     if (!mounted) return;
@@ -54,87 +76,73 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => DigitalReceiptDialog(ticket: ticket),
-    );
+    ).then((_) {
+      setState(() {
+        _selectedTicketType = null;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final stops = _repository.activeShift.stops;
+    final shift = _repository.activeShift;
+    final int currentPassengers = shift.currentOccupancy;
+    final int capacity = shift.totalCapacity;
+    final int seatsAvailable = (capacity - currentPassengers).clamp(0, capacity);
+    final double capacityRatio =
+        capacity > 0 ? (currentPassengers / capacity).clamp(0.0, 1.0) : 0.0;
+
+    final int totalTickets = shift.totalTicketsIssued;
+    final double totalRevenue = shift.totalRevenue;
+    final int avgTrip = 34;
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
-        title: const Text('Digital Ticket Issuance'),
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF0F172A)),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'Issue Ticket',
+          style: TextStyle(
+            color: Color(0xFF0F172A),
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header Info Card
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(16),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Top Emerald Container: Current Passengers
+              _buildCurrentPassengersCard(
+                currentPassengers: currentPassengers,
+                capacity: capacity,
+                seatsAvailable: seatsAvailable,
+                capacityRatio: capacityRatio,
               ),
-              child: Row(
-                children: [
-                  const Icon(Icons.directions_bus, color: AppColors.primary, size: 28),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _repository.activeShift.routeNumber,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                      Text(
-                        _repository.activeShift.routeName,
-                        style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
-                      ),
-                    ],
-                  ),
-                ],
+
+              const SizedBox(height: 24),
+
+              // Section Title: Select Ticket Type
+              const Text(
+                'Select Ticket Type',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF0F172A),
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
 
-            // Stop Selector Section
-            const Text(
-              'Journey Details',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 12),
-
-            // Origin Dropdown
-            _buildDropdown(
-              label: 'Boarding Stop (Origin)',
-              icon: Icons.trip_origin,
-              iconColor: AppColors.success,
-              value: _selectedOrigin,
-              items: stops,
-              onChanged: (val) {
-                if (val != null) setState(() => _selectedOrigin = val);
-              },
-            ),
-            const SizedBox(height: 12),
-
-            // Destination Dropdown
-            _buildDropdown(
-              label: 'Destination Stop',
-              icon: Icons.location_on,
-              iconColor: AppColors.danger,
-              value: _selectedDestination,
-              items: stops,
-              onChanged: (val) {
-                if (val != null) setState(() => _selectedDestination = val);
-              },
-            ),
-            const SizedBox(height: 24),
+              const SizedBox(height: 12),
 
             // Passenger Category Chips
             const Text(
@@ -156,85 +164,49 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
                       if (selected) setState(() => _passengerType = type);
                     },
                   ),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 24),
-
-            // Passenger Count Stepper & Payment Method
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Quantity',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                      const SizedBox(height: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppColors.surface,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.remove_circle_outline),
-                              onPressed: _passengerCount > 1
-                                  ? () => setState(() => _passengerCount--)
-                                  : null,
-                            ),
-                            Text(
-                              '$_passengerCount',
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.add_circle_outline),
-                              onPressed: () => setState(() => _passengerCount++),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Payment Method',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                      const SizedBox(height: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                          color: AppColors.surface,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: _paymentMethod,
-                            isExpanded: true,
-                            items: _paymentMethods.map((pm) {
-                              return DropdownMenuItem(value: pm, child: Text(pm));
-                            }).toList(),
-                            onChanged: (val) {
-                              if (val != null) setState(() => _paymentMethod = val);
-                            },
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      gradient: _selectedTicketType != null
+                          ? const LinearGradient(
+                              colors: [
+                                Color(0xFF00E676),
+                                Color(0xFF10B981),
+                              ],
+                            )
+                          : null,
+                      color: _selectedTicketType == null
+                          ? const Color(0xFFCBD5E1)
+                          : null,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.confirmation_number_outlined,
+                            size: 20,
+                            color: _selectedTicketType != null
+                                ? Colors.white
+                                : const Color(0xFF64748B),
                           ),
-                        ),
+                          const SizedBox(width: 8),
+                          Text(
+                            _selectedTicketType != null
+                                ? 'Issue $_selectedTicketType Ticket'
+                                : 'Select Ticket Type Above',
+                            style: TextStyle(
+                              fontSize: 15.5,
+                              fontWeight: FontWeight.bold,
+                              color: _selectedTicketType != null
+                                  ? Colors.white
+                                  : const Color(0xFF64748B),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],
@@ -249,54 +221,213 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: AppColors.primary.withValues(alpha: 0.4)),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+              const SizedBox(height: 24),
+
+              // Bottom 3 Metrics Cards Row
+              Row(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Calculated Fare',
-                        style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
-                      ),
-                      Text(
-                        '$_passengerCount x $_passengerType Pass',
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-                      ),
-                    ],
+                  Expanded(
+                    child: _buildBottomStatCard(
+                      value: '$totalTickets',
+                      label: 'Issued Today',
+                    ),
                   ),
-                  Text(
-                    'Rs. ${_calculatedFare.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildBottomStatCard(
+                      value: '₹${totalRevenue.toStringAsFixed(0)}',
+                      label: 'Revenue',
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildBottomStatCard(
+                      value: '$avgTrip',
+                      label: 'Avg/Trip',
                     ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 32),
 
-            // Issue Ticket Big Action Button
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.success,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  elevation: 6,
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Top Emerald Green Passengers Card
+  Widget _buildCurrentPassengersCard({
+    required int currentPassengers,
+    required int capacity,
+    required int seatsAvailable,
+    required double capacityRatio,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 22.0),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF00E676),
+            Color(0xFF10B981),
+            Color(0xFF059669),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF10B981).withOpacity(0.3),
+            blurRadius: 16,
+            spreadRadius: 1,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          const Text(
+            'Current Passengers',
+            style: TextStyle(
+              color: Colors.white70,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            '$currentPassengers',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 44,
+              fontWeight: FontWeight.bold,
+              letterSpacing: -1,
+              height: 1.1,
+            ),
+          ),
+          Text(
+            'of $capacity capacity',
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 12.5,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
+          // Horizontal Progress Pill
+          Container(
+            height: 7,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: FractionallySizedBox(
+              alignment: Alignment.centerLeft,
+              widthFactor: capacityRatio,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(4),
                 ),
-                onPressed: _onIssueTicketPressed,
-                icon: const Icon(Icons.print_rounded, size: 24),
-                label: const Text(
-                  'ISSUE & PRINT TICKET',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          Text(
+            '$seatsAvailable seats available',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12.5,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 2x2 Ticket Type Selector Grid
+  Widget _buildTicketTypeGrid() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(child: _buildTicketTypeCard(_ticketOptions[0])),
+            const SizedBox(width: 12),
+            Expanded(child: _buildTicketTypeCard(_ticketOptions[1])),
+          ],
+        ),
+        const SizedBox(width: 12, height: 12),
+        Row(
+          children: [
+            Expanded(child: _buildTicketTypeCard(_ticketOptions[2])),
+            const SizedBox(width: 12),
+            Expanded(child: _buildTicketTypeCard(_ticketOptions[3])),
+          ],
+        ),
+      ],
+    );
+  }
+
+  // Single Ticket Type Card
+  Widget _buildTicketTypeCard(Map<String, dynamic> option) {
+    final String type = option['type'];
+    final String priceDisplay = option['priceDisplay'];
+    final Color color = option['color'];
+    final bool isSelected = _selectedTicketType == type;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedTicketType = type;
+        });
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 16.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected ? const Color(0xFF10B981) : const Color(0xFFF1F5F9),
+            width: isSelected ? 2.0 : 1.0,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: isSelected
+                  ? const Color(0xFF10B981).withOpacity(0.15)
+                  : Colors.black.withOpacity(0.03),
+              blurRadius: isSelected ? 12 : 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Text(
+              type,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF0F172A),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              priceDisplay,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: color,
               ),
             ),
           ],
@@ -305,45 +436,49 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
     );
   }
 
-  Widget _buildDropdown({
-    required String label,
-    required IconData icon,
-    required Color iconColor,
+  // Bottom Summary Stat Card
+  Widget _buildBottomStatCard({
     required String value,
-    required List<String> items,
-    required ValueChanged<String?> onChanged,
+    required String label,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
-        const SizedBox(height: 6),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(14),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 12.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
           ),
-          child: Row(
-            children: [
-              Icon(icon, color: iconColor, size: 20),
-              const SizedBox(width: 12),
-              Expanded(
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    value: value,
-                    isExpanded: true,
-                    items: items.map((stop) {
-                      return DropdownMenuItem(value: stop, child: Text(stop));
-                    }).toList(),
-                    onChanged: onChanged,
-                  ),
-                ),
-              ),
-            ],
+        ],
+      ),
+      child: Column(
+        children: [
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF0F172A),
+              letterSpacing: -0.3,
+            ),
           ),
-        ),
-      ],
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF94A3B8),
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
     );
   }
 }
