@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
+import 'features/passenger/presentation/screens/welcome_splash_screen.dart';
+import 'features/passenger/presentation/screens/onboarding_screen.dart';
+import 'features/passenger/presentation/screens/login_screen.dart';
 import 'features/passenger/presentation/screens/passenger_home_screen.dart';
 import 'features/passenger/presentation/screens/live_map_screen.dart';
 import 'features/passenger/presentation/screens/route_recommendation_screen.dart';
@@ -23,7 +26,10 @@ class SyncRideApp extends StatelessWidget {
       theme: AppTheme.darkTheme,
       initialRoute: '/',
       routes: {
-        '/': (context) => const PassengerHomeScreen(),
+        '/': (context) => const WelcomeSplashScreen(),
+        '/passenger/onboarding': (context) => const OnboardingScreen(),
+        '/passenger/login': (context) => const LoginScreen(),
+        '/passenger/home': (context) => const PassengerHomeScreen(),
         '/passenger/map': (context) => const LiveMapScreen(),
         '/passenger/recommendations': (context) => const RouteRecommendationScreen(),
         '/passenger/bus-details': (context) => const BusDetailsScreen(),

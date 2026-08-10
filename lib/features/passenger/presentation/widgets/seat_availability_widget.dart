@@ -32,7 +32,7 @@ class SeatAvailabilityWidget extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           SizedBox(
-            height: 84,
+            height: 92,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: entries.length,
