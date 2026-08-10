@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../data/repositories/passenger_repository.dart';
-import '../../data/models/bus_model.dart';
-import '../widgets/occupancy_indicator_widget.dart';
 
 class LiveMapScreen extends StatefulWidget {
   const LiveMapScreen({super.key});
@@ -11,289 +7,461 @@ class LiveMapScreen extends StatefulWidget {
   State<LiveMapScreen> createState() => _LiveMapScreenState();
 }
 
-class _LiveMapScreenState extends State<LiveMapScreen> {
-  final PassengerRepository _repository = PassengerRepository();
-  late List<BusModel> _buses;
-  late BusModel _selectedBus;
+class _LiveMapScreenState extends State<LiveMapScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animController;
+  bool _isTracking = true;
 
   @override
   void initState() {
     super.initState();
-    _buses = _repository.liveBuses;
-    _selectedBus = _buses.first;
+    _animController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _animController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Live Map • ${_selectedBus.routeNumber}'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.my_location_rounded),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Centered on current commuter GPS location')),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          // Visual Map Simulation Canvas
-          Positioned.fill(
-            child: Container(
-              color: const Color(0xFF0F172A),
-              child: CustomPaint(
-                painter: _MapCanvasPainter(
-                  buses: _buses,
-                  selectedBusId: _selectedBus.busId,
-                ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // Vector Live Map Custom Painter Canvas (Full Screen)
+            Positioned.fill(
+              child: AnimatedBuilder(
+                animation: _animController,
+                builder: (context, child) {
+                  return CustomPaint(
+                    size: Size.infinite,
+                    painter: _LiveMapPainter(
+                      animValue: _animController.value,
+                    ),
+                  );
+                },
               ),
             ),
-          ),
 
-          // Map Control Floating Buttons (Layers / Zoom)
-          Positioned(
-            top: 20,
-            right: 16,
-            child: Column(
-              children: [
-                _buildMapFab(Icons.layers_outlined, () {}),
-                const SizedBox(height: 10),
-                _buildMapFab(Icons.add, () {}),
-                const SizedBox(height: 10),
-                _buildMapFab(Icons.remove, () {}),
-              ],
-            ),
-          ),
+            // Top Header Bar Overlay
+            Positioned(
+              top: 16,
+              left: 16,
+              right: 16,
+              child: Row(
+                children: [
+                  // Circular Back Button
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.12),
+                            blurRadius: 10,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_rounded,
+                        color: Color(0xFF0F172A),
+                        size: 22,
+                      ),
+                    ),
+                  ),
 
-          // Bottom Sheet Carousel for Selected Bus Info
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 24,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Horizontal Bus Switcher Chips
-                SizedBox(
-                  height: 36,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _buses.length,
-                    itemBuilder: (context, index) {
-                      final bus = _buses[index];
-                      final isSelected = bus.busId == _selectedBus.busId;
+                  const SizedBox(width: 12),
 
-                      return GestureDetector(
-                        onTap: () => setState(() => _selectedBus = bus),
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 8),
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: isSelected ? AppColors.primary : AppColors.surface,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isSelected ? AppColors.primary : AppColors.surfaceLight,
+                  // Central Bus Info Pill Bar
+                  Expanded(
+                    child: Container(
+                      height: 46,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(23),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.12),
+                            blurRadius: 10,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.directions_bus_rounded,
+                            color: Color(0xFF2563EB),
+                            size: 22,
+                          ),
+                          const SizedBox(width: 10),
+                          const Expanded(
+                            child: Text.rich(
+                              TextSpan(
+                                style: TextStyle(fontSize: 14, color: Color(0xFF0F172A)),
+                                children: [
+                                  TextSpan(
+                                    text: 'Bus 177 ',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                    text: '— 3 min away',
+                                    style: TextStyle(fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          child: Text(
-                            '${bus.busId} (${bus.routeNumber})',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: isSelected ? Colors.white : AppColors.textPrimary,
+                          // Green Pulse Live Dot
+                          Container(
+                            width: 10,
+                            height: 10,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF22C55E),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color(0xFF22C55E),
+                                  blurRadius: 6,
+                                  spreadRadius: 1,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Bottom Floating Sheet Panel
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                padding: const EdgeInsets.all(22),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(28),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.14),
+                      blurRadius: 24,
+                      offset: const Offset(0, -4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // 3 Stat Cards Row (ETA, Distance, Occupancy)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildMapStatCard(
+                            value: '3 min',
+                            valueColor: const Color(0xFF16A34A),
+                            label: 'ETA',
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _buildMapStatCard(
+                            value: '1.2 km',
+                            valueColor: const Color(0xFF2563EB),
+                            label: 'Distance',
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _buildMapStatCard(
+                            value: '45%',
+                            valueColor: const Color(0xFFD97706),
+                            label: 'Occupancy',
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 18),
+
+                    // Start Tracking Primary Button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _isTracking = !_isTracking;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                _isTracking
+                                    ? 'Live GPS tracking active for Bus 177.'
+                                    : 'Tracking paused.',
+                              ),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(26),
+                          ),
+                          elevation: 4,
+                          shadowColor: const Color(0xFF0D9488).withOpacity(0.35),
+                        ),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color(0xFF2563EB),
+                                Color(0xFF0D9488),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(26),
+                          ),
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  _isTracking ? Icons.sensors_rounded : Icons.play_arrow_rounded,
+                                  color: Colors.white,
+                                  size: 22,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  _isTracking ? 'Start Tracking' : 'Resume Tracking',
+                                  style: const TextStyle(
+                                    fontSize: 16.5,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    letterSpacing: 0.2,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 12),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-                // Selected Bus Details Floating Card
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black54,
-                        blurRadius: 16,
-                        offset: Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${_selectedBus.routeNumber} • ${_selectedBus.busId}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                              Text(
-                                _selectedBus.routeName,
-                                style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
-                              ),
-                            ],
-                          ),
-                          OccupancyIndicatorWidget(
-                            status: _selectedBus.status,
-                            percentage: _selectedBus.occupancyPercentage,
-                          ),
-                        ],
-                      ),
-                      const Divider(height: 20, color: AppColors.surfaceLight),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildMapMetric(
-                            'Next Stop',
-                            _selectedBus.nextStop,
-                            Icons.location_on,
-                            AppColors.danger,
-                          ),
-                          _buildMapMetric(
-                            'ETA',
-                            '${_selectedBus.predictedEtaMinutes} Mins',
-                            Icons.timer,
-                            AppColors.success,
-                          ),
-                          _buildMapMetric(
-                            'Speed',
-                            '${_selectedBus.speedKmh} km/h',
-                            Icons.speed,
-                            AppColors.accent,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+  Widget _buildMapStatCard({
+    required String value,
+    required Color valueColor,
+    required String label,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8FAFC),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+      ),
+      child: Column(
+        children: [
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+              color: valueColor,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 11.5,
+              color: Color(0xFF94A3B8),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildMapFab(IconData icon, VoidCallback onTap) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        shape: BoxShape.circle,
-        boxShadow: const [BoxShadow(color: Colors.black38, blurRadius: 8)],
-      ),
-      child: IconButton(
-        icon: Icon(icon, color: Colors.white, size: 20),
-        onPressed: onTap,
-      ),
-    );
-  }
-
-  Widget _buildMapMetric(String label, String value, IconData icon, Color color) {
-    return Row(
-      children: [
-        Icon(icon, size: 16, color: color),
-        const SizedBox(width: 6),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(label, style: const TextStyle(fontSize: 10, color: AppColors.textSecondary)),
-            Text(
-              value,
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: color),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
 
-// Custom Painter for Map Simulation Canvas
-class _MapCanvasPainter extends CustomPainter {
-  final List<BusModel> buses;
-  final String selectedBusId;
+// Vector Live Map Painter
+class _LiveMapPainter extends CustomPainter {
+  final double animValue;
 
-  _MapCanvasPainter({required this.buses, required this.selectedBusId});
+  _LiveMapPainter({required this.animValue});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final gridPaint = Paint()
-      ..color = const Color(0xFF1E293B)
-      ..strokeWidth = 1.0;
+    // Background Fill
+    final bgPaint = Paint()..color = const Color(0xFFE5EEF8);
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bgPaint);
 
-    // Draw Grid Lines
-    for (double x = 0; x < size.width; x += 40) {
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), gridPaint);
-    }
-    for (double y = 0; y < size.height; y += 40) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), gridPaint);
-    }
+    // Water River Body at Bottom
+    final waterPaint = Paint()..color = const Color(0xFFC7E2FE);
+    final waterPath = Path()
+      ..moveTo(0, size.height * 0.72)
+      ..cubicTo(size.width * 0.3, size.height * 0.70, size.width * 0.7, size.height * 0.74, size.width, size.height * 0.71)
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
+    canvas.drawPath(waterPath, waterPaint);
 
-    // Draw Route Polyline Stream
-    final routePath = Path();
-    routePath.moveTo(size.width * 0.1, size.height * 0.2);
-    routePath.cubicTo(
-      size.width * 0.4,
-      size.height * 0.15,
-      size.width * 0.3,
-      size.height * 0.5,
-      size.width * 0.85,
-      size.height * 0.7,
-    );
+    // City Block Rectangles & Parks
+    final blockPaint = Paint()..color = const Color(0xFFCBD5E1);
+    final parkPaint = Paint()..color = const Color(0xFFBBF7D0);
 
-    final polylinePaint = Paint()
-      ..color = AppColors.primary.withOpacity(0.6)
-      ..strokeWidth = 6.0
+    // Blocks
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(size.width * 0.12, 100, size.width * 0.2, 50), const Radius.circular(6)), blockPaint);
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(size.width * 0.36, 100, size.width * 0.25, 50), const Radius.circular(6)), blockPaint);
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(size.width * 0.65, 100, size.width * 0.2, 50), const Radius.circular(6)), blockPaint);
+
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(size.width * 0.12, 180, size.width * 0.2, 70), const Radius.circular(6)), blockPaint);
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(size.width * 0.36, 180, size.width * 0.25, 70), const Radius.circular(6)), blockPaint);
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(size.width * 0.65, 180, size.width * 0.2, 70), const Radius.circular(6)), blockPaint);
+
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(size.width * 0.12, 270, size.width * 0.2, 60), const Radius.circular(6)), blockPaint);
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(size.width * 0.36, 270, size.width * 0.25, 60), const Radius.circular(6)), blockPaint);
+
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(size.width * 0.65, 270, size.width * 0.15, 60), const Radius.circular(6)), parkPaint);
+
+    // Roads Lines
+    final roadPaint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 18
       ..style = PaintingStyle.stroke;
 
-    canvas.drawPath(routePath, polylinePaint);
+    final verticalX1 = size.width * 0.08;
+    final verticalX2 = size.width * 0.34;
+    final verticalX3 = size.width * 0.63;
+    final verticalX4 = size.width * 0.88;
 
-    // Draw Bus Markers along map
-    final busPositions = [
-      Offset(size.width * 0.25, size.height * 0.28),
-      Offset(size.width * 0.45, size.height * 0.42),
-      Offset(size.width * 0.70, size.height * 0.62),
-    ];
+    canvas.drawLine(Offset(verticalX1, 0), Offset(verticalX1, size.height * 0.72), roadPaint);
+    canvas.drawLine(Offset(verticalX2, 0), Offset(verticalX2, size.height * 0.72), roadPaint);
+    canvas.drawLine(Offset(verticalX3, 0), Offset(verticalX3, size.height * 0.72), roadPaint);
+    canvas.drawLine(Offset(verticalX4, 0), Offset(verticalX4, size.height * 0.72), roadPaint);
 
-    for (int i = 0; i < buses.length && i < busPositions.length; i++) {
-      final bus = buses[i];
-      final pos = busPositions[i];
-      final isSelected = bus.busId == selectedBusId;
+    canvas.drawLine(Offset(0, 90), Offset(size.width, 90), roadPaint);
+    canvas.drawLine(Offset(0, 165), Offset(size.width, 165), roadPaint);
+    canvas.drawLine(Offset(0, 260), Offset(size.width, 260), roadPaint);
 
-      // Glow circle
-      final glowPaint = Paint()
-        ..color = isSelected ? AppColors.primary.withOpacity(0.4) : Colors.transparent
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 12);
-      canvas.drawCircle(pos, 22, glowPaint);
+    // Street Names Text
+    _drawText(canvas, '177', Offset(verticalX3 - 6, 80), fontSize: 9.5, color: Colors.white70);
+    _drawText(canvas, 'Airport', Offset(verticalX3 - 25, 120), fontSize: 9.5, color: const Color(0xFF64748B));
+    _drawText(canvas, 'MG Road', Offset(verticalX2 + 10, 158), fontSize: 9.5, color: const Color(0xFF64748B));
+    _drawText(canvas, 'FC Road', Offset(verticalX2 + 10, 252), fontSize: 9.5, color: const Color(0xFF64748B));
 
-      // Marker Circle
-      final markerPaint = Paint()
-        ..color = isSelected ? AppColors.primary : AppColors.surfaceLight;
-      canvas.drawCircle(pos, 14, markerPaint);
+    // Dotted Route Polyline (Blue)
+    final routePaint = Paint()
+      ..color = const Color(0xFF2563EB)
+      ..strokeWidth = 5.5
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
 
-      // Inner Icon dot
-      final innerPaint = Paint()..color = Colors.white;
-      canvas.drawCircle(pos, 5, innerPaint);
+    final routePath = Path()
+      ..moveTo(verticalX2, 340)
+      ..lineTo(verticalX2, 260)
+      ..lineTo(verticalX3, 260)
+      ..lineTo(verticalX3, 130);
+
+    _drawDottedPath(canvas, routePath, routePaint);
+
+    // Route Waypoint Rings
+    _drawWaypoint(canvas, Offset(verticalX2, 340));
+    _drawWaypoint(canvas, Offset(verticalX2, 260));
+    _drawWaypoint(canvas, Offset(verticalX3, 260));
+    _drawWaypoint(canvas, Offset(verticalX3, 165));
+    _drawWaypoint(canvas, Offset(verticalX3, 130));
+
+    // User Location Halo Dot
+    final userPaint = Paint()..color = const Color(0xFF2563EB).withOpacity(0.2);
+    canvas.drawCircle(Offset(verticalX3, 300), 16, userPaint);
+    final userInnerPaint = Paint()..color = const Color(0xFF2563EB);
+    canvas.drawCircle(Offset(verticalX3, 300), 8, userInnerPaint);
+    final userCenterPaint = Paint()..color = Colors.white;
+    canvas.drawCircle(Offset(verticalX3, 300), 3.5, userCenterPaint);
+
+    // Moving Live Bus Marker (Orange Circle)
+    final busY = 260.0 - (animValue * 80.0);
+    final busPaint = Paint()..color = const Color(0xFFF97316);
+    canvas.drawCircle(Offset(verticalX3, busY), 13, busPaint);
+    final busBorder = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 3
+      ..style = PaintingStyle.stroke;
+    canvas.drawCircle(Offset(verticalX3, busY), 13, busBorder);
+
+    // Destination Pin Marker at Airport
+    final pinPaint = Paint()..color = const Color(0xFFEF4444);
+    canvas.drawCircle(Offset(verticalX3, 122), 7, pinPaint);
+  }
+
+  void _drawWaypoint(Canvas canvas, Offset point) {
+    final bgPaint = Paint()..color = Colors.white;
+    canvas.drawCircle(point, 8, bgPaint);
+    final borderPaint = Paint()
+      ..color = const Color(0xFF2563EB)
+      ..strokeWidth = 2.5
+      ..style = PaintingStyle.stroke;
+    canvas.drawCircle(point, 8, borderPaint);
+    final innerDot = Paint()..color = const Color(0xFF2563EB);
+    canvas.drawCircle(point, 3.5, innerDot);
+  }
+
+  void _drawDottedPath(Canvas canvas, Path path, Paint paint) {
+    final metrics = path.computeMetrics();
+    for (final metric in metrics) {
+      double distance = 0.0;
+      while (distance < metric.length) {
+        final extractPath = metric.extractPath(distance, distance + 7);
+        canvas.drawPath(extractPath, paint);
+        distance += 13;
+      }
     }
   }
 
+  void _drawText(Canvas canvas, String text, Offset offset, {double fontSize = 10, Color color = Colors.black}) {
+    final textSpan = TextSpan(
+      text: text,
+      style: TextStyle(fontSize: fontSize, color: color, fontWeight: FontWeight.w600),
+    );
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout();
+    textPainter.paint(canvas, offset);
+  }
+
   @override
-  bool shouldRepaint(covariant _MapCanvasPainter oldDelegate) => true;
+  bool shouldRepaint(covariant _LiveMapPainter oldDelegate) {
+    return oldDelegate.animValue != animValue;
+  }
 }

@@ -150,7 +150,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 9,
                             color: Colors.black54,
-                            fontWeight: FontWeight.mono,
+                            fontFamily: 'monospace',
                           ),
                         ),
                       ],
