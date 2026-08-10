@@ -8,7 +8,7 @@ class PassengerProfileScreen extends StatefulWidget {
 }
 
 class _PassengerProfileScreenState extends State<PassengerProfileScreen> {
-  int _currentBottomNavIndex = 4; // 4 = Profile active tab
+  final int _currentBottomNavIndex = 4; // 4 = Profile active tab
   bool _isDarkMode = false;
 
   @override
@@ -74,7 +74,7 @@ class _PassengerProfileScreenState extends State<PassengerProfileScreen> {
                               border: Border.all(color: Colors.white, width: 2),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
+                                  color: Colors.black.withValues(alpha: 0.1),
                                   blurRadius: 4,
                                   offset: const Offset(0, 2),
                                 ),
@@ -188,7 +188,7 @@ class _PassengerProfileScreenState extends State<PassengerProfileScreen> {
                     title: 'Dark Mode',
                     trailingWidget: Switch.adaptive(
                       value: _isDarkMode,
-                      activeColor: const Color(0xFF2563EB),
+                      activeTrackColor: const Color(0xFF2563EB),
                       onChanged: (val) {
                         setState(() {
                           _isDarkMode = val;
@@ -245,7 +245,7 @@ class _PassengerProfileScreenState extends State<PassengerProfileScreen> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
+              color: Colors.black.withValues(alpha: 0.06),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),
@@ -304,7 +304,7 @@ class _PassengerProfileScreenState extends State<PassengerProfileScreen> {
         border: Border.all(color: const Color(0xFFF1F5F9)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.015),
+            color: Colors.black.withValues(alpha: 0.015),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/repositories/ticket_repository.dart';
 import '../../data/models/bus_shift_model.dart';
-import '../../data/models/ticket_model.dart';
 import 'conductor_state.dart';
 
 class ConductorCubit extends Cubit<ConductorState> {

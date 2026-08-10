@@ -150,7 +150,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
                   child: FilterChip(
                     label: Text(type),
                     selected: isSelected,
-                    selectedColor: AppColors.primary.withOpacity(0.3),
+                    selectedColor: AppColors.primary.withValues(alpha: 0.3),
                     checkmarkColor: AppColors.primary,
                     onSelected: (selected) {
                       if (selected) setState(() => _passengerType = type);
@@ -247,7 +247,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.primary.withOpacity(0.4)),
+                border: Border.all(color: AppColors.primary.withValues(alpha: 0.4)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

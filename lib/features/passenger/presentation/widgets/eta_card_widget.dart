@@ -12,7 +12,7 @@ class EtaCardWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight.withOpacity(0.5),
+        color: AppColors.surfaceLight.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
@@ -24,7 +24,7 @@ class EtaCardWidget extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.2),
+                  color: AppColors.primary.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Icon(Icons.timer_rounded, color: AppColors.primary, size: 20),
@@ -51,8 +51,8 @@ class EtaCardWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
               color: bus.seatPredictionScore > 50
-                  ? AppColors.success.withOpacity(0.15)
-                  : AppColors.warning.withOpacity(0.15),
+                  ? AppColors.success.withValues(alpha: 0.15)
+                  : AppColors.warning.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: bus.seatPredictionScore > 50 ? AppColors.success : AppColors.warning,

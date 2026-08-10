@@ -21,8 +21,8 @@ class SyncStatusBadge extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           color: isOnline
-              ? (pendingCount > 0 ? AppColors.warning.withOpacity(0.15) : AppColors.success.withOpacity(0.15))
-              : AppColors.danger.withOpacity(0.15),
+              ? (pendingCount > 0 ? AppColors.warning.withValues(alpha: 0.15) : AppColors.success.withValues(alpha: 0.15))
+              : AppColors.danger.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isOnline

@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             boxShadow: _isLoginTab
                                 ? [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.06),
+                                      color: Colors.black.withValues(alpha: 0.06),
                                       blurRadius: 8,
                                       offset: const Offset(0, 2),
                                     ),
@@ -180,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             boxShadow: !_isLoginTab
                                 ? [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.06),
+                                      color: Colors.black.withValues(alpha: 0.06),
                                       blurRadius: 8,
                                       offset: const Offset(0, 2),
                                     ),
@@ -352,7 +352,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(14),
                     ),
                     elevation: 4,
-                    shadowColor: const Color(0xFF0D9488).withOpacity(0.3),
+                    shadowColor: const Color(0xFF0D9488).withValues(alpha: 0.3),
                   ),
                   child: Ink(
                     decoration: BoxDecoration(
@@ -383,8 +383,8 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 24),
 
               // Divider
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Expanded(child: Divider(color: Color(0xFFE2E8F0), thickness: 1)),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 14.0),

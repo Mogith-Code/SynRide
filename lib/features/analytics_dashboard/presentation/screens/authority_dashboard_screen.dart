@@ -43,9 +43,9 @@ class AuthorityDashboardScreen extends StatelessWidget {
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'Route Congestion Heatmap Matrix',
                     style: TextStyle(fontWeight: FontWeight.bold),

@@ -81,12 +81,12 @@ class _WelcomeSplashScreenState extends State<WelcomeSplashScreen>
                               ),
                               borderRadius: BorderRadius.circular(28),
                               border: Border.all(
-                                color: const Color(0xFF00E5FF).withOpacity(0.4),
+                                color: const Color(0xFF00E5FF).withValues(alpha: 0.4),
                                 width: 1.5,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFF00C6FF).withOpacity(0.35),
+                                  color: const Color(0xFF00C6FF).withValues(alpha: 0.35),
                                   blurRadius: 24,
                                   spreadRadius: 2,
                                   offset: const Offset(0, 8),
@@ -119,7 +119,7 @@ class _WelcomeSplashScreenState extends State<WelcomeSplashScreen>
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFF00E676).withOpacity(0.6),
+                                  color: const Color(0xFF00E676).withValues(alpha: 0.6),
                                   blurRadius: 10,
                                   spreadRadius: 1,
                                 ),
@@ -173,7 +173,7 @@ class _WelcomeSplashScreenState extends State<WelcomeSplashScreen>
                   width: 180,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.12),
+                    color: Colors.white.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(2),
                   ),
                   child: Stack(
@@ -211,7 +211,7 @@ class _WelcomeSplashScreenState extends State<WelcomeSplashScreen>
                         borderRadius: BorderRadius.circular(26),
                       ),
                       elevation: 8,
-                      shadowColor: const Color(0xFF0088FF).withOpacity(0.5),
+                      shadowColor: const Color(0xFF0088FF).withValues(alpha: 0.5),
                     ),
                     child: Ink(
                       decoration: BoxDecoration(

@@ -29,8 +29,8 @@ class StopSelectorWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Icon(Icons.location_on, color: AppColors.primary, size: 20),
                   SizedBox(width: 8),
                   Text(
@@ -70,7 +70,7 @@ class StopSelectorWidget extends StatelessWidget {
                             ? AppColors.primary
                             : (isPast
                                 ? AppColors.surfaceLight
-                                : AppColors.textSecondary.withOpacity(0.3)),
+                                : AppColors.textSecondary.withValues(alpha: 0.3)),
                       ),
                     ),
                     child: Row(

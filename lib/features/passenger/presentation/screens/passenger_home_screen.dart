@@ -29,9 +29,9 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen> {
                 children: [
                   const Icon(Icons.location_on_outlined, color: Color(0xFF2563EB), size: 24),
                   const SizedBox(width: 8),
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         'Current Location',
                         style: TextStyle(
@@ -60,8 +60,8 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen> {
                       color: const Color(0xFFFEF3C7),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: Row(
-                      children: const [
+                    child: const Row(
+                      children: [
                         Icon(Icons.wb_sunny_rounded, size: 14, color: Color(0xFFD97706)),
                         SizedBox(width: 4),
                         Text(
@@ -145,14 +145,14 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen> {
                     border: Border.all(color: const Color(0xFFE2E8F0)),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.03),
+                        color: Colors.black.withValues(alpha: 0.03),
                         blurRadius: 10,
                         offset: const Offset(0, 2),
                       ),
                     ],
                   ),
-                  child: Row(
-                    children: const [
+                  child: const Row(
+                    children: [
                       Icon(Icons.search_rounded, color: Color(0xFF94A3B8), size: 22),
                       SizedBox(width: 12),
                       Expanded(
@@ -239,10 +239,10 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen> {
                         ),
                       ),
                       const SizedBox(width: 14),
-                      Expanded(
+                      const Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
                               'AI Recommendation',
                               style: TextStyle(
@@ -291,8 +291,8 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen> {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: const Color(0xFFFCA5A5)),
                 ),
-                child: Row(
-                  children: const [
+                child: const Row(
+                  children: [
                     Icon(Icons.warning_amber_rounded, color: Color(0xFFEF4444), size: 22),
                     SizedBox(width: 12),
                     Expanded(
@@ -396,9 +396,9 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen> {
               const SizedBox(height: 22),
 
               // Recent Trips Header
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Recent Trips',
                     style: TextStyle(
@@ -446,7 +446,7 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen> {
                   borderRadius: BorderRadius.circular(22),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.12),
+                      color: Colors.black.withValues(alpha: 0.12),
                       blurRadius: 16,
                       offset: const Offset(0, 4),
                     ),
@@ -489,7 +489,7 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
+              color: Colors.black.withValues(alpha: 0.06),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),
@@ -529,7 +529,7 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen> {
         border: Border.all(color: const Color(0xFFF1F5F9)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),

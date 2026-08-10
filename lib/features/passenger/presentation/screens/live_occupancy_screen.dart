@@ -56,14 +56,14 @@ class LiveOccupancyScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     // Circular Progress Indicator Ring
-                    SizedBox(
+                    const SizedBox(
                       width: 150,
                       height: 150,
                       child: CircularProgressIndicator(
                         value: 0.45,
                         strokeWidth: 14,
-                        backgroundColor: const Color(0xFFF1F5F9),
-                        valueColor: const AlwaysStoppedAnimation<Color>(
+                        backgroundColor: Color(0xFFF1F5F9),
+                        valueColor: AlwaysStoppedAnimation<Color>(
                           Color(0xFFF59E0B),
                         ),
                       ),
@@ -149,7 +149,7 @@ class LiveOccupancyScreen extends StatelessWidget {
                   border: Border.all(color: const Color(0xFFF1F5F9)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.02),
+                      color: Colors.black.withValues(alpha: 0.02),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -158,9 +158,9 @@ class LiveOccupancyScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text(
                           'Capacity Usage',
                           style: TextStyle(
@@ -212,9 +212,9 @@ class LiveOccupancyScreen extends StatelessWidget {
 
                     const SizedBox(height: 10),
 
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text(
                           'Empty',
                           style: TextStyle(
@@ -248,7 +248,7 @@ class LiveOccupancyScreen extends StatelessWidget {
                   border: Border.all(color: const Color(0xFFF1F5F9)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.02),
+                      color: Colors.black.withValues(alpha: 0.02),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -282,9 +282,9 @@ class LiveOccupancyScreen extends StatelessWidget {
                               Container(
                                 width: 16,
                                 height: height,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF2563EB),
-                                  borderRadius: const BorderRadius.vertical(
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFF2563EB),
+                                  borderRadius: BorderRadius.vertical(
                                     top: Radius.circular(5),
                                   ),
                                 ),
@@ -318,11 +318,11 @@ class LiveOccupancyScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: const Color(0xFFBAE6FD)),
                 ),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      children: const [
+                      children: [
                         Icon(
                           Icons.memory_rounded,
                           color: Color(0xFF0284C7),
@@ -339,8 +339,8 @@ class LiveOccupancyScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
-                    const Text(
+                    SizedBox(height: 10),
+                    Text(
                       'In 10 minutes: ~68% full',
                       style: TextStyle(
                         fontSize: 15,
@@ -348,8 +348,8 @@ class LiveOccupancyScreen extends StatelessWidget {
                         color: Color(0xFF0F172A),
                       ),
                     ),
-                    const SizedBox(height: 3),
-                    const Text(
+                    SizedBox(height: 3),
+                    Text(
                       'Bus will get busier — board now for comfortable ride',
                       style: TextStyle(
                         fontSize: 12.5,
@@ -382,7 +382,7 @@ class LiveOccupancyScreen extends StatelessWidget {
         border: Border.all(color: const Color(0xFFF1F5F9)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
