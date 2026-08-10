@@ -112,10 +112,10 @@ class _OfflineSyncQueueScreenState extends State<OfflineSyncQueueScreen> {
 
             Expanded(
               child: pendingTickets.isEmpty
-                  ? Center(
+                  ? const Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.check_circle_outline, size: 64, color: AppColors.success),
                           SizedBox(height: 12),
                           Text(

@@ -120,7 +120,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 borderRadius: BorderRadius.circular(24),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: item.iconBgColor.withOpacity(0.35),
+                                    color: item.iconBgColor.withValues(alpha: 0.35),
                                     blurRadius: 18,
                                     offset: const Offset(0, 6),
                                   ),
@@ -210,7 +210,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           borderRadius: BorderRadius.circular(26),
                         ),
                         elevation: 6,
-                        shadowColor: const Color(0xFF0D9488).withOpacity(0.35),
+                        shadowColor: const Color(0xFF0D9488).withValues(alpha: 0.35),
                       ),
                       child: Ink(
                         decoration: BoxDecoration(

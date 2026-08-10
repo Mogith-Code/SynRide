@@ -70,7 +70,7 @@ class BusDetailsScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(22),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF2563EB).withOpacity(0.3),
+                      color: const Color(0xFF2563EB).withValues(alpha: 0.3),
                       blurRadius: 16,
                       offset: const Offset(0, 6),
                     ),
@@ -85,7 +85,7 @@ class BusDetailsScreen extends StatelessWidget {
                           width: 48,
                           height: 48,
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
+                            color: Colors.white.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: const Icon(
@@ -95,10 +95,10 @@ class BusDetailsScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 14),
-                        Expanded(
+                        const Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               Text(
                                 'Bus 177',
                                 style: TextStyle(
@@ -123,7 +123,7 @@ class BusDetailsScreen extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.22),
+                            color: Colors.white.withValues(alpha: 0.22),
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: const Text(
@@ -212,7 +212,7 @@ class BusDetailsScreen extends StatelessWidget {
                   border: Border.all(color: const Color(0xFFF1F5F9)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.02),
+                      color: Colors.black.withValues(alpha: 0.02),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -282,9 +282,9 @@ class BusDetailsScreen extends StatelessWidget {
 
                     const SizedBox(height: 10),
 
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text(
                           '0 seats',
                           style: TextStyle(
@@ -321,7 +321,7 @@ class BusDetailsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     elevation: 4,
-                    shadowColor: const Color(0xFF0D9488).withOpacity(0.35),
+                    shadowColor: const Color(0xFF0D9488).withValues(alpha: 0.35),
                   ),
                   child: Ink(
                     decoration: BoxDecoration(
@@ -335,9 +335,9 @@ class BusDetailsScreen extends StatelessWidget {
                     ),
                     child: Container(
                       alignment: Alignment.center,
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.map_outlined, color: Colors.white, size: 22),
                           SizedBox(width: 8),
                           Text(
@@ -375,9 +375,9 @@ class BusDetailsScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.groups_outlined, color: Color(0xFF0D9488), size: 20),
                           SizedBox(width: 8),
                           Text(
@@ -409,9 +409,9 @@ class BusDetailsScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.bolt_rounded, color: Color(0xFF2563EB), size: 20),
                           SizedBox(width: 8),
                           Text(
@@ -473,7 +473,7 @@ class BusDetailsScreen extends StatelessWidget {
         border: Border.all(color: const Color(0xFFF1F5F9)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),

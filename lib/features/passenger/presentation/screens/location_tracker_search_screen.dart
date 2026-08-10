@@ -9,7 +9,7 @@ class LocationTrackerSearchScreen extends StatefulWidget {
 
 class _LocationTrackerSearchScreenState extends State<LocationTrackerSearchScreen> {
   int _selectedFilterIndex = 0;
-  int _currentBottomNavIndex = 1; // 1 = Search tab active
+  final int _currentBottomNavIndex = 1; // 1 = Search tab active
 
   final List<String> _filters = ['All', 'Bus No', 'Route', 'Nearby', 'Express'];
   final TextEditingController _searchController = TextEditingController();
@@ -211,7 +211,7 @@ class _LocationTrackerSearchScreenState extends State<LocationTrackerSearchScree
                       border: Border.all(color: const Color(0xFFF1F5F9)),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.02),
+                          color: Colors.black.withValues(alpha: 0.02),
                           blurRadius: 10,
                           offset: const Offset(0, 2),
                         ),
@@ -369,7 +369,7 @@ class _LocationTrackerSearchScreenState extends State<LocationTrackerSearchScree
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
+              color: Colors.black.withValues(alpha: 0.06),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),

@@ -27,61 +27,75 @@ class WelcomeSplashScreen extends StatelessWidget {
               // Top Bar Header
               _buildTopHeader(),
 
-              // Scrollable Hero & Cards Content
-              Expanded(
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0, vertical: 20.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 16),
-
-                      // Center Hero Header Tag: AI-Powered Smart Public Transportation
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF2563EB).withOpacity(0.18),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: const Color(0xFF2563EB).withOpacity(0.35),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Icon(Icons.bolt_rounded,
-                                color: Color(0xFF38BDF8), size: 16),
-                            SizedBox(width: 6),
-                            Text(
-                              'AI-Powered Smart Public Transportation',
-                              style: TextStyle(
-                                color: Color(0xFF38BDF8),
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
+                // App Logo with Green Microchip Badge
+                ScaleTransition(
+                  scale: _pulseAnim,
+                  child: SizedBox(
+                    width: 120,
+                    height: 120,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        // Main Icon Square
+                        Center(
+                          child: Container(
+                            width: 104,
+                            height: 104,
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color(0xFF0072FF),
+                                  Color(0xFF00C6FF),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(28),
+                              border: Border.all(
+                                color: const Color(0xFF00E5FF).withValues(alpha: 0.4),
+                                width: 1.5,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFF00C6FF).withValues(alpha: 0.35),
+                                  blurRadius: 24,
+                                  spreadRadius: 2,
+                                  offset: const Offset(0, 8),
+                                ),
+                              ],
+                            ),
+                            child: const Center(
+                              child: Icon(
+                                Icons.directions_bus_rounded,
+                                size: 54,
+                                color: Colors.white,
                               ),
                             ),
                           ],
                         ),
                       ),
 
-                      const SizedBox(height: 24),
-
-                      // Main Title Banner with Gradient Text
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          style: const TextStyle(
-                            fontSize: 42,
-                            fontWeight: FontWeight.bold,
-                            height: 1.15,
-                            letterSpacing: -0.8,
-                          ),
-                          children: [
-                            const TextSpan(
-                              text: 'Smart City\n',
-                              style: TextStyle(color: Colors.white),
+                        // Green Chip Badge (Top Right)
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Container(
+                            width: 32,
+                            height: 32,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF00E676),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: const Color(0xFF0F2244),
+                                width: 2.5,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFF00E676).withValues(alpha: 0.6),
+                                  blurRadius: 10,
+                                  spreadRadius: 1,
+                                ),
+                              ],
                             ),
                             WidgetSpan(
                               child: ShaderMask(
@@ -427,18 +441,15 @@ class WelcomeSplashScreen extends StatelessWidget {
             ),
           ),
 
-          // Card Body Details
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  description,
-                  style: const TextStyle(
-                    color: Color(0xFF94A3B8),
-                    fontSize: 13,
-                    height: 1.4,
+                const SizedBox(height: 28),
+
+                // Progress / Indicator Bar
+                Container(
+                  width: 180,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -484,6 +495,8 @@ class WelcomeSplashScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
+                      elevation: 8,
+                      shadowColor: const Color(0xFF0088FF).withValues(alpha: 0.5),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

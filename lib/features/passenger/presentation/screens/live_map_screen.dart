@@ -66,7 +66,7 @@ class _LiveMapScreenState extends State<LiveMapScreen>
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.12),
+                            color: Colors.black.withValues(alpha: 0.12),
                             blurRadius: 10,
                             offset: const Offset(0, 3),
                           ),
@@ -92,7 +92,7 @@ class _LiveMapScreenState extends State<LiveMapScreen>
                         borderRadius: BorderRadius.circular(23),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.12),
+                            color: Colors.black.withValues(alpha: 0.12),
                             blurRadius: 10,
                             offset: const Offset(0, 3),
                           ),
@@ -163,7 +163,7 @@ class _LiveMapScreenState extends State<LiveMapScreen>
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.14),
+                      color: Colors.black.withValues(alpha: 0.14),
                       blurRadius: 24,
                       offset: const Offset(0, -4),
                     ),
@@ -228,7 +228,7 @@ class _LiveMapScreenState extends State<LiveMapScreen>
                             borderRadius: BorderRadius.circular(26),
                           ),
                           elevation: 4,
-                          shadowColor: const Color(0xFF0D9488).withOpacity(0.35),
+                          shadowColor: const Color(0xFF0D9488).withValues(alpha: 0.35),
                         ),
                         child: Ink(
                           decoration: BoxDecoration(
@@ -368,9 +368,9 @@ class _LiveMapPainter extends CustomPainter {
     canvas.drawLine(Offset(verticalX3, 0), Offset(verticalX3, size.height * 0.72), roadPaint);
     canvas.drawLine(Offset(verticalX4, 0), Offset(verticalX4, size.height * 0.72), roadPaint);
 
-    canvas.drawLine(Offset(0, 90), Offset(size.width, 90), roadPaint);
-    canvas.drawLine(Offset(0, 165), Offset(size.width, 165), roadPaint);
-    canvas.drawLine(Offset(0, 260), Offset(size.width, 260), roadPaint);
+    canvas.drawLine(const Offset(0, 90), Offset(size.width, 90), roadPaint);
+    canvas.drawLine(const Offset(0, 165), Offset(size.width, 165), roadPaint);
+    canvas.drawLine(const Offset(0, 260), Offset(size.width, 260), roadPaint);
 
     // Street Names Text
     _drawText(canvas, '177', Offset(verticalX3 - 6, 80), fontSize: 9.5, color: Colors.white70);
@@ -401,7 +401,7 @@ class _LiveMapPainter extends CustomPainter {
     _drawWaypoint(canvas, Offset(verticalX3, 130));
 
     // User Location Halo Dot
-    final userPaint = Paint()..color = const Color(0xFF2563EB).withOpacity(0.2);
+    final userPaint = Paint()..color = const Color(0xFF2563EB).withValues(alpha: 0.2);
     canvas.drawCircle(Offset(verticalX3, 300), 16, userPaint);
     final userInnerPaint = Paint()..color = const Color(0xFF2563EB);
     canvas.drawCircle(Offset(verticalX3, 300), 8, userInnerPaint);

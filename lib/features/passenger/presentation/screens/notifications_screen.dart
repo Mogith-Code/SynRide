@@ -8,7 +8,7 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-  int _currentBottomNavIndex = 3; // 3 = Alerts active tab
+  final int _currentBottomNavIndex = 3; // 3 = Alerts active tab
   bool _markAllRead = false;
 
   final List<Map<String, dynamic>> _notifications = [
@@ -151,7 +151,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.02),
+                    color: Colors.black.withValues(alpha: 0.02),
                     blurRadius: 10,
                     offset: const Offset(0, 2),
                   ),
@@ -237,7 +237,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
+              color: Colors.black.withValues(alpha: 0.06),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),

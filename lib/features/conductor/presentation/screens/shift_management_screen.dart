@@ -44,7 +44,7 @@ class ShiftManagementScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 28,
-                    backgroundColor: AppColors.primary.withOpacity(0.2),
+                    backgroundColor: AppColors.primary.withValues(alpha: 0.2),
                     child: const Icon(Icons.badge, color: AppColors.primary, size: 30),
                   ),
                   const SizedBox(width: 16),
@@ -67,7 +67,7 @@ class ShiftManagementScreen extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                           decoration: BoxDecoration(
-                            color: AppColors.success.withOpacity(0.15),
+                            color: AppColors.success.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Text(

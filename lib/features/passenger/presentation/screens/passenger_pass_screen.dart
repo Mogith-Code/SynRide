@@ -26,7 +26,7 @@ class PassengerPassScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primary.withOpacity(0.4),
+                    color: AppColors.primary.withValues(alpha: 0.4),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
@@ -34,9 +34,9 @@ class PassengerPassScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         'SYNCRIDE PASSPORT',
                         style: TextStyle(
@@ -58,8 +58,8 @@ class PassengerPassScreen extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: Column(
-                      children: const [
+                    child: const Column(
+                      children: [
                         Icon(Icons.qr_code_2_rounded, size: 140, color: Colors.black87),
                         SizedBox(height: 4),
                         Text(
@@ -75,9 +75,9 @@ class PassengerPassScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
 
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -109,9 +109,9 @@ class PassengerPassScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text('SyncPass Wallet Balance', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                       SizedBox(height: 4),
                       Text(

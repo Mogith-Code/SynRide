@@ -144,26 +144,25 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
 
               const SizedBox(height: 12),
 
-              // Ticket Options 2x2 Grid
-              _buildTicketTypeGrid(),
-
-              const SizedBox(height: 24),
-
-              // Submit Action Button: Issue Ticket
-              SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: ElevatedButton(
-                  onPressed: _handleIssueTicket,
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    elevation: 6,
-                    shadowColor: _selectedTicketType != null
-                        ? const Color(0xFF10B981).withOpacity(0.4)
-                        : Colors.transparent,
+            // Passenger Category Chips
+            const Text(
+              'Passenger Category',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: _passengerTypes.map((type) {
+                final isSelected = _passengerType == type;
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: FilterChip(
+                    label: Text(type),
+                    selected: isSelected,
+                    selectedColor: AppColors.primary.withValues(alpha: 0.3),
+                    checkmarkColor: AppColors.primary,
+                    onSelected: (selected) {
+                      if (selected) setState(() => _passengerType = type);
+                    },
                   ),
                   child: Ink(
                     decoration: BoxDecoration(
@@ -210,6 +209,17 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
                     ),
                   ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 28),
+
+            // Total Fare Display Card
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: AppColors.primary.withValues(alpha: 0.4)),
               ),
 
               const SizedBox(height: 24),

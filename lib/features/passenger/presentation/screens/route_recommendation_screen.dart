@@ -48,7 +48,7 @@ class RouteRecommendationScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(22),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF0EA5E9).withOpacity(0.3),
+                      color: const Color(0xFF0EA5E9).withValues(alpha: 0.3),
                       blurRadius: 16,
                       offset: const Offset(0, 6),
                     ),
@@ -62,7 +62,7 @@ class RouteRecommendationScreen extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
+                            color: Colors.white.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Icon(
@@ -72,9 +72,9 @@ class RouteRecommendationScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 12),
-                        Column(
+                        const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
                               'AI Analysis Complete',
                               style: TextStyle(
@@ -102,10 +102,10 @@ class RouteRecommendationScreen extends StatelessWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.16),
+                        color: Colors.white.withValues(alpha: 0.16),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withValues(alpha: 0.2),
                         ),
                       ),
                       child: const Text(
@@ -125,8 +125,8 @@ class RouteRecommendationScreen extends StatelessWidget {
               const SizedBox(height: 22),
 
               // BEST OPTION Section Label
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Text(
                     '⭐ ',
                     style: TextStyle(fontSize: 12),
@@ -157,7 +157,7 @@ class RouteRecommendationScreen extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF2563EB).withOpacity(0.08),
+                      color: const Color(0xFF2563EB).withValues(alpha: 0.08),
                       blurRadius: 16,
                       offset: const Offset(0, 4),
                     ),
@@ -187,10 +187,10 @@ class RouteRecommendationScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 14),
-                        Expanded(
+                        const Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               Text(
                                 'Bus 177',
                                 style: TextStyle(
@@ -212,13 +212,13 @@ class RouteRecommendationScreen extends StatelessWidget {
                         ),
 
                         // Score display
-                        Column(
+                        const Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.baseline,
                               textBaseline: TextBaseline.alphabetic,
-                              children: const [
+                              children: [
                                 Text(
                                   '94',
                                   style: TextStyle(
@@ -236,8 +236,8 @@ class RouteRecommendationScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 1),
-                            const Text(
+                            SizedBox(height: 1),
+                            Text(
                               'AI Score',
                               style: TextStyle(
                                 fontSize: 10.5,
@@ -328,7 +328,7 @@ class RouteRecommendationScreen extends StatelessWidget {
                   border: Border.all(color: const Color(0xFFF1F5F9)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.02),
+                      color: Colors.black.withValues(alpha: 0.02),
                       blurRadius: 12,
                       offset: const Offset(0, 2),
                     ),

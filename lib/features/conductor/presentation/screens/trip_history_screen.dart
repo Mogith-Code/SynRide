@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../data/repositories/ticket_repository.dart';
-import '../../data/models/ticket_model.dart';
 import '../widgets/digital_receipt_dialog.dart';
 import 'package:intl/intl.dart';
 
@@ -155,8 +154,8 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                                       ),
                                       decoration: BoxDecoration(
                                         color: ticket.isSynced
-                                            ? AppColors.success.withOpacity(0.15)
-                                            : AppColors.warning.withOpacity(0.15),
+                                            ? AppColors.success.withValues(alpha: 0.15)
+                                            : AppColors.warning.withValues(alpha: 0.15),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Text(

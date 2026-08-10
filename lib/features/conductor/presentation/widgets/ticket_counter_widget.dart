@@ -40,7 +40,7 @@ class TicketCounterWidget extends StatelessWidget {
             Expanded(
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.danger.withOpacity(0.9),
+                  backgroundColor: AppColors.danger.withValues(alpha: 0.9),
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 18),
                   shape: RoundedRectangleBorder(
@@ -93,7 +93,7 @@ class TicketCounterWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.surfaceLight,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.primary.withOpacity(0.4)),
+            border: Border.all(color: AppColors.primary.withValues(alpha: 0.4)),
           ),
           child: Text(
             label,

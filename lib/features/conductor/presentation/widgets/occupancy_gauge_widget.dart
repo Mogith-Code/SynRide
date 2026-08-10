@@ -38,12 +38,12 @@ class OccupancyGaugeWidget extends StatelessWidget {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: statusColor.withOpacity(0.3),
+          color: statusColor.withValues(alpha: 0.3),
           width: 2,
         ),
         boxShadow: [
           BoxShadow(
-            color: statusColor.withOpacity(0.1),
+            color: statusColor.withValues(alpha: 0.1),
             blurRadius: 16,
             spreadRadius: 2,
           ),
@@ -89,7 +89,7 @@ class OccupancyGaugeWidget extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: statusColor.withOpacity(0.15),
+                      color: statusColor.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
@@ -109,7 +109,7 @@ class OccupancyGaugeWidget extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: statusColor.withOpacity(0.15),
+              color: statusColor.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(

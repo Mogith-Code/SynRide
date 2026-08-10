@@ -20,8 +20,8 @@ class SeatAvailabilityWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: const [
+          const Row(
+            children: [
               Icon(Icons.insights_rounded, color: AppColors.accent, size: 20),
               SizedBox(width: 8),
               Text(
@@ -50,11 +50,11 @@ class SeatAvailabilityWidget extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: isGood
-                        ? AppColors.success.withOpacity(0.12)
-                        : AppColors.warning.withOpacity(0.12),
+                        ? AppColors.success.withValues(alpha: 0.12)
+                        : AppColors.warning.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                      color: isGood ? AppColors.success.withOpacity(0.4) : AppColors.warning.withOpacity(0.4),
+                      color: isGood ? AppColors.success.withValues(alpha: 0.4) : AppColors.warning.withValues(alpha: 0.4),
                     ),
                   ),
                   child: Column(
