@@ -788,27 +788,17 @@ class _ConductorHomeScreenView extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                title,
+                label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-              ),
-              child: Icon(icon, color: color, size: 18),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                label,
                 style: const TextStyle(
                   fontSize: 12.5,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.bold,
                   color: Color(0xFF1E293B),
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
