@@ -97,252 +97,150 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
     final int avgTrip = 34;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0D192B), // Dark ambient outer theme
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: RadialGradient(
-            center: Alignment(0.4, -0.6),
-            radius: 1.2,
-            colors: [
-              Color(0xFF0F3A36), // Deep emerald glow
-              Color(0xFF0B192A), // Dark slate teal
-              Color(0xFF070E1A), // Dark ambient space
-            ],
+      backgroundColor: const Color(0xFFF8FAFC),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF0F172A)),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'Issue Ticket',
+          style: TextStyle(
+            color: Color(0xFF0F172A),
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        child: SafeArea(
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Outer Header Navigation Bar
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Back to Hub Button
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.15),
-                          ),
-                        ),
-                        child: Row(
-                          children: const [
-                            Icon(Icons.arrow_back_rounded,
-                                color: Colors.white, size: 16),
-                            SizedBox(width: 6),
-                            Text(
-                              'Back to Hub',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+              // Top Emerald Container: Current Passengers
+              _buildCurrentPassengersCard(
+                currentPassengers: currentPassengers,
+                capacity: capacity,
+                seatsAvailable: seatsAvailable,
+                capacityRatio: capacityRatio,
+              ),
 
-                    // App Identifier Badge
-                    const Text(
-                      'Conductor App',
-                      style: TextStyle(
-                        color: Color(0xFF10B981),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.3,
-                      ),
-                    ),
-                  ],
+              const SizedBox(height: 24),
+
+              // Section Title: Select Ticket Type
+              const Text(
+                'Select Ticket Type',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF0F172A),
                 ),
               ),
 
-              // Main Mobile Screen Frame Container
-              Expanded(
-                child: Center(
-                  child: Container(
-                    constraints: const BoxConstraints(maxWidth: 430),
-                    margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF8FAFC),
-                      borderRadius: BorderRadius.circular(32),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.4),
-                          blurRadius: 30,
-                          spreadRadius: 2,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
+              const SizedBox(height: 12),
+
+              // Ticket Options 2x2 Grid
+              _buildTicketTypeGrid(),
+
+              const SizedBox(height: 24),
+
+              // Submit Action Button: Issue Ticket
+              SizedBox(
+                width: double.infinity,
+                height: 54,
+                child: ElevatedButton(
+                  onPressed: _handleIssueTicket,
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    clipBehavior: Clip.antiAlias,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Inner Header Row: Back Arrow + Issue Ticket
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 14),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () => Navigator.pop(context),
-                                borderRadius: BorderRadius.circular(10),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(4.0),
-                                  child: Icon(
-                                    Icons.arrow_back_rounded,
-                                    color: Color(0xFF0F172A),
-                                    size: 22,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              const Text(
-                                'Issue Ticket',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF0F172A),
-                                  letterSpacing: -0.3,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Scrollable Body Content
-                        Expanded(
-                          child: SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Top Emerald Container: Current Passengers
-                                _buildCurrentPassengersCard(
-                                  currentPassengers: currentPassengers,
-                                  capacity: capacity,
-                                  seatsAvailable: seatsAvailable,
-                                  capacityRatio: capacityRatio,
-                                ),
-
-                                const SizedBox(height: 24),
-
-                                // Section Title: Select Ticket Type
-                                const Text(
-                                  'Select Ticket Type',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF0F172A),
-                                  ),
-                                ),
-
-                                const SizedBox(height: 14),
-
-                                // 2x2 Ticket Types Selector Grid
-                                _buildTicketTypeGrid(),
-
-                                const SizedBox(height: 24),
-
-                                // Issue Ticket Button
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 52,
-                                  child: ElevatedButton(
-                                    onPressed: _selectedTicketType != null
-                                        ? _handleIssueTicket
-                                        : _handleIssueTicket,
-                                    style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      backgroundColor: _selectedTicketType != null
-                                          ? const Color(0xFF10B981)
-                                          : const Color(0xFFE2E8F0),
-                                      foregroundColor: _selectedTicketType != null
-                                          ? Colors.white
-                                          : const Color(0xFF94A3B8),
-                                      elevation: _selectedTicketType != null ? 4 : 0,
-                                      shadowColor: const Color(0xFF10B981).withOpacity(0.3),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.confirmation_number_outlined,
-                                          size: 20,
-                                          color: _selectedTicketType != null
-                                              ? Colors.white
-                                              : const Color(0xFF94A3B8),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          'Issue Ticket',
-                                          style: TextStyle(
-                                            fontSize: 15.5,
-                                            fontWeight: FontWeight.bold,
-                                            color: _selectedTicketType != null
-                                                ? Colors.white
-                                                : const Color(0xFF64748B),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-
-                                const SizedBox(height: 24),
-
-                                // Bottom 3 Metrics Cards Row
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: _buildBottomStatCard(
-                                        value: '$totalTickets',
-                                        label: 'Issued Today',
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Expanded(
-                                      child: _buildBottomStatCard(
-                                        value: '₹${totalRevenue.toStringAsFixed(0)}',
-                                        label: 'Revenue',
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Expanded(
-                                      child: _buildBottomStatCard(
-                                        value: '$avgTrip',
-                                        label: 'Avg/Trip',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                const SizedBox(height: 20),
+                    elevation: 6,
+                    shadowColor: _selectedTicketType != null
+                        ? const Color(0xFF10B981).withOpacity(0.4)
+                        : Colors.transparent,
+                  ),
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      gradient: _selectedTicketType != null
+                          ? const LinearGradient(
+                              colors: [
+                                Color(0xFF00E676),
+                                Color(0xFF10B981),
                               ],
+                            )
+                          : null,
+                      color: _selectedTicketType == null
+                          ? const Color(0xFFCBD5E1)
+                          : null,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.confirmation_number_outlined,
+                            size: 20,
+                            color: _selectedTicketType != null
+                                ? Colors.white
+                                : const Color(0xFF64748B),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            _selectedTicketType != null
+                                ? 'Issue $_selectedTicketType Ticket'
+                                : 'Select Ticket Type Above',
+                            style: TextStyle(
+                              fontSize: 15.5,
+                              fontWeight: FontWeight.bold,
+                              color: _selectedTicketType != null
+                                  ? Colors.white
+                                  : const Color(0xFF64748B),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
+
+              const SizedBox(height: 24),
+
+              // Bottom 3 Metrics Cards Row
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildBottomStatCard(
+                      value: '$totalTickets',
+                      label: 'Issued Today',
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildBottomStatCard(
+                      value: '₹${totalRevenue.toStringAsFixed(0)}',
+                      label: 'Revenue',
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildBottomStatCard(
+                      value: '$avgTrip',
+                      label: 'Avg/Trip',
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
             ],
           ),
         ),

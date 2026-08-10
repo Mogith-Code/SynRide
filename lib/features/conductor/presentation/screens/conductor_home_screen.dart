@@ -52,239 +52,152 @@ class _ConductorHomeScreenView extends StatelessWidget {
             : 0;
 
         return Scaffold(
-          backgroundColor: const Color(0xFF0D192B), // Dark ambient frame
-          body: Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: const BoxDecoration(
-              gradient: RadialGradient(
-                center: Alignment(0.4, -0.6),
-                radius: 1.2,
-                colors: [
-                  Color(0xFF0F3A36), // Deep emerald ambient glow
-                  Color(0xFF0B192A), // Dark slate teal
-                  Color(0xFF070E1A), // Dark ambient space
-                ],
-              ),
-            ),
-            child: SafeArea(
-              child: Column(
-                children: [
-                  // Outer Header Navigation Bar
-                  Padding(
+          backgroundColor: const Color(0xFFF8FAFC),
+          body: SafeArea(
+            child: Column(
+              children: [
+                // Top Green Header Section
+                _buildGreenHeaderSection(
+                  context: context,
+                  conductorName: shift.conductorName,
+                  busId: shift.busId,
+                  routeNumber: shift.routeNumber,
+                  state: state,
+                  cubit: cubit,
+                ),
+
+                // Main Scrollable Dashboard Content
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 12.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        horizontal: 20.0, vertical: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Back to Hub Button
-                        InkWell(
-                          onTap: () =>
-                              Navigator.pushReplacementNamed(context, '/conductor/login'),
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 14, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: Colors.white.withOpacity(0.15),
-                              ),
-                            ),
-                            child: Row(
-                              children: const [
-                                Icon(Icons.arrow_back_rounded,
-                                    color: Colors.white, size: 16),
-                                SizedBox(width: 6),
-                                Text(
-                                  'Back to Hub',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                        // 2x2 Metric Cards Grid
+                        _buildMetricsGrid(
+                          passengersCount: onBoardCount,
+                          ticketsIssuedCount:
+                              shift.totalTicketsIssued,
+                          tripProgressPercent: 50,
+                          revenue: shift.totalRevenue,
                         ),
 
-                        // App Identifier Badge
+                        const SizedBox(height: 18),
+
+                        // Current Occupancy Card
+                        _buildOccupancyCard(
+                          context,
+                          onBoard: onBoardCount,
+                          available: available,
+                          capacity: capacity,
+                          percent: occupancyPercent,
+                        ),
+
+                        const SizedBox(height: 18),
+
+                        // Passenger Flow Today Card
+                        _buildPassengerFlowCard(),
+
+                        const SizedBox(height: 20),
+
+                        // Conductor Operations Quick Actions
+                        const Text(
+                          'Quick Actions',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF0F172A),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+
+                        // Quick Action Buttons
                         Row(
                           children: [
-                            IconButton(
-                              icon: Icon(
-                                state.isOnline
-                                    ? Icons.wifi_rounded
-                                    : Icons.wifi_off_rounded,
-                                color: state.isOnline
-                                    ? const Color(0xFF10B981)
-                                    : const Color(0xFFF59E0B),
-                                size: 20,
+                            Expanded(
+                              child: _buildActionButton(
+                                context: context,
+                                icon: Icons.confirmation_number_outlined,
+                                label: 'Issue Ticket',
+                                color: const Color(0xFF10B981),
+                                onTap: () => Navigator.pushNamed(
+                                    context, '/conductor/issue-ticket'),
                               ),
-                              tooltip: state.isOnline
-                                  ? 'Online Mode'
-                                  : 'Offline Mode',
-                              onPressed: () =>
-                                  cubit.toggleOnlineMode(!state.isOnline),
                             ),
-                            const Text(
-                              'Conductor App',
-                              style: TextStyle(
-                                color: Color(0xFF10B981),
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.3,
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: _buildActionButton(
+                                context: context,
+                                icon: Icons.people_alt_outlined,
+                                label: 'Passenger Exit',
+                                color: const Color(0xFFEC4899),
+                                onTap: () => Navigator.pushNamed(
+                                    context, '/conductor/passenger-exit'),
                               ),
                             ),
                           ],
                         ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildActionButton(
+                                context: context,
+                                icon: Icons.directions_bus_outlined,
+                                label: 'Trip Summary',
+                                color: const Color(0xFF8B5CF6),
+                                onTap: () => Navigator.pushNamed(
+                                    context, '/conductor/trip-summary'),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: _buildActionButton(
+                                context: context,
+                                icon: Icons.receipt_long_rounded,
+                                label: 'Trip History',
+                                color: const Color(0xFF3B82F6),
+                                onTap: () => Navigator.pushNamed(
+                                    context, '/conductor/history'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildActionButton(
+                                context: context,
+                                icon: Icons.badge_outlined,
+                                label: 'Waybill & Shift',
+                                color: const Color(0xFF8B5CF6),
+                                onTap: () => Navigator.pushNamed(
+                                    context, '/conductor/shift'),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: _buildActionButton(
+                                context: context,
+                                icon: Icons.sync_rounded,
+                                label: 'Sync Queue',
+                                color: const Color(0xFFF59E0B),
+                                onTap: () => Navigator.pushNamed(
+                                    context,
+                                    '/conductor/sync-queue'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ),
-
-                  // Main Mobile Screen Container
-                  Expanded(
-                    child: Center(
-                      child: Container(
-                        constraints: const BoxConstraints(maxWidth: 430),
-                        margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF8FAFC),
-                          borderRadius: BorderRadius.circular(32),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.4),
-                              blurRadius: 30,
-                              spreadRadius: 2,
-                              offset: const Offset(0, 10),
-                            ),
-                          ],
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        child: Column(
-                          children: [
-                            // Top Green Header Section
-                            _buildGreenHeaderSection(
-                              context: context,
-                              conductorName: shift.conductorName,
-                              busId: shift.busId,
-                              routeNumber: shift.routeNumber,
-                            ),
-
-                            // Main Scrollable Dashboard Content
-                            Expanded(
-                              child: SingleChildScrollView(
-                                physics: const BouncingScrollPhysics(),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // 2x2 Metric Cards Grid
-                                    _buildMetricsGrid(
-                                      passengersCount: onBoardCount,
-                                      ticketsIssuedCount:
-                                          shift.totalTicketsIssued,
-                                      tripProgressPercent: 50,
-                                      revenue: shift.totalRevenue,
-                                    ),
-
-                                    const SizedBox(height: 18),
-
-                                    // Current Occupancy Card
-                                    _buildOccupancyCard(
-                                      context,
-                                      onBoard: onBoardCount,
-                                      available: available,
-                                      capacity: capacity,
-                                      percent: occupancyPercent,
-                                    ),
-
-                                    const SizedBox(height: 18),
-
-                                    // Passenger Flow Today Card
-                                    _buildPassengerFlowCard(),
-
-                                    const SizedBox(height: 20),
-
-                                    // Conductor Operations Quick Actions
-                                    const Text(
-                                      'Quick Actions',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF0F172A),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 12),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: _buildActionButton(
-                                            context: context,
-                                            icon: Icons
-                                                .confirmation_number_rounded,
-                                            label: 'Issue Ticket',
-                                            color: const Color(0xFF10B981),
-                                            onTap: () => Navigator.pushNamed(
-                                                context,
-                                                '/conductor/issue-ticket'),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Expanded(
-                                          child: _buildActionButton(
-                                            context: context,
-                                            icon: Icons.receipt_long_rounded,
-                                            label: 'Trip History',
-                                            color: const Color(0xFF3B82F6),
-                                            onTap: () => Navigator.pushNamed(
-                                                context, '/conductor/history'),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: _buildActionButton(
-                                            context: context,
-                                            icon: Icons.badge_outlined,
-                                            label: 'Waybill & Shift',
-                                            color: const Color(0xFF8B5CF6),
-                                            onTap: () => Navigator.pushNamed(
-                                                context, '/conductor/shift'),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Expanded(
-                                          child: _buildActionButton(
-                                            context: context,
-                                            icon: Icons.sync_rounded,
-                                            label: 'Sync Queue',
-                                            color: const Color(0xFFF59E0B),
-                                            onTap: () => Navigator.pushNamed(
-                                                context,
-                                                '/conductor/sync-queue'),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 20),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );
@@ -298,10 +211,12 @@ class _ConductorHomeScreenView extends StatelessWidget {
     required String conductorName,
     required String busId,
     required String routeNumber,
+    required ConductorState state,
+    required ConductorCubit cubit,
   }) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 14.0, 20.0, 20.0),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -317,6 +232,39 @@ class _ConductorHomeScreenView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Top Mobile Navigation & Status Bar Row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
+                onPressed: () => Navigator.pushReplacementNamed(context, '/conductor/login'),
+                tooltip: 'Back to Login',
+              ),
+              const Text(
+                'Conductor Dashboard',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      state.isOnline ? Icons.wifi_rounded : Icons.wifi_off_rounded,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                    tooltip: state.isOnline ? 'Online Mode' : 'Offline Mode',
+                    onPressed: () => cubit.toggleOnlineMode(!state.isOnline),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
           // Greeting & Profile Avatar Row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

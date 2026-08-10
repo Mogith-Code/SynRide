@@ -99,218 +99,101 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
     final shift = _repository.activeShift;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0D192B), // Dark ambient outer theme
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: RadialGradient(
-            center: Alignment(0.4, -0.6),
-            radius: 1.2,
-            colors: [
-              Color(0xFF0F3A36), // Deep emerald glow
-              Color(0xFF0B192A), // Dark slate teal
-              Color(0xFF070E1A), // Dark ambient space
-            ],
+      backgroundColor: const Color(0xFFF8FAFC),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF0F172A)),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'Trip Summary',
+          style: TextStyle(
+            color: Color(0xFF0F172A),
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        child: SafeArea(
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Outer Header Navigation Bar
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Back to Hub Button
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.15),
-                          ),
-                        ),
-                        child: Row(
-                          children: const [
-                            Icon(Icons.arrow_back_rounded,
-                                color: Colors.white, size: 16),
-                            SizedBox(width: 6),
-                            Text(
-                              'Back to Hub',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    // App Identifier Badge
-                    const Text(
-                      'Conductor App',
-                      style: TextStyle(
-                        color: Color(0xFF10B981),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.3,
-                      ),
-                    ),
-                  ],
+              // Section 1: TODAY'S PERFORMANCE
+              const Text(
+                'TODAY\'S PERFORMANCE',
+                style: TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF94A3B8),
+                  letterSpacing: 0.6,
                 ),
               ),
 
-              // Main Mobile Screen Frame Container
-              Expanded(
-                child: Center(
-                  child: Container(
-                    constraints: const BoxConstraints(maxWidth: 430),
-                    margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF8FAFC),
-                      borderRadius: BorderRadius.circular(32),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.4),
-                          blurRadius: 30,
-                          spreadRadius: 2,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
+              const SizedBox(height: 12),
+
+              // 2x2 Performance Metrics Grid
+              _buildPerformanceGrid(
+                totalPassengers: 89,
+                revenue: shift.totalRevenue,
+                tripsCompleted: 3,
+                avgOccupancyPercent: 64,
+              ),
+
+              const SizedBox(height: 24),
+
+              // Section 2: ROUTE PROGRESS
+              const Text(
+                'ROUTE PROGRESS',
+                style: TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF94A3B8),
+                  letterSpacing: 0.6,
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              // Route Progress Stepper List Card
+              _buildRouteProgressCard(),
+
+              const SizedBox(height: 24),
+
+              // End Trip Action Button
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: _handleEndTrip,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFEF4444),
+                    foregroundColor: Colors.white,
+                    elevation: 4,
+                    shadowColor:
+                        const Color(0xFFEF4444).withOpacity(0.4),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    clipBehavior: Clip.antiAlias,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Inner Header Row: Back Arrow + Trip Summary
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 14),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () => Navigator.pop(context),
-                                borderRadius: BorderRadius.circular(10),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(4.0),
-                                  child: Icon(
-                                    Icons.arrow_back_rounded,
-                                    color: Color(0xFF0F172A),
-                                    size: 22,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              const Text(
-                                'Trip Summary',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF0F172A),
-                                  letterSpacing: -0.3,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Scrollable Body Content
-                        Expanded(
-                          child: SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Section 1: TODAY'S PERFORMANCE
-                                const Text(
-                                  'TODAY\'S PERFORMANCE',
-                                  style: TextStyle(
-                                    fontSize: 11.5,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF94A3B8),
-                                    letterSpacing: 0.6,
-                                  ),
-                                ),
-
-                                const SizedBox(height: 12),
-
-                                // 2x2 Performance Metrics Grid
-                                _buildPerformanceGrid(
-                                  totalPassengers: 89,
-                                  revenue: shift.totalRevenue,
-                                  tripsCompleted: 3,
-                                  avgOccupancyPercent: 64,
-                                ),
-
-                                const SizedBox(height: 24),
-
-                                // Section 2: ROUTE PROGRESS
-                                const Text(
-                                  'ROUTE PROGRESS',
-                                  style: TextStyle(
-                                    fontSize: 11.5,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF94A3B8),
-                                    letterSpacing: 0.6,
-                                  ),
-                                ),
-
-                                const SizedBox(height: 12),
-
-                                // Route Progress Stepper List Card
-                                _buildRouteProgressCard(),
-
-                                const SizedBox(height: 24),
-
-                                // End Trip Action Button
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 52,
-                                  child: ElevatedButton(
-                                    onPressed: _handleEndTrip,
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFFEF4444),
-                                      foregroundColor: Colors.white,
-                                      elevation: 4,
-                                      shadowColor:
-                                          const Color(0xFFEF4444).withOpacity(0.4),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                    ),
-                                    child: const Text(
-                                      'End Trip',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        letterSpacing: 0.2,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                                const SizedBox(height: 20),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+                  ),
+                  child: const Text(
+                    'End Trip',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 0.2,
                     ),
                   ),
                 ),
               ),
+
+              const SizedBox(height: 20),
             ],
           ),
         ),

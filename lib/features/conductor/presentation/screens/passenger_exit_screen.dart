@@ -69,171 +69,54 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
         _capacity > 0 ? ((_onBoard / _capacity) * 100).round() : 0;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0D192B), // Dark ambient outer theme
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: RadialGradient(
-            center: Alignment(0.4, -0.6),
-            radius: 1.2,
-            colors: [
-              Color(0xFF0F3A36), // Deep emerald glow
-              Color(0xFF0B192A), // Dark slate teal
-              Color(0xFF070E1A), // Dark ambient space
-            ],
+      backgroundColor: const Color(0xFFF8FAFC),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF0F172A)),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'Passenger Exit Counter',
+          style: TextStyle(
+            color: Color(0xFF0F172A),
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        child: SafeArea(
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Outer Header Navigation Bar
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Back to Hub Button
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.15),
-                          ),
-                        ),
-                        child: Row(
-                          children: const [
-                            Icon(Icons.arrow_back_rounded,
-                                color: Colors.white, size: 16),
-                            SizedBox(width: 6),
-                            Text(
-                              'Back to Hub',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+              // Top Blue/Teal Card: On Board Passengers
+              _buildOnBoardCard(_onBoard),
 
-                    // App Identifier Badge
-                    const Text(
-                      'Conductor App',
-                      style: TextStyle(
-                        color: Color(0xFF10B981),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.3,
-                      ),
-                    ),
-                  ],
-                ),
+              const SizedBox(height: 24),
+
+              // Interactive Plus / Minus Controller Row
+              _buildCounterControlRow(
+                availableSeats: availableSeats,
+                onIncrement: _incrementPassenger,
+                onDecrement: _decrementPassenger,
               ),
 
-              // Main Mobile Screen Frame Container
-              Expanded(
-                child: Center(
-                  child: Container(
-                    constraints: const BoxConstraints(maxWidth: 430),
-                    margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF8FAFC),
-                      borderRadius: BorderRadius.circular(32),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.4),
-                          blurRadius: 30,
-                          spreadRadius: 2,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Inner Header Row: Back Arrow + Passenger Exit
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 14),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () => Navigator.pop(context),
-                                borderRadius: BorderRadius.circular(10),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(4.0),
-                                  child: Icon(
-                                    Icons.arrow_back_rounded,
-                                    color: Color(0xFF0F172A),
-                                    size: 22,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              const Text(
-                                'Passenger Exit',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF0F172A),
-                                  letterSpacing: -0.3,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+              const SizedBox(height: 24),
 
-                        // Scrollable Body Content
-                        Expanded(
-                          child: SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Top Blue/Teal Card: On Board Passengers
-                                _buildOnBoardCard(_onBoard),
-
-                                const SizedBox(height: 24),
-
-                                // Interactive Plus / Minus Controller Row
-                                _buildCounterControlRow(
-                                  availableSeats: availableSeats,
-                                  onIncrement: _incrementPassenger,
-                                  onDecrement: _decrementPassenger,
-                                ),
-
-                                const SizedBox(height: 24),
-
-                                // Occupancy Progress Card
-                                _buildOccupancyBarCard(occupancyPercent),
+              // Occupancy Progress Card
+              _buildOccupancyBarCard(occupancyPercent),
 
                                 const SizedBox(height: 20),
 
-                                // Bottom 2x2 Metrics Grid Cards
-                                _buildMetricsGrid(),
+              // Bottom 2x2 Metrics Grid Cards
+              _buildMetricsGrid(),
 
-                                const SizedBox(height: 20),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
