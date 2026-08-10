@@ -27,100 +27,67 @@ class WelcomeSplashScreen extends StatelessWidget {
               // Top Bar Header
               _buildTopHeader(),
 
-                // App Logo with Green Microchip Badge
-                ScaleTransition(
-                  scale: _pulseAnim,
-                  child: SizedBox(
-                    width: 120,
-                    height: 120,
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        // Main Icon Square
-                        Center(
-                          child: Container(
-                            width: 104,
-                            height: 104,
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Color(0xFF0072FF),
-                                  Color(0xFF00C6FF),
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(28),
-                              border: Border.all(
-                                color: const Color(0xFF00E5FF).withValues(alpha: 0.4),
-                                width: 1.5,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xFF00C6FF).withValues(alpha: 0.35),
-                                  blurRadius: 24,
-                                  spreadRadius: 2,
-                                  offset: const Offset(0, 8),
-                                ),
-                              ],
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.directions_bus_rounded,
-                                size: 54,
-                                color: Colors.white,
-                              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      // Main Icon Square
+                      Container(
+                        width: 104,
+                        height: 104,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color(0xFF0072FF),
+                              Color(0xFF00C6FF),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(28),
+                          border: Border.all(
+                            color: const Color(0xFF00E5FF).withValues(alpha: 0.4),
+                            width: 1.5,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF00C6FF).withValues(alpha: 0.35),
+                              blurRadius: 24,
+                              spreadRadius: 2,
+                              offset: const Offset(0, 8),
                             ),
                           ],
                         ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.directions_bus_rounded,
+                            size: 54,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
 
-                        // Green Chip Badge (Top Right)
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          child: Container(
-                            width: 32,
-                            height: 32,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF00E676),
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: const Color(0xFF0F2244),
-                                width: 2.5,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xFF00E676).withValues(alpha: 0.6),
-                                  blurRadius: 10,
-                                  spreadRadius: 1,
-                                ),
-                              ],
-                            ),
-                            WidgetSpan(
-                              child: ShaderMask(
-                                shaderCallback: (bounds) => const LinearGradient(
-                                  colors: [
-                                    Color(0xFF38BDF8),
-                                    Color(0xFF34D399),
-                                  ],
-                                ).createShader(bounds),
-                                child: const Text(
-                                  'Transportation ',
-                                  style: TextStyle(
-                                    fontSize: 42,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    letterSpacing: -0.8,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const TextSpan(
-                              text: 'Platform',
-                              style: TextStyle(color: Colors.white),
-                            ),
+                      const SizedBox(height: 24),
+
+                      ShaderMask(
+                        shaderCallback: (bounds) => const LinearGradient(
+                          colors: [
+                            Color(0xFF38BDF8),
+                            Color(0xFF34D399),
                           ],
+                        ).createShader(bounds),
+                        child: const Text(
+                          'Next-Gen Smart Public Transportation Platform',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: -0.8,
+                          ),
                         ),
                       ),
 
@@ -215,9 +182,9 @@ class WelcomeSplashScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.06),
+              color: Colors.white.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(0.12)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
             ),
             child: Row(
               children: const [
@@ -367,12 +334,12 @@ class WelcomeSplashScreen extends StatelessWidget {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B).withOpacity(0.5),
+        color: const Color(0xFF1E293B).withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.08)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -396,7 +363,7 @@ class WelcomeSplashScreen extends StatelessWidget {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(icon, color: Colors.white, size: 22),
@@ -405,7 +372,7 @@ class WelcomeSplashScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -432,7 +399,7 @@ class WelcomeSplashScreen extends StatelessWidget {
                 Text(
                   subtitle,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withValues(alpha: 0.8),
                     fontSize: 12.5,
                     fontWeight: FontWeight.w500,
                   ),
@@ -441,15 +408,17 @@ class WelcomeSplashScreen extends StatelessWidget {
             ),
           ),
 
-                const SizedBox(height: 28),
-
-                // Progress / Indicator Bar
-                Container(
-                  width: 180,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(2),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  description,
+                  style: const TextStyle(
+                    color: Color(0xFF94A3B8),
+                    fontSize: 13.5,
+                    height: 1.4,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -488,15 +457,12 @@ class WelcomeSplashScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: onTap,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white.withOpacity(0.08),
+                      backgroundColor: buttonColor,
                       foregroundColor: Colors.white,
-                      elevation: 0,
-                      side: BorderSide(color: Colors.white.withOpacity(0.15)),
+                      elevation: 4,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
-                      elevation: 8,
-                      shadowColor: const Color(0xFF0088FF).withValues(alpha: 0.5),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
