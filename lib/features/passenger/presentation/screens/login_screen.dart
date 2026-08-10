@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final bool initialIsLogin;
+  const LoginScreen({super.key, this.initialIsLogin = true});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _isLoginTab = true; // true = Login, false = Register
+  late bool _isLoginTab;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
@@ -17,6 +18,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _isLoginTab = widget.initialIsLogin;
+  }
 
   @override
   void dispose() {
@@ -314,7 +321,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                       // Title & Subtitle
                                       Text(
-                                        _isLoginTab ? 'Welcome back!' : 'Create account',
+                                        _isLoginTab ? 'Welcome back!' : 'Create Account',
                                         style: const TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold,
@@ -326,7 +333,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       Text(
                                         _isLoginTab
                                             ? 'Sign in to your account'
-                                            : 'Start your smart transit journey',
+                                            : 'Join SyncRide today',
                                         style: const TextStyle(
                                           fontSize: 13.5,
                                           color: Color(0xFF64748B),
@@ -445,9 +452,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                             controller: _nameController,
                                             style: const TextStyle(fontSize: 14, color: Color(0xFF0F172A)),
                                             decoration: const InputDecoration(
-                                              hintText: 'John Doe',
+                                              hintText: 'Your full name',
                                               hintStyle: TextStyle(color: Color(0xFF94A3B8), fontSize: 14),
-                                              prefixIcon: Icon(Icons.person_outline_rounded, color: Color(0xFF2563EB), size: 20),
+                                              prefixIcon: Icon(Icons.person_outline_rounded, color: Color(0xFF94A3B8), size: 20),
                                               border: InputBorder.none,
                                               contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                                             ),

@@ -29,6 +29,7 @@ class SyncRideApp extends StatelessWidget {
         '/': (context) => const WelcomeSplashScreen(),
         '/passenger/onboarding': (context) => const OnboardingScreen(),
         '/passenger/login': (context) => const LoginScreen(),
+        '/passenger/register': (context) => const LoginScreen(initialIsLogin: false),
         '/passenger/home': (context) => const PassengerHomeScreen(),
         '/passenger/map': (context) => const LiveMapScreen(),
         '/passenger/recommendations': (context) => const RouteRecommendationScreen(),
