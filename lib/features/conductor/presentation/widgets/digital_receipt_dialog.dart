@@ -17,11 +17,15 @@ class DigitalReceiptDialog extends StatelessWidget {
       insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: AppColors.surfaceLight,
+            width: 1,
+          ),
           boxShadow: const [
             BoxShadow(
-              color: Colors.black45,
+              color: Colors.black54,
               blurRadius: 20,
               offset: Offset(0, 10),
             ),
@@ -30,12 +34,12 @@ class DigitalReceiptDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Thermal Receipt Header Banner
+            // Ticket Header Banner
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceLight.withValues(alpha: 0.5),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Row(
                 children: [
@@ -48,7 +52,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                         const Text(
                           'SYNCRIDE DIGITAL TICKET',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.textPrimary,
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                             letterSpacing: 1.0,
@@ -65,14 +69,14 @@ class DigitalReceiptDialog extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: const Icon(Icons.close, color: AppColors.textSecondary),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
               ),
             ),
 
-            // Thermal Paper Content Body
+            // Content Body
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
@@ -80,7 +84,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                   const Text(
                     '--- OFFICIAL BUS PASS ---',
                     style: TextStyle(
-                      color: Colors.black54,
+                      color: AppColors.textSecondary,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.2,
                       fontSize: 12,
@@ -94,7 +98,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                   _buildReceiptRow('Conductor ID', ticket.conductorId),
                   _buildReceiptRow('Date & Time', dateFormat.format(ticket.issuedAt)),
 
-                  const Divider(height: 24, color: Colors.black26, thickness: 1),
+                  Divider(height: 24, color: AppColors.surfaceLight.withValues(alpha: 0.6), thickness: 1),
 
                   // Travel Details
                   _buildReceiptRow('Origin', ticket.originStop),
@@ -103,7 +107,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                   _buildReceiptRow('Passengers', '${ticket.passengerCount} Person(s)'),
                   _buildReceiptRow('Payment Method', ticket.paymentMethod),
 
-                  const Divider(height: 24, color: Colors.black26, thickness: 1),
+                  Divider(height: 24, color: AppColors.surfaceLight.withValues(alpha: 0.6), thickness: 1),
 
                   // Total Fare
                   Row(
@@ -112,13 +116,13 @@ class DigitalReceiptDialog extends StatelessWidget {
                       const Text(
                         'TOTAL FARE',
                         style: TextStyle(
-                          color: Colors.black87,
+                          color: AppColors.textPrimary,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                       Text(
-                        'Rs. ${ticket.fareAmount.toStringAsFixed(2)}',
+                        'LKR ${ticket.fareAmount.toStringAsFixed(2)}',
                         style: const TextStyle(
                           color: AppColors.primary,
                           fontWeight: FontWeight.bold,
@@ -136,9 +140,8 @@ class DigitalReceiptDialog extends StatelessWidget {
                     height: 130,
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.black12),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -156,7 +159,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   Text(
                     ticket.isSynced ? '✓ Cloud Synced Live' : '⏳ Pending Offline Queue',
                     style: TextStyle(
@@ -171,9 +174,9 @@ class DigitalReceiptDialog extends StatelessWidget {
 
             // Dialog Footer Action Buttons
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
               decoration: BoxDecoration(
-                color: Colors.grey.shade100,
+                color: AppColors.surfaceLight.withValues(alpha: 0.3),
                 borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
               ),
               child: Row(
@@ -181,8 +184,11 @@ class DigitalReceiptDialog extends StatelessWidget {
                   Expanded(
                     child: OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.black87,
-                        side: const BorderSide(color: Colors.black26),
+                        foregroundColor: AppColors.textPrimary,
+                        side: const BorderSide(color: AppColors.surfaceLight),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -203,6 +209,9 @@ class DigitalReceiptDialog extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       onPressed: () => Navigator.pop(context),
                       icon: const Icon(Icons.check_circle_outline, size: 18),
@@ -226,12 +235,12 @@ class DigitalReceiptDialog extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(color: Colors.black54, fontSize: 13),
+            style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
           ),
           Text(
             value,
             style: TextStyle(
-              color: Colors.black87,
+              color: AppColors.textPrimary,
               fontSize: 13,
               fontWeight: isBold ? FontWeight.bold : FontWeight.w600,
             ),

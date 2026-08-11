@@ -39,6 +39,7 @@ class ShiftManagementScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: AppColors.surfaceLight.withValues(alpha: 0.5)),
               ),
               child: Row(
                 children: [
@@ -57,13 +58,14 @@ class ShiftManagementScreen extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
                           ),
                         ),
                         Text(
                           'ID: ${shift.conductorId} • Bus: ${shift.busId}',
                           style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 6),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                           decoration: BoxDecoration(
@@ -90,13 +92,13 @@ class ShiftManagementScreen extends StatelessWidget {
             // Trip & Shift Overview Metrics
             const Text(
               'Live Shift Financial Summary',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.textPrimary),
             ),
             const SizedBox(height: 12),
 
             Row(
               children: [
-                _buildStatCard('Total Revenue', 'Rs. ${shift.totalRevenue.toStringAsFixed(0)}', AppColors.success),
+                _buildStatCard('Total Revenue', 'LKR ${shift.totalRevenue.toStringAsFixed(0)}', AppColors.success),
                 const SizedBox(width: 12),
                 _buildStatCard('Tickets Issued', '${shift.totalTicketsIssued}', AppColors.primary),
               ],
@@ -117,19 +119,20 @@ class ShiftManagementScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: AppColors.surfaceLight.withValues(alpha: 0.5)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Revenue Breakdown by Payment Channel',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary),
                   ),
                   const SizedBox(height: 16),
                   _buildPaymentRow(Icons.payments, 'Cash Collection', cashTotal, AppColors.success),
-                  const Divider(height: 20),
+                  Divider(height: 20, color: AppColors.surfaceLight.withValues(alpha: 0.5)),
                   _buildPaymentRow(Icons.qr_code_scanner, 'SyncPass QR Payments', qrTotal, AppColors.primary),
-                  const Divider(height: 20),
+                  Divider(height: 20, color: AppColors.surfaceLight.withValues(alpha: 0.5)),
                   _buildPaymentRow(Icons.credit_card, 'Contactless Card', cardTotal, AppColors.accent),
                 ],
               ),
@@ -153,17 +156,25 @@ class ShiftManagementScreen extends StatelessWidget {
                     context: context,
                     builder: (context) => AlertDialog(
                       backgroundColor: AppColors.surface,
-                      title: const Text('End Shift & Submit Waybill?'),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      title: const Text(
+                        'End Shift & Submit Waybill?',
+                        style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
+                      ),
                       content: Text(
-                        'Total tickets issued: ${shift.totalTicketsIssued}\nTotal revenue: Rs. ${shift.totalRevenue.toStringAsFixed(2)}\n\nThis action will finalize your daily conductor waybill report.',
+                        'Total tickets issued: ${shift.totalTicketsIssued}\nTotal revenue: LKR ${shift.totalRevenue.toStringAsFixed(2)}\n\nThis action will finalize your daily conductor waybill report.',
+                        style: const TextStyle(color: AppColors.textSecondary),
                       ),
                       actions: [
                         TextButton(
-                          child: const Text('Cancel'),
+                          child: const Text('Cancel', style: TextStyle(color: AppColors.textSecondary)),
                           onPressed: () => Navigator.pop(context),
                         ),
                         ElevatedButton(
-                          style: ElevatedButton.styleFrom(backgroundColor: AppColors.danger),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.danger,
+                            foregroundColor: Colors.white,
+                          ),
                           child: const Text('End Shift'),
                           onPressed: () {
                             Navigator.pop(context);
@@ -199,12 +210,25 @@ class ShiftManagementScreen extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border(left: BorderSide(color: color, width: 4)),
+          border: Border.all(color: AppColors.surfaceLight.withValues(alpha: 0.5)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: const TextStyle(color: AppColors.textSecondary, fontSize: 11)),
+            Row(
+              children: [
+                Container(
+                  width: 4,
+                  height: 12,
+                  margin: const EdgeInsets.only(right: 6),
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                Text(label, style: const TextStyle(color: AppColors.textSecondary, fontSize: 11)),
+              ],
+            ),
             const SizedBox(height: 6),
             Text(
               value,
@@ -225,13 +249,23 @@ class ShiftManagementScreen extends StatelessWidget {
   Widget _buildPaymentRow(IconData icon, String title, double amount, Color color) {
     return Row(
       children: [
-        Icon(icon, color: color, size: 20),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(icon, color: color, size: 20),
+        ),
         const SizedBox(width: 12),
         Expanded(
-          child: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
+          child: Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.w500, color: AppColors.textPrimary),
+          ),
         ),
         Text(
-          'Rs. ${amount.toStringAsFixed(2)}',
+          'LKR ${amount.toStringAsFixed(2)}',
           style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 15),
         ),
       ],

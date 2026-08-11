@@ -10,7 +10,7 @@ class TicketRepository {
     routeNumber: 'Route 138',
     routeName: 'Pettah - Maharagama Express',
     conductorId: 'COND-042',
-    conductorName: 'Rubashalini R.',
+    conductorName: 'Renujaan R',
     totalCapacity: 54,
     currentOccupancy: 18,
     currentStopIndex: 0,

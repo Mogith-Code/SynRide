@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../shared_widgets/app_logo.dart';
 
 class WelcomeSplashScreen extends StatelessWidget {
   const WelcomeSplashScreen({super.key});
@@ -62,10 +63,9 @@ class WelcomeSplashScreen extends StatelessWidget {
                           ],
                         ),
                         child: const Center(
-                          child: Icon(
-                            Icons.directions_bus_rounded,
-                            size: 54,
-                            color: Colors.white,
+                          child: AppLogo(
+                            size: 64,
+                            borderRadius: 16,
                           ),
                         ),
                       ),
@@ -97,7 +97,7 @@ class WelcomeSplashScreen extends StatelessWidget {
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 680),
                         child: const Text(
-                          'A production-ready AI platform for real-time bus tracking, occupancy prediction, route optimization, and transportation analytics — built for national hackathon competition.',
+                          'A production-ready AI platform for real-time bus tracking, occupancy prediction, route optimization, and transportation analytics.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14.5,
@@ -152,18 +152,9 @@ class WelcomeSplashScreen extends StatelessWidget {
           // Logo & Name
           Row(
             children: [
-              Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2563EB),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.directions_bus_rounded,
-                  color: Colors.white,
-                  size: 22,
-                ),
+              const AppLogo(
+                size: 36,
+                borderRadius: 10,
               ),
               const SizedBox(width: 10),
               const Text(
@@ -178,7 +169,7 @@ class WelcomeSplashScreen extends StatelessWidget {
             ],
           ),
 
-          // Hackathon Demo Badge
+          // System Status Badge
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
             decoration: BoxDecoration(
@@ -191,7 +182,7 @@ class WelcomeSplashScreen extends StatelessWidget {
                 Icon(Icons.circle, color: Color(0xFF10B981), size: 7),
                 SizedBox(width: 6),
                 Text(
-                  'Hackathon Demo',
+                  'System Active',
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 12.5,
@@ -270,6 +261,7 @@ class WelcomeSplashScreen extends StatelessWidget {
         'Smart Alerts',
       ],
       buttonColor: const Color(0xFF2563EB),
+      buttonText: 'Launch Passenger App',
       onTap: () => Navigator.pushNamed(context, '/passenger/onboarding'),
     );
   }
@@ -293,6 +285,7 @@ class WelcomeSplashScreen extends StatelessWidget {
         'Revenue Summary',
       ],
       buttonColor: const Color(0xFF10B981),
+      buttonText: 'Open Conductor Portal',
       onTap: () => Navigator.pushNamed(context, '/conductor/login'),
     );
   }
@@ -316,6 +309,7 @@ class WelcomeSplashScreen extends StatelessWidget {
         'Report Center',
       ],
       buttonColor: const Color(0xFF8B5CF6),
+      buttonText: 'Open Admin Web Portal',
       onTap: () => Navigator.pushNamed(context, '/admin/dashboard'),
     );
   }
@@ -330,6 +324,7 @@ class WelcomeSplashScreen extends StatelessWidget {
     required String description,
     required List<String> bulletList,
     required Color buttonColor,
+    required String buttonText,
     required VoidCallback onTap,
   }) {
     return Container(
@@ -466,17 +461,17 @@ class WelcomeSplashScreen extends StatelessWidget {
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Text(
-                          'Launch App',
-                          style: TextStyle(
+                          buttonText,
+                          style: const TextStyle(
                             fontSize: 14.5,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
-                        SizedBox(width: 8),
-                        Icon(Icons.arrow_forward_rounded,
+                        const SizedBox(width: 8),
+                        const Icon(Icons.arrow_forward_rounded,
                             size: 16, color: Colors.white),
                       ],
                     ),

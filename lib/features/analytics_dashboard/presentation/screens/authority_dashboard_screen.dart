@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../shared_widgets/app_logo.dart';
 
 class AuthorityDashboardScreen extends StatefulWidget {
   const AuthorityDashboardScreen({super.key});
@@ -98,6 +99,34 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
           // System Operational Tag & Profile Actions
           Row(
             children: [
+              // Web Browser Access Badge
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF8B5CF6).withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                      color: const Color(0xFF8B5CF6).withOpacity(0.35)),
+                ),
+                child: Row(
+                  children: const [
+                    Icon(Icons.language_rounded, color: Color(0xFFA78BFA), size: 14),
+                    SizedBox(width: 6),
+                    Text(
+                      'Web Browser Portal',
+                      style: TextStyle(
+                        color: Color(0xFFA78BFA),
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(width: 12),
+
               // All Systems Operational Badge
               Container(
                 padding:
@@ -177,17 +206,9 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
               children: [
-                Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2563EB),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Center(
-                    child: Icon(Icons.directions_bus_rounded,
-                        color: Colors.white, size: 22),
-                  ),
+                const AppLogo(
+                  size: 38,
+                  borderRadius: 10,
                 ),
                 const SizedBox(width: 12),
                 Column(
@@ -584,7 +605,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                 badgeText: '+12%',
                 badgeBgColor: const Color(0xFFDCFCE7),
                 badgeTextColor: const Color(0xFF16A34A),
-                value: '₹2.4L',
+                value: 'LKR 240K',
                 label: 'Daily Revenue',
               ),
             ),

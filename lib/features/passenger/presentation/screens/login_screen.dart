@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../../shared_widgets/app_logo.dart';
+import '../../../../shared_widgets/google_logo.dart';
 
 class LoginScreen extends StatefulWidget {
   final bool initialIsLogin;
@@ -35,20 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildGoogleLogo() {
-    return Container(
-      width: 20,
-      height: 20,
-      alignment: Alignment.center,
-      child: const Text(
-        'G',
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Color(0xFF4285F4),
-          fontFamily: 'Roboto',
-        ),
-      ),
-    );
+    return const GoogleLogo(size: 22);
   }
 
   @override
@@ -67,18 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
               // Header Logo & App Name
               Row(
                 children: [
-                  Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2563EB),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(
-                      Icons.directions_bus_rounded,
-                      size: 22,
-                      color: Colors.white,
-                    ),
+                  const AppLogo(
+                    size: 36,
+                    borderRadius: 10,
                   ),
                   const SizedBox(width: 10),
                   const Text(

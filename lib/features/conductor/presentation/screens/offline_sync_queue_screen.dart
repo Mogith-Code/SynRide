@@ -100,7 +100,7 @@ class _OfflineSyncQueueScreenState extends State<OfflineSyncQueueScreen> {
               children: [
                 const Text(
                   'Pending Queue Payloads',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.textPrimary),
                 ),
                 Text(
                   '${pendingTickets.length} items',
@@ -135,21 +135,41 @@ class _OfflineSyncQueueScreenState extends State<OfflineSyncQueueScreen> {
                       itemBuilder: (context, index) {
                         final ticket = pendingTickets[index];
                         return Card(
+                          color: AppColors.surface,
+                          elevation: 0,
                           margin: const EdgeInsets.only(bottom: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            side: BorderSide(
+                              color: AppColors.surfaceLight.withValues(alpha: 0.5),
+                            ),
+                          ),
                           child: ListTile(
-                            leading: const CircleAvatar(
-                              backgroundColor: AppColors.warning,
-                              child: Icon(Icons.sync_problem, color: Colors.white, size: 20),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                            leading: CircleAvatar(
+                              backgroundColor: AppColors.warning.withValues(alpha: 0.15),
+                              child: const Icon(Icons.sync_problem, color: AppColors.warning, size: 20),
                             ),
                             title: Text(
                               ticket.ticketNumber,
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text('${ticket.originStop} ➔ ${ticket.destinationStop}'),
-                            trailing: Text(
-                              'Rs. ${ticket.fareAmount.toStringAsFixed(0)}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
+                                color: AppColors.textPrimary,
+                                fontSize: 15,
+                              ),
+                            ),
+                            subtitle: Text(
+                              '${ticket.originStop} ➔ ${ticket.destinationStop}',
+                              style: const TextStyle(
+                                color: AppColors.textSecondary,
+                                fontSize: 13,
+                              ),
+                            ),
+                            trailing: Text(
+                              'LKR ${ticket.fareAmount.toStringAsFixed(0)}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
                                 color: AppColors.primary,
                               ),
                             ),

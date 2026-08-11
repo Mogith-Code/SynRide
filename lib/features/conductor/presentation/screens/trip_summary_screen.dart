@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../../data/repositories/ticket_repository.dart';
 
 class TripSummaryScreen extends StatefulWidget {
@@ -48,27 +49,27 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text(
           'End Current Trip?',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Color(0xFF0F172A),
+            color: AppColors.textPrimary,
           ),
         ),
         content: const Text(
           'Are you sure you want to finalize this trip summary? This will record all passenger stats and revenue into your shift waybill.',
-          style: TextStyle(color: Color(0xFF64748B), fontSize: 14),
+          style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
         ),
         actions: [
           TextButton(
-            child: const Text('Cancel', style: TextStyle(color: Color(0xFF64748B))),
+            child: const Text('Cancel', style: TextStyle(color: AppColors.textSecondary)),
             onPressed: () => Navigator.pop(context),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFEF4444),
+              backgroundColor: AppColors.danger,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -83,7 +84,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Trip Ended Successfully! Waybill updated.'),
-                  backgroundColor: Color(0xFF10B981),
+                  backgroundColor: AppColors.success,
                 ),
               );
               Navigator.pushReplacementNamed(context, '/conductor/home');
@@ -99,23 +100,8 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
     final shift = _repository.activeShift;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.5,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF0F172A)),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          'Trip Summary',
-          style: TextStyle(
-            color: Color(0xFF0F172A),
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
+        title: const Text('Trip Summary'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -130,7 +116,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 style: TextStyle(
                   fontSize: 11.5,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF94A3B8),
+                  color: AppColors.textSecondary,
                   letterSpacing: 0.6,
                 ),
               ),
@@ -153,7 +139,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 style: TextStyle(
                   fontSize: 11.5,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF94A3B8),
+                  color: AppColors.textSecondary,
                   letterSpacing: 0.6,
                 ),
               ),
@@ -172,11 +158,9 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 child: ElevatedButton(
                   onPressed: _handleEndTrip,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFEF4444),
+                    backgroundColor: AppColors.danger,
                     foregroundColor: Colors.white,
                     elevation: 4,
-                    shadowColor:
-                        const Color(0xFFEF4444).withOpacity(0.4),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -215,8 +199,8 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
             Expanded(
               child: _buildPerformanceCard(
                 icon: Icons.people_alt_outlined,
-                iconBgColor: const Color(0xFFEFF6FF),
-                iconColor: const Color(0xFF3B82F6),
+                iconBgColor: AppColors.primary.withValues(alpha: 0.15),
+                iconColor: AppColors.primary,
                 value: '$totalPassengers',
                 label: 'Total Passengers',
               ),
@@ -225,9 +209,9 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
             Expanded(
               child: _buildPerformanceCard(
                 icon: Icons.payments_outlined,
-                iconBgColor: const Color(0xFFECFDF5),
-                iconColor: const Color(0xFF10B981),
-                value: '₹${revenue.toStringAsFixed(0)}',
+                iconBgColor: AppColors.success.withValues(alpha: 0.15),
+                iconColor: AppColors.success,
+                value: 'LKR ${revenue.toStringAsFixed(0)}',
                 label: 'Revenue',
               ),
             ),
@@ -239,8 +223,8 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
             Expanded(
               child: _buildPerformanceCard(
                 icon: Icons.alt_route_rounded,
-                iconBgColor: const Color(0xFFECFDF5),
-                iconColor: const Color(0xFF06B6D4),
+                iconBgColor: AppColors.accent.withValues(alpha: 0.15),
+                iconColor: AppColors.accent,
                 value: '$tripsCompleted',
                 label: 'Trips Completed',
               ),
@@ -249,8 +233,8 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
             Expanded(
               child: _buildPerformanceCard(
                 icon: Icons.show_chart_rounded,
-                iconBgColor: const Color(0xFFFFFBEB),
-                iconColor: const Color(0xFFF59E0B),
+                iconBgColor: AppColors.warning.withValues(alpha: 0.15),
+                iconColor: AppColors.warning,
                 value: '$avgOccupancyPercent%',
                 label: 'Avg Occupancy',
               ),
@@ -271,16 +255,9 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        border: Border.all(color: AppColors.surfaceLight.withValues(alpha: 0.5)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,7 +277,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
             style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF0F172A),
+              color: AppColors.textPrimary,
               letterSpacing: -0.5,
             ),
           ),
@@ -310,7 +287,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
             style: const TextStyle(
               fontSize: 12.5,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF94A3B8),
+              color: AppColors.textSecondary,
             ),
           ),
         ],
@@ -323,16 +300,9 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
     return Container(
       padding: const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        border: Border.all(color: AppColors.surfaceLight.withValues(alpha: 0.5)),
       ),
       child: ListView.builder(
         shrinkWrap: true,
@@ -356,7 +326,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                       isCompleted
                           ? const Icon(
                               Icons.check_circle,
-                              color: Color(0xFF10B981),
+                              color: AppColors.success,
                               size: 20,
                             )
                           : Container(
@@ -364,7 +334,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                               height: 14,
                               margin: const EdgeInsets.only(top: 3),
                               decoration: const BoxDecoration(
-                                color: Color(0xFFCBD5E1),
+                                color: AppColors.surfaceLight,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -375,8 +345,8 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                             width: 2,
                             margin: const EdgeInsets.symmetric(vertical: 4),
                             color: isCompleted
-                                ? const Color(0xFF10B981)
-                                : const Color(0xFFE2E8F0),
+                                ? AppColors.success
+                                : AppColors.surfaceLight,
                           ),
                         ),
                     ],
@@ -401,8 +371,8 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                                 ? FontWeight.bold
                                 : FontWeight.w500,
                             color: isCompleted
-                                ? const Color(0xFF0F172A)
-                                : const Color(0xFF94A3B8),
+                                ? AppColors.textPrimary
+                                : AppColors.textSecondary,
                           ),
                         ),
                         Text(
@@ -413,8 +383,8 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                                 ? FontWeight.bold
                                 : FontWeight.w500,
                             color: isCompleted
-                                ? const Color(0xFF10B981)
-                                : const Color(0xFF94A3B8),
+                                ? AppColors.success
+                                : AppColors.textSecondary,
                           ),
                         ),
                       ],
