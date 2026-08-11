@@ -227,7 +227,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 icon: Icons.payments_outlined,
                 iconBgColor: const Color(0xFFECFDF5),
                 iconColor: const Color(0xFF10B981),
-                value: '₹${revenue.toStringAsFixed(0)}',
+                value: 'LKR ${revenue.toStringAsFixed(0)}',
                 label: 'Revenue',
               ),
             ),

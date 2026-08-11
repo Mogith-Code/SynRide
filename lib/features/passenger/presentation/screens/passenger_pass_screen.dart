@@ -115,7 +115,7 @@ class PassengerPassScreen extends StatelessWidget {
                       Text('SyncPass Wallet Balance', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                       SizedBox(height: 4),
                       Text(
-                        'Rs. 1,450.00',
+                        'LKR 1,450.00',
                         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.success),
                       ),
                     ],
@@ -127,7 +127,7 @@ class PassengerPassScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Top up Rs. 500 added to SyncPass Wallet!')),
+                        const SnackBar(content: Text('Top up LKR 500 added to SyncPass Wallet!')),
                       );
                     },
                     icon: const Icon(Icons.add, size: 18),

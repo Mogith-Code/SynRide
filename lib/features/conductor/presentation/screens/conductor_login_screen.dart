@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../shared_widgets/app_logo.dart';
 
 class ConductorLoginScreen extends StatefulWidget {
   const ConductorLoginScreen({super.key});
@@ -221,10 +222,9 @@ class _ConductorLoginScreenState extends State<ConductorLoginScreen> {
                       ],
                     ),
                     child: const Center(
-                      child: Icon(
-                        Icons.directions_bus_rounded,
-                        size: 40,
-                        color: Colors.white,
+                      child: AppLogo(
+                        size: 50,
+                        borderRadius: 12,
                       ),
                     ),
                   ),

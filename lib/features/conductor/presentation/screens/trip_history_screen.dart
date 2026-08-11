@@ -51,7 +51,7 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
             child: Row(
               children: [
                 _buildMetricItem('Total Tickets', '${tickets.length}', AppColors.primary),
-                _buildMetricItem('Total Revenue', 'Rs. ${totalRev.toStringAsFixed(0)}', AppColors.success),
+                _buildMetricItem('Total Revenue', 'LKR ${totalRev.toStringAsFixed(0)}', AppColors.success),
                 _buildMetricItem('Unsynced Queue', '$pendingCount', pendingCount > 0 ? AppColors.warning : AppColors.textSecondary),
               ],
             ),
@@ -119,6 +119,8 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                       final ticket = filteredTickets[index];
 
                       return Card(
+                        color: Colors.white,
+                        elevation: 1,
                         margin: const EdgeInsets.only(bottom: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
@@ -204,7 +206,7 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                                       ),
                                     ),
                                     Text(
-                                      'Rs. ${ticket.fareAmount.toStringAsFixed(2)}',
+                                      'LKR ${ticket.fareAmount.toStringAsFixed(2)}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16,

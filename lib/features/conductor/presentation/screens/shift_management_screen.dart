@@ -96,7 +96,7 @@ class ShiftManagementScreen extends StatelessWidget {
 
             Row(
               children: [
-                _buildStatCard('Total Revenue', 'Rs. ${shift.totalRevenue.toStringAsFixed(0)}', AppColors.success),
+                _buildStatCard('Total Revenue', 'LKR ${shift.totalRevenue.toStringAsFixed(0)}', AppColors.success),
                 const SizedBox(width: 12),
                 _buildStatCard('Tickets Issued', '${shift.totalTicketsIssued}', AppColors.primary),
               ],
@@ -155,7 +155,7 @@ class ShiftManagementScreen extends StatelessWidget {
                       backgroundColor: AppColors.surface,
                       title: const Text('End Shift & Submit Waybill?'),
                       content: Text(
-                        'Total tickets issued: ${shift.totalTicketsIssued}\nTotal revenue: Rs. ${shift.totalRevenue.toStringAsFixed(2)}\n\nThis action will finalize your daily conductor waybill report.',
+                        'Total tickets issued: ${shift.totalTicketsIssued}\nTotal revenue: LKR ${shift.totalRevenue.toStringAsFixed(2)}\n\nThis action will finalize your daily conductor waybill report.',
                       ),
                       actions: [
                         TextButton(
@@ -231,7 +231,7 @@ class ShiftManagementScreen extends StatelessWidget {
           child: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
         ),
         Text(
-          'Rs. ${amount.toStringAsFixed(2)}',
+          'LKR ${amount.toStringAsFixed(2)}',
           style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 15),
         ),
       ],

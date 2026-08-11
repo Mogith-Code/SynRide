@@ -118,7 +118,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Rs. ${ticket.fareAmount.toStringAsFixed(2)}',
+                        'LKR ${ticket.fareAmount.toStringAsFixed(2)}',
                         style: const TextStyle(
                           color: AppColors.primary,
                           fontWeight: FontWeight.bold,

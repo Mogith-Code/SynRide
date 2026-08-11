@@ -42,7 +42,7 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen> {
                       ),
                       SizedBox(height: 1),
                       Text(
-                        'Pune, Maharashtra',
+                        'Batticaloa, Sri Lanka',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -424,7 +424,7 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen> {
               _buildTripItem(
                 title: 'Home → Office',
                 subtext: 'Bus 177 · 35 min · Today',
-                price: '₹45',
+                price: 'LKR 45',
               ),
               const SizedBox(height: 10),
 
@@ -432,46 +432,64 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen> {
               _buildTripItem(
                 title: 'Office → Mall',
                 subtext: 'Bus 203 · 22 min · Yesterday',
-                price: '₹28',
+                price: 'LKR 28',
               ),
 
               const SizedBox(height: 22),
 
-              // Impact Card
+              // Impact Card - High Contrast Premium Styling
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF0F172A),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFF1E293B),
+                      Color(0xFF0F172A),
+                    ],
+                  ),
                   borderRadius: BorderRadius.circular(22),
+                  border: Border.all(
+                    color: const Color(0xFF38BDF8).withValues(alpha: 0.3),
+                    width: 1.2,
+                  ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.12),
-                      blurRadius: 16,
-                      offset: const Offset(0, 4),
+                      color: const Color(0xFF0F172A).withValues(alpha: 0.4),
+                      blurRadius: 18,
+                      offset: const Offset(0, 6),
                     ),
                   ],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Your Impact This Month',
-                      style: TextStyle(
-                        fontSize: 12.5,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF94A3B8),
-                      ),
+                    Row(
+                      children: const [
+                        Icon(Icons.eco_rounded, color: Color(0xFF34D399), size: 18),
+                        SizedBox(width: 8),
+                        Text(
+                          'Your Impact This Month',
+                          style: TextStyle(
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 0.2,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 18),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         _buildImpactStat('47', 'Trips'),
-                        Container(width: 1, height: 32, color: Colors.white10),
+                        Container(width: 1, height: 32, color: Colors.white24),
                         _buildImpactStat('28kg', 'CO₂ Saved'),
-                        Container(width: 1, height: 32, color: Colors.white10),
-                        _buildImpactStat('₹840', 'Money Saved'),
+                        Container(width: 1, height: 32, color: Colors.white24),
+                        _buildImpactStat('LKR 840', 'Money Saved'),
                       ],
                     ),
                   ],
@@ -709,17 +727,18 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen> {
         Text(
           value,
           style: const TextStyle(
-            fontSize: 19,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
-        const SizedBox(height: 2),
+        const SizedBox(height: 3),
         Text(
           label,
           style: const TextStyle(
             fontSize: 11.5,
-            color: Color(0xFF94A3B8),
+            fontWeight: FontWeight.w500,
+            color: Color(0xFFCBD5E1),
           ),
         ),
       ],

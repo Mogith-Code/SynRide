@@ -95,7 +95,7 @@ class _PassengerProfileScreenState extends State<PassengerProfileScreen> {
 
                   // Name
                   const Text(
-                    'Arjun Sharma',
+                    'Mogith C',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -108,7 +108,7 @@ class _PassengerProfileScreenState extends State<PassengerProfileScreen> {
 
                   // Email
                   const Text(
-                    'arjun.sharma@email.com',
+                    'mogith@gmail.com',
                     style: TextStyle(
                       fontSize: 13,
                       color: Color(0xFF64748B),

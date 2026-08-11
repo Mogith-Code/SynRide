@@ -135,6 +135,8 @@ class _OfflineSyncQueueScreenState extends State<OfflineSyncQueueScreen> {
                       itemBuilder: (context, index) {
                         final ticket = pendingTickets[index];
                         return Card(
+                          color: Colors.white,
+                          elevation: 1,
                           margin: const EdgeInsets.only(bottom: 10),
                           child: ListTile(
                             leading: const CircleAvatar(
@@ -147,7 +149,7 @@ class _OfflineSyncQueueScreenState extends State<OfflineSyncQueueScreen> {
                             ),
                             subtitle: Text('${ticket.originStop} ➔ ${ticket.destinationStop}'),
                             trailing: Text(
-                              'Rs. ${ticket.fareAmount.toStringAsFixed(0)}',
+                              'LKR ${ticket.fareAmount.toStringAsFixed(0)}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.primary,

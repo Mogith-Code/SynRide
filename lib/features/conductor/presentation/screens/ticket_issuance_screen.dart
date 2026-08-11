@@ -19,25 +19,25 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
     {
       'type': 'Adult',
       'price': 25,
-      'priceDisplay': '₹25',
+      'priceDisplay': 'LKR 25',
       'color': const Color(0xFF2563EB), // Blue
     },
     {
       'type': 'Child',
       'price': 15,
-      'priceDisplay': '₹15',
+      'priceDisplay': 'LKR 15',
       'color': const Color(0xFF10B981), // Teal/Green
     },
     {
       'type': 'Student',
       'price': 12,
-      'priceDisplay': '₹12',
+      'priceDisplay': 'LKR 12',
       'color': const Color(0xFF10B981), // Green
     },
     {
       'type': 'Senior',
       'price': 10,
-      'priceDisplay': '₹10',
+      'priceDisplay': 'LKR 10',
       'color': const Color(0xFFF59E0B), // Amber/Orange
     },
   ];
@@ -209,7 +209,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: _buildBottomStatCard(
-                      value: '₹${totalRevenue.toStringAsFixed(0)}',
+                      value: 'LKR ${totalRevenue.toStringAsFixed(0)}',
                       label: 'Revenue',
                     ),
                   ),

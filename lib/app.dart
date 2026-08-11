@@ -59,6 +59,9 @@ class SyncRideApp extends StatelessWidget {
         '/admin': (context) => const AuthorityDashboardScreen(),
         '/admin/dashboard': (context) => const AuthorityDashboardScreen(),
         '/authority': (context) => const AuthorityDashboardScreen(),
+        '/web': (context) => const AuthorityDashboardScreen(),
+        '/dashboard': (context) => const AuthorityDashboardScreen(),
+        '/analytics': (context) => const AuthorityDashboardScreen(),
       },
     );
   }

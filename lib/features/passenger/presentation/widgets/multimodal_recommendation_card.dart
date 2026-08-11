@@ -100,7 +100,7 @@ class MultimodalRecommendationCard extends StatelessWidget {
               const SizedBox(width: 8),
               _buildBadge(Icons.people_outline, '${recommendation.crowdStatus} Crowd', AppColors.primary),
               const SizedBox(width: 8),
-              _buildBadge(Icons.payments_outlined, 'Rs. ${recommendation.fareAmount.toStringAsFixed(0)}', AppColors.textSecondary),
+              _buildBadge(Icons.payments_outlined, 'LKR ${recommendation.fareAmount.toStringAsFixed(0)}', AppColors.textSecondary),
             ],
           ),
           const SizedBox(height: 12),
