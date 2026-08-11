@@ -97,7 +97,7 @@ class WelcomeSplashScreen extends StatelessWidget {
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 680),
                         child: const Text(
-                          'A production-ready AI platform for real-time bus tracking, occupancy prediction, route optimization, and transportation analytics — built for national hackathon competition.',
+                          'A production-ready AI platform for real-time bus tracking, occupancy prediction, route optimization, and transportation analytics.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14.5,
@@ -169,7 +169,7 @@ class WelcomeSplashScreen extends StatelessWidget {
             ],
           ),
 
-          // Hackathon Demo Badge
+          // System Status Badge
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
             decoration: BoxDecoration(
@@ -182,7 +182,7 @@ class WelcomeSplashScreen extends StatelessWidget {
                 Icon(Icons.circle, color: Color(0xFF10B981), size: 7),
                 SizedBox(width: 6),
                 Text(
-                  'Hackathon Demo',
+                  'System Active',
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 12.5,
