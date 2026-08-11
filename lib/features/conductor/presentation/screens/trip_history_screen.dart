@@ -64,14 +64,20 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
               children: [
                 TextField(
                   onChanged: (val) => setState(() => _searchQuery = val),
+                  style: const TextStyle(color: AppColors.textPrimary),
                   decoration: InputDecoration(
                     hintText: 'Search ticket # or stop name...',
+                    hintStyle: const TextStyle(color: AppColors.textSecondary),
                     prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
                     filled: true,
                     fillColor: AppColors.surface,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide.none,
+                      borderSide: BorderSide(color: AppColors.surfaceLight.withValues(alpha: 0.5)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: BorderSide(color: AppColors.surfaceLight.withValues(alpha: 0.5)),
                     ),
                     contentPadding: const EdgeInsets.symmetric(vertical: 12),
                   ),
@@ -88,8 +94,12 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                         label: Text(f),
                         selected: isSelected,
                         selectedColor: AppColors.primary,
+                        backgroundColor: AppColors.surface,
+                        side: BorderSide(
+                          color: isSelected ? AppColors.primary : AppColors.surfaceLight,
+                        ),
                         labelStyle: TextStyle(
-                          color: isSelected ? Colors.white : AppColors.textPrimary,
+                          color: isSelected ? Colors.white : AppColors.textSecondary,
                           fontWeight: FontWeight.bold,
                         ),
                         onSelected: (selected) {
@@ -119,11 +129,14 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                       final ticket = filteredTickets[index];
 
                       return Card(
-                        color: Colors.white,
-                        elevation: 1,
+                        color: AppColors.surface,
+                        elevation: 0,
                         margin: const EdgeInsets.only(bottom: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
+                          side: BorderSide(
+                            color: AppColors.surfaceLight.withValues(alpha: 0.5),
+                          ),
                         ),
                         child: InkWell(
                           onTap: () {
@@ -180,7 +193,11 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                                     const SizedBox(width: 6),
                                     Text(
                                       ticket.originStop,
-                                      style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13,
+                                        color: AppColors.textPrimary,
+                                      ),
                                     ),
                                     const Padding(
                                       padding: EdgeInsets.symmetric(horizontal: 6.0),
@@ -190,7 +207,11 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                                     const SizedBox(width: 6),
                                     Text(
                                       ticket.destinationStop,
-                                      style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13,
+                                        color: AppColors.textPrimary,
+                                      ),
                                     ),
                                   ],
                                 ),

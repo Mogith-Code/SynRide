@@ -52,7 +52,6 @@ class _ConductorHomeScreenView extends StatelessWidget {
             : 0;
 
         return Scaffold(
-          backgroundColor: const Color(0xFFF8FAFC),
           body: SafeArea(
             child: Column(
               children: [

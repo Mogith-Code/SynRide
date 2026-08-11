@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../../data/repositories/ticket_repository.dart';
 
 class PassengerExitScreen extends StatefulWidget {
@@ -37,7 +38,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
         const SnackBar(
           content: Text('Passenger Boarded (+1)'),
           duration: Duration(milliseconds: 800),
-          backgroundColor: Color(0xFF10B981),
+          backgroundColor: AppColors.success,
         ),
       );
     }
@@ -56,7 +57,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
         const SnackBar(
           content: Text('Passenger Exited (-1)'),
           duration: Duration(milliseconds: 800),
-          backgroundColor: Color(0xFFEF4444),
+          backgroundColor: AppColors.danger,
         ),
       );
     }
@@ -69,23 +70,8 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
         _capacity > 0 ? ((_onBoard / _capacity) * 100).round() : 0;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.5,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF0F172A)),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          'Passenger Exit Counter',
-          style: TextStyle(
-            color: Color(0xFF0F172A),
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
+        title: const Text('Passenger Exit Counter'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -111,7 +97,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
               // Occupancy Progress Card
               _buildOccupancyBarCard(occupancyPercent),
 
-                                const SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Bottom 2x2 Metrics Grid Cards
               _buildMetricsGrid(),
@@ -124,25 +110,18 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
     );
   }
 
-  // Top Blue to Cyan Gradient On Board Card
+  // Top Card
   Widget _buildOnBoardCard(int count) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 20.0),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF2563EB), // Deep Blue
-            Color(0xFF0284C7), // Sky Blue
-            Color(0xFF06B6D4), // Cyan
-          ],
-        ),
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.5)),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0284C7).withOpacity(0.35),
+            color: AppColors.primary.withValues(alpha: 0.15),
             blurRadius: 18,
             spreadRadius: 1,
             offset: const Offset(0, 6),
@@ -154,7 +133,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
           const Text(
             'On Board',
             style: TextStyle(
-              color: Colors.white70,
+              color: AppColors.textSecondary,
               fontSize: 13.5,
               fontWeight: FontWeight.w500,
             ),
@@ -163,7 +142,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
           Text(
             '$count',
             style: const TextStyle(
-              color: Colors.white,
+              color: AppColors.primary,
               fontSize: 48,
               fontWeight: FontWeight.bold,
               letterSpacing: -1,
@@ -174,7 +153,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
           const Text(
             'passengers',
             style: TextStyle(
-              color: Colors.white70,
+              color: AppColors.textSecondary,
               fontSize: 13,
               fontWeight: FontWeight.w400,
             ),
@@ -201,13 +180,14 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
             width: 72,
             height: 72,
             decoration: BoxDecoration(
-              color: const Color(0xFFFEE2E2), // Light Soft Red
+              color: AppColors.danger.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: AppColors.danger.withValues(alpha: 0.3)),
             ),
             child: const Center(
               child: Icon(
                 Icons.remove_rounded,
-                color: Color(0xFFEF4444),
+                color: AppColors.danger,
                 size: 32,
               ),
             ),
@@ -222,7 +202,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
               style: TextStyle(
                 fontSize: 12.5,
                 fontWeight: FontWeight.w500,
-                color: Color(0xFF94A3B8),
+                color: AppColors.textSecondary,
               ),
             ),
             const SizedBox(height: 4),
@@ -231,7 +211,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
               style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF10B981),
+                color: AppColors.success,
               ),
             ),
           ],
@@ -244,13 +224,14 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
             width: 72,
             height: 72,
             decoration: BoxDecoration(
-              color: const Color(0xFFECFDF5), // Light Soft Green
+              color: AppColors.success.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: AppColors.success.withValues(alpha: 0.3)),
             ),
             child: const Center(
               child: Icon(
                 Icons.add_rounded,
-                color: Color(0xFF10B981),
+                color: AppColors.success,
                 size: 32,
               ),
             ),
@@ -265,16 +246,9 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
     return Container(
       padding: const EdgeInsets.all(18.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        border: Border.all(color: AppColors.surfaceLight.withValues(alpha: 0.5)),
       ),
       child: Column(
         children: [
@@ -286,7 +260,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
                 style: TextStyle(
                   fontSize: 14.5,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF0F172A),
+                  color: AppColors.textPrimary,
                 ),
               ),
               Text(
@@ -294,7 +268,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
                 style: const TextStyle(
                   fontSize: 13.5,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF64748B),
+                  color: AppColors.textSecondary,
                 ),
               ),
             ],
@@ -305,9 +279,9 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
             child: LinearProgressIndicator(
               value: (percent / 100).clamp(0.0, 1.0),
               minHeight: 10,
-              backgroundColor: const Color(0xFFF1F5F9),
+              backgroundColor: AppColors.surfaceLight,
               valueColor: const AlwaysStoppedAnimation<Color>(
-                Color(0xFFF59E0B), // Orange fill
+                AppColors.warning,
               ),
             ),
           ),
@@ -326,7 +300,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
               child: _buildMetricCard(
                 value: '$_boardedToday',
                 label: 'Boarded Today',
-                valueColor: const Color(0xFF2563EB), // Blue
+                valueColor: AppColors.primary,
               ),
             ),
             const SizedBox(width: 12),
@@ -334,7 +308,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
               child: _buildMetricCard(
                 value: '$_exitedToday',
                 label: 'Exited Today',
-                valueColor: const Color(0xFF10B981), // Teal
+                valueColor: AppColors.success,
               ),
             ),
           ],
@@ -346,7 +320,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
               child: _buildMetricCard(
                 value: 'University',
                 label: 'Next Stop',
-                valueColor: const Color(0xFFF59E0B), // Orange
+                valueColor: AppColors.warning,
               ),
             ),
             const SizedBox(width: 12),
@@ -354,7 +328,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
               child: _buildMetricCard(
                 value: '3/6',
                 label: 'Stops Done',
-                valueColor: const Color(0xFF10B981), // Green
+                valueColor: AppColors.accent,
               ),
             ),
           ],
@@ -371,16 +345,9 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        border: Border.all(color: AppColors.surfaceLight.withValues(alpha: 0.5)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,11 +369,4 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
             style: const TextStyle(
               fontSize: 11.5,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF94A3B8),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

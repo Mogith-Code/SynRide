@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../../data/repositories/ticket_repository.dart';
 import '../widgets/digital_receipt_dialog.dart';
 
@@ -20,7 +21,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
       'type': 'Adult',
       'price': 25,
       'priceDisplay': 'LKR 25',
-      'color': const Color(0xFF2563EB), // Blue
+      'color': const Color(0xFF3B82F6), // Blue
     },
     {
       'type': 'Child',
@@ -32,7 +33,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
       'type': 'Student',
       'price': 12,
       'priceDisplay': 'LKR 12',
-      'color': const Color(0xFF10B981), // Green
+      'color': const Color(0xFF06B6D4), // Cyan
     },
     {
       'type': 'Senior',
@@ -47,7 +48,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please select a ticket type first.'),
-          backgroundColor: Color(0xFFF59E0B),
+          backgroundColor: AppColors.warning,
         ),
       );
       return;
@@ -97,23 +98,8 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
     final int avgTrip = 34;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.5,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF0F172A)),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          'Issue Ticket',
-          style: TextStyle(
-            color: Color(0xFF0F172A),
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
+        title: const Text('Issue Ticket'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -138,9 +124,11 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF0F172A),
+                  color: AppColors.textPrimary,
                 ),
               ),
+
+              const SizedBox(height: 12),
 
               // 2x2 Ticket Options Grid
               _buildTicketTypeGrid(),
@@ -157,13 +145,13 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
                     gradient: _selectedTicketType != null
                         ? const LinearGradient(
                             colors: [
-                              Color(0xFF00E676),
-                              Color(0xFF10B981),
+                              AppColors.primary,
+                              AppColors.accent,
                             ],
                           )
                         : null,
                     color: _selectedTicketType == null
-                        ? const Color(0xFFCBD5E1)
+                        ? AppColors.surfaceLight.withValues(alpha: 0.5)
                         : null,
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -175,7 +163,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
                         size: 20,
                         color: _selectedTicketType != null
                             ? Colors.white
-                            : const Color(0xFF64748B),
+                            : AppColors.textSecondary,
                       ),
                       const SizedBox(width: 8),
                       Text(
@@ -187,7 +175,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
                           fontWeight: FontWeight.bold,
                           color: _selectedTicketType != null
                               ? Colors.white
-                              : const Color(0xFF64748B),
+                              : AppColors.textSecondary,
                         ),
                       ),
                     ],
@@ -242,19 +230,12 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 22.0),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF00E676),
-            Color(0xFF10B981),
-            Color(0xFF059669),
-          ],
-        ),
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.5)),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF10B981).withOpacity(0.3),
+            color: AppColors.primary.withValues(alpha: 0.1),
             blurRadius: 16,
             spreadRadius: 1,
             offset: const Offset(0, 6),
@@ -266,7 +247,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
           const Text(
             'Current Passengers',
             style: TextStyle(
-              color: Colors.white70,
+              color: AppColors.textSecondary,
               fontSize: 13,
               fontWeight: FontWeight.w500,
             ),
@@ -275,7 +256,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
           Text(
             '$currentPassengers',
             style: const TextStyle(
-              color: Colors.white,
+              color: AppColors.primary,
               fontSize: 44,
               fontWeight: FontWeight.bold,
               letterSpacing: -1,
@@ -285,7 +266,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
           Text(
             'of $capacity capacity',
             style: const TextStyle(
-              color: Colors.white70,
+              color: AppColors.textSecondary,
               fontSize: 12.5,
               fontWeight: FontWeight.w400,
             ),
@@ -298,7 +279,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
             height: 7,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.3),
+              color: AppColors.surfaceLight,
               borderRadius: BorderRadius.circular(4),
             ),
             child: FractionallySizedBox(
@@ -306,7 +287,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
               widthFactor: capacityRatio,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.primary,
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
@@ -318,7 +299,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
           Text(
             '$seatsAvailable seats available',
             style: const TextStyle(
-              color: Colors.white,
+              color: AppColors.textPrimary,
               fontSize: 12.5,
               fontWeight: FontWeight.bold,
             ),
@@ -368,17 +349,17 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 16.0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? const Color(0xFF10B981) : const Color(0xFFF1F5F9),
+            color: isSelected ? AppColors.primary : AppColors.surfaceLight.withValues(alpha: 0.5),
             width: isSelected ? 2.0 : 1.0,
           ),
           boxShadow: [
             BoxShadow(
               color: isSelected
-                  ? const Color(0xFF10B981).withOpacity(0.15)
-                  : Colors.black.withOpacity(0.03),
+                  ? AppColors.primary.withValues(alpha: 0.15)
+                  : Colors.black.withValues(alpha: 0.1),
               blurRadius: isSelected ? 12 : 8,
               offset: const Offset(0, 4),
             ),
@@ -391,7 +372,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF0F172A),
+                color: AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 4),
@@ -417,16 +398,9 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 12.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
+        border: Border.all(color: AppColors.surfaceLight.withValues(alpha: 0.5)),
       ),
       child: Column(
         children: [
@@ -435,7 +409,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF0F172A),
+              color: AppColors.textPrimary,
               letterSpacing: -0.3,
             ),
           ),
@@ -445,7 +419,7 @@ class _TicketIssuanceScreenState extends State<TicketIssuanceScreen> {
             style: const TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF94A3B8),
+              color: AppColors.textSecondary,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
