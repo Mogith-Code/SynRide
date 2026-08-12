@@ -10,10 +10,11 @@ class AuthorityDashboardScreen extends StatefulWidget {
 }
 
 class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
-  int _selectedNavIndex = 2; // Default to Analytics tab matching requested design image
+  int _selectedNavIndex = 3; // Default to Reports tab matching requested design image
   String _selectedFilter = 'All';
   String _searchQuery = '';
   String _selectedAnalyticsPeriod = 'Weekly';
+  String _selectedReportFilter = 'All';
   final TextEditingController _searchController = TextEditingController();
 
   final List<String> _navTitles = [
@@ -78,6 +79,49 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
         status: 'Breakdown'),
   ];
 
+  final List<_ReportItemModel> _reports = [
+    _ReportItemModel(
+      type: 'Traffic',
+      busId: 'B342',
+      location: 'MG Road',
+      timeAgo: '10 min ago',
+      status: 'Active',
+      flagColorType: 'orange',
+    ),
+    _ReportItemModel(
+      type: 'Bus Breakdown',
+      busId: 'B056',
+      location: 'Ring Road Jn',
+      timeAgo: '25 min ago',
+      status: 'Reviewing',
+      flagColorType: 'red',
+    ),
+    _ReportItemModel(
+      type: 'Crowded Bus',
+      busId: 'B203',
+      location: 'FC Road',
+      timeAgo: '1 hr ago',
+      status: 'Resolved',
+      flagColorType: 'green',
+    ),
+    _ReportItemModel(
+      type: 'Road Closure',
+      busId: null,
+      location: 'JM Road',
+      timeAgo: '2 hrs ago',
+      status: 'Active',
+      flagColorType: 'red',
+    ),
+    _ReportItemModel(
+      type: 'Unsafe Driving',
+      busId: 'B177',
+      location: 'Airport Rd',
+      timeAgo: '3 hrs ago',
+      status: 'Resolved',
+      flagColorType: 'green',
+    ),
+  ];
+
   List<_BusModel> get _filteredBuses {
     return _buses.where((bus) {
       if (_selectedFilter == 'On Time' && bus.status != 'On Time') return false;
@@ -91,6 +135,14 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
         final matchesDriver = bus.driver.toLowerCase().contains(query);
         return matchesId || matchesRoute || matchesDriver;
       }
+      return true;
+    }).toList();
+  }
+
+  List<_ReportItemModel> get _filteredReports {
+    return _reports.where((report) {
+      if (_selectedReportFilter == 'Active' && report.status == 'Resolved') return false;
+      if (_selectedReportFilter == 'Resolved' && report.status != 'Resolved') return false;
       return true;
     }).toList();
   }
@@ -1323,7 +1375,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
   }
 
   // --------------------------------------------------------------------------
-  // TAB 3: ANALYTICS VIEW (EXACT IMPLEMENTATION MATCHING USER IMAGE)
+  // TAB 3: ANALYTICS VIEW
   // --------------------------------------------------------------------------
   Widget _buildAnalyticsView() {
     return SingleChildScrollView(
@@ -1332,7 +1384,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Row: Title & Subtitle + Period Toggle Pills (Daily, Weekly, Monthly)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -1360,7 +1411,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                   ),
                 ],
               ),
-              // Period Toggle Pills (Daily, Weekly, Monthly)
               Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
@@ -1378,10 +1428,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
               ),
             ],
           ),
-
           const SizedBox(height: 24),
-
-          // Top Row: Hourly Passenger Distribution + Revenue Trend
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -1394,15 +1441,9 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
               ),
             ],
           ),
-
           const SizedBox(height: 24),
-
-          // Middle Section: Congestion Heatmap Card
           _buildCongestionHeatmapCard(),
-
           const SizedBox(height: 24),
-
-          // Bottom Section: Top Routes by Ridership Card
           _buildTopRoutesCard(),
         ],
       ),
@@ -1852,31 +1893,151 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
   }
 
   // --------------------------------------------------------------------------
-  // OTHER DASHBOARD TABS
+  // TAB 4: REPORTS VIEW (EXACT IMPLEMENTATION MATCHING USER IMAGE)
   // --------------------------------------------------------------------------
   Widget _buildReportsView() {
-    return Padding(
+    final filtered = _filteredReports;
+
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.all(28.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Official Waybills & Reports', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
-          const SizedBox(height: 4),
-          const Text('Daily conductor summaries & delay logs', style: TextStyle(color: Color(0xFF64748B))),
-          const SizedBox(height: 20),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFE2E8F0))),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('5 Generated Shift Waybill Reports Available for Download', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  Spacer(),
-                  Center(child: Text('Reports Exporter & Waybill Archiver', style: TextStyle(color: Color(0xFF64748B)))),
-                  Spacer(),
-                ],
+          // Header Row: Title & Subtitle
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                'Reports',
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF0F172A),
+                  letterSpacing: -0.5,
+                ),
               ),
+              SizedBox(height: 4),
+              Text(
+                'Community reports & maintenance',
+                style: TextStyle(
+                  fontSize: 13.5,
+                  color: Color(0xFF64748B),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 24),
+
+          // Top 4 Metric Summary Cards Row
+          Row(
+            children: [
+              Expanded(
+                child: _buildReportMetricCard(
+                  value: '14',
+                  valueColor: const Color(0xFFF59E0B),
+                  label: 'Open Reports',
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: _buildReportMetricCard(
+                  value: '8',
+                  valueColor: const Color(0xFF10B981),
+                  label: 'Resolved Today',
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: _buildReportMetricCard(
+                  value: '3',
+                  valueColor: const Color(0xFFEF4444),
+                  label: 'Critical',
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: _buildReportMetricCard(
+                  value: '12 min',
+                  valueColor: const Color(0xFF2563EB),
+                  label: 'Avg Response',
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 24),
+
+          // Main Community Reports Section Card
+          Container(
+            padding: const EdgeInsets.all(24.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: const Color(0xFFF1F5F9)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.02),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header + Filter Pills
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Community Reports',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0F172A),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        _buildReportFilterPill('All'),
+                        const SizedBox(width: 8),
+                        _buildReportFilterPill('Active'),
+                        const SizedBox(width: 8),
+                        _buildReportFilterPill('Resolved'),
+                      ],
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                // Reports List
+                if (filtered.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.all(32.0),
+                    child: Center(
+                      child: Text(
+                        'No community reports match this filter.',
+                        style: TextStyle(color: Color(0xFF94A3B8), fontSize: 14),
+                      ),
+                    ),
+                  )
+                else
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: filtered.length,
+                    separatorBuilder: (context, index) =>
+                        const Divider(height: 1, color: Color(0xFFF8FAFC)),
+                    itemBuilder: (context, index) {
+                      final item = filtered[index];
+                      return _buildReportRowItem(item);
+                    },
+                  ),
+              ],
             ),
           ),
         ],
@@ -1884,6 +2045,229 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
     );
   }
 
+  Widget _buildReportMetricCard({
+    required String value,
+    required Color valueColor,
+    required String label,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: valueColor,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF94A3B8),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReportFilterPill(String filter) {
+    final isSelected = _selectedReportFilter == filter;
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _selectedReportFilter = filter;
+        });
+      },
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF2563EB) : Colors.transparent,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Text(
+          filter,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+            color: isSelected ? Colors.white : const Color(0xFF94A3B8),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildReportRowItem(_ReportItemModel item) {
+    Color flagBg;
+    Color flagIconColor;
+    if (item.flagColorType == 'red') {
+      flagBg = const Color(0xFFFEE2E2);
+      flagIconColor = const Color(0xFFEF4444);
+    } else if (item.flagColorType == 'green') {
+      flagBg = const Color(0xFFECFDF5);
+      flagIconColor = const Color(0xFF10B981);
+    } else {
+      flagBg = const Color(0xFFFFFBEB);
+      flagIconColor = const Color(0xFFF59E0B);
+    }
+
+    Color statusBg;
+    Color statusText;
+    if (item.status == 'Reviewing') {
+      statusBg = const Color(0xFFEFF6FF);
+      statusText = const Color(0xFF3B82F6);
+    } else if (item.status == 'Resolved') {
+      statusBg = const Color(0xFFDCFCE7);
+      statusText = const Color(0xFF16A34A);
+    } else {
+      // Active
+      statusBg = const Color(0xFFFEF3C7);
+      statusText = const Color(0xFFD97706);
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 14.0),
+      child: Row(
+        children: [
+          Container(
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              color: flagBg,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.outlined_flag_rounded,
+              color: flagIconColor,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      item.type,
+                      style: const TextStyle(
+                        fontSize: 14.5,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0F172A),
+                      ),
+                    ),
+                    if (item.busId != null) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFEFF6FF),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          item.busId!,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF2563EB),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  '${item.location} · ${item.timeAgo}',
+                  style: const TextStyle(
+                    fontSize: 12.5,
+                    color: Color(0xFF94A3B8),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+            decoration: BoxDecoration(
+              color: statusBg,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Text(
+              item.status,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: statusText,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert, color: Color(0xFF94A3B8), size: 20),
+            onSelected: (action) {
+              setState(() {
+                if (action == 'resolve') {
+                  item.status = 'Resolved';
+                  item.flagColorType = 'green';
+                } else if (action == 'active') {
+                  item.status = 'Active';
+                  item.flagColorType = 'orange';
+                } else if (action == 'delete') {
+                  _reports.remove(item);
+                }
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Report "${item.type}" updated.'),
+                  backgroundColor: const Color(0xFF2563EB),
+                ),
+              );
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 'resolve',
+                child: Text('Mark as Resolved'),
+              ),
+              const PopupMenuItem(
+                value: 'active',
+                child: Text('Mark as Active'),
+              ),
+              const PopupMenuItem(
+                value: 'delete',
+                child: Text('Delete Report', style: TextStyle(color: Colors.red)),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --------------------------------------------------------------------------
+  // OTHER DASHBOARD TABS
+  // --------------------------------------------------------------------------
   Widget _buildRoutesView() {
     return Padding(
       padding: const EdgeInsets.all(28.0),
@@ -2019,6 +2403,25 @@ class _BusModel {
     required this.driver,
     required this.occupancyPercent,
     required this.status,
+  });
+}
+
+// Model for Community Report Items
+class _ReportItemModel {
+  String type;
+  String? busId;
+  String location;
+  String timeAgo;
+  String status;
+  String flagColorType;
+
+  _ReportItemModel({
+    required this.type,
+    this.busId,
+    required this.location,
+    required this.timeAgo,
+    required this.status,
+    required this.flagColorType,
   });
 }
 
