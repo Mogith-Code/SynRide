@@ -10,7 +10,7 @@ class AuthorityDashboardScreen extends StatefulWidget {
 }
 
 class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
-  int _selectedNavIndex = 6; // Default to AI Predictions tab matching requested design image
+  int _selectedNavIndex = 6; // Default active tab: AI Predictions
   String _selectedFilter = 'All';
   String _searchQuery = '';
   String _selectedAnalyticsPeriod = 'Weekly';
@@ -958,7 +958,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
           const SizedBox(height: 24),
           Wrap(
             alignment: WrapAlignment.spaceBetween,
-            crossAlignment: WrapCrossAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
             spacing: 16,
             runSpacing: 12,
             children: [
