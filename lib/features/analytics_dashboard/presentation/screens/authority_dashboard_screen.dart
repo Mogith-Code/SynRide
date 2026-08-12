@@ -10,7 +10,7 @@ class AuthorityDashboardScreen extends StatefulWidget {
 }
 
 class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
-  int _selectedNavIndex = 6; // Default to AI Predictions tab matching requested design image
+  int _selectedNavIndex = 6; // Active tab default: AI Predictions
   String _selectedFilter = 'All';
   String _searchQuery = '';
   String _selectedAnalyticsPeriod = 'Weekly';
@@ -162,17 +162,17 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
           // Top Navigation Bar
           _buildTopBar(context),
 
-          // Main Web Container (Sidebar + Content)
+          // Main Container (Sidebar + Dynamic Content)
           Expanded(
             child: Row(
               children: [
-                // Left Dark Sidebar Navigation
+                // Left Sidebar Navigation
                 _buildSidebar(context),
 
-                // Main Content View based on active navigation tab
+                // Active View Content
                 Expanded(
                   child: Container(
-                    color: const Color(0xFFF8FAFC), // Light dashboard content background
+                    color: const Color(0xFFF8FAFC),
                     child: _buildMainContentBody(),
                   ),
                 ),
@@ -184,7 +184,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
     );
   }
 
-  // Top Navigation Bar (Dark Header)
+  // Top Navigation Bar
   Widget _buildTopBar(BuildContext context) {
     return Container(
       height: 60,
@@ -226,18 +226,15 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
             ),
           ),
 
-          // System Operational Tag & Profile Actions
+          // System Operational Badge & Avatar
           Row(
             children: [
-              // All Systems Operational Badge
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: const Color(0xFF10B981).withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                      color: const Color(0xFF10B981).withValues(alpha: 0.3)),
+                  border: Border.all(color: const Color(0xFF10B981).withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: const [
@@ -257,10 +254,8 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
 
               const SizedBox(width: 16),
 
-              // Bell Notification Icon
               IconButton(
-                icon: const Icon(Icons.notifications_none_rounded,
-                    color: Color(0xFF94A3B8), size: 22),
+                icon: const Icon(Icons.notifications_none_rounded, color: Color(0xFF94A3B8), size: 22),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -273,7 +268,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
 
               const SizedBox(width: 8),
 
-              // Admin Avatar Circle
               Container(
                 width: 34,
                 height: 34,
@@ -282,8 +276,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                   shape: BoxShape.circle,
                 ),
                 child: const Center(
-                  child: Icon(Icons.person_outline_rounded,
-                      color: Colors.white, size: 20),
+                  child: Icon(Icons.person_outline_rounded, color: Colors.white, size: 20),
                 ),
               ),
             ],
@@ -297,21 +290,18 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
   Widget _buildSidebar(BuildContext context) {
     return Container(
       width: 240,
-      color: const Color(0xFF0B132B), // Deep navy sidebar
+      color: const Color(0xFF0B132B),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20),
 
-          // Header Logo & Branding
+          // Logo Branding
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
               children: [
-                const AppLogo(
-                  size: 38,
-                  borderRadius: 10,
-                ),
+                const AppLogo(size: 38, borderRadius: 10),
                 const SizedBox(width: 12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -341,17 +331,15 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
 
           const SizedBox(height: 28),
 
-          // Navigation Links List
+          // Menu items
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               children: [
                 _buildNavItem(0, Icons.grid_view_rounded, 'Dashboard'),
-                _buildNavItem(1, Icons.directions_bus_outlined, 'Live Buses',
-                    badgeCount: 12),
+                _buildNavItem(1, Icons.directions_bus_outlined, 'Live Buses', badgeCount: 12),
                 _buildNavItem(2, Icons.show_chart_rounded, 'Analytics'),
-                _buildNavItem(3, Icons.insert_drive_file_outlined, 'Reports',
-                    badgeCount: 5),
+                _buildNavItem(3, Icons.insert_drive_file_outlined, 'Reports', badgeCount: 5),
                 _buildNavItem(4, Icons.alt_route_rounded, 'Routes'),
                 _buildNavItem(5, Icons.badge_outlined, 'Drivers'),
                 _buildNavItem(6, Icons.psychology_outlined, 'AI Predictions'),
@@ -360,7 +348,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
             ),
           ),
 
-          // Bottom Admin Profile User Card (Matches image: Admin / Pune Transport Auth)
+          // Admin User Card
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
@@ -380,8 +368,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                       shape: BoxShape.circle,
                     ),
                     child: const Center(
-                      child: Icon(Icons.person_outline_rounded,
-                          color: Colors.white, size: 20),
+                      child: Icon(Icons.person_outline_rounded, color: Colors.white, size: 20),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -447,9 +434,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
             ? Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: isSelected
-                      ? Colors.white.withValues(alpha: 0.2)
-                      : const Color(0xFFEF4444),
+                  color: isSelected ? Colors.white.withValues(alpha: 0.2) : const Color(0xFFEF4444),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
@@ -489,7 +474,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
   }
 
   // --------------------------------------------------------------------------
-  // TAB 1: OPERATIONS DASHBOARD VIEW
+  // TAB 0: OPERATIONS DASHBOARD VIEW
   // --------------------------------------------------------------------------
   Widget _buildOperationsDashboardView() {
     return SingleChildScrollView(
@@ -539,14 +524,10 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.white,
                       side: const BorderSide(color: Color(0xFFE2E8F0)),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
-                    icon: const Icon(Icons.file_download_outlined,
-                        color: Color(0xFF475569), size: 18),
+                    icon: const Icon(Icons.file_download_outlined, color: Color(0xFF475569), size: 18),
                     label: const Text(
                       'Export',
                       style: TextStyle(
@@ -570,20 +551,14 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF2563EB),
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 18, vertical: 14),
+                      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
                       elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                     icon: const Icon(Icons.refresh_rounded, size: 18),
                     label: const Text(
                       'Refresh',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13.5,
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.5),
                     ),
                   ),
                 ],
@@ -596,30 +571,18 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                flex: 7,
-                child: _buildDailyPassengersChartCard(),
-              ),
+              Expanded(flex: 7, child: _buildDailyPassengersChartCard()),
               const SizedBox(width: 24),
-              Expanded(
-                flex: 4,
-                child: _buildFleetStatusDonutCard(),
-              ),
+              Expanded(flex: 4, child: _buildFleetStatusDonutCard()),
             ],
           ),
           const SizedBox(height: 24),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                flex: 7,
-                child: _buildLiveFleetMapCard(),
-              ),
+              Expanded(flex: 7, child: _buildLiveFleetMapCard()),
               const SizedBox(width: 24),
-              Expanded(
-                flex: 4,
-                child: _buildActiveAlertsCard(),
-              ),
+              Expanded(flex: 4, child: _buildActiveAlertsCard()),
             ],
           ),
         ],
@@ -628,12 +591,11 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
   }
 
   // --------------------------------------------------------------------------
-  // TAB 2: LIVE BUSES VIEW
+  // TAB 1: LIVE BUSES VIEW
   // --------------------------------------------------------------------------
   Widget _buildLiveBusesView() {
     final filtered = _filteredBuses;
     final totalCount = _buses.length;
-    final onTimeCount = _buses.where((b) => b.status == 'On Time').length;
     final delayedCount = _buses.where((b) => b.status == 'Delayed').length;
     final breakdownCount = _buses.where((b) => b.status == 'Breakdown').length;
 
@@ -686,25 +648,26 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                   elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // Responsive Filters & Search Row
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAlignment: WrapCrossAlignment.center,
+            spacing: 16,
+            runSpacing: 12,
             children: [
-              Row(
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
                 children: [
                   _buildFilterPill('All ($totalCount)', 'All'),
-                  const SizedBox(width: 10),
                   _buildFilterPill('On Time', 'On Time'),
-                  const SizedBox(width: 10),
                   _buildFilterPill('Delayed ($delayedCount)', 'Delayed'),
-                  const SizedBox(width: 10),
                   _buildFilterPill('Breakdown ($breakdownCount)', 'Breakdown'),
                 ],
               ),
@@ -1077,9 +1040,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFF2563EB) : Colors.white,
           borderRadius: BorderRadius.circular(20),
-          border: isSelected
-              ? null
-              : Border.all(color: const Color(0xFFE2E8F0)),
+          border: isSelected ? null : Border.all(color: const Color(0xFFE2E8F0)),
         ),
         child: Text(
           label,
@@ -1375,7 +1336,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
   }
 
   // --------------------------------------------------------------------------
-  // TAB 3: ANALYTICS VIEW
+  // TAB 2: ANALYTICS VIEW
   // --------------------------------------------------------------------------
   Widget _buildAnalyticsView() {
     return SingleChildScrollView(
@@ -1429,17 +1390,26 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
             ],
           ),
           const SizedBox(height: 24),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: _buildHourlyPassengerCard(),
-              ),
-              const SizedBox(width: 24),
-              Expanded(
-                child: _buildRevenueTrendCard(),
-              ),
-            ],
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth < 900) {
+                return Column(
+                  children: [
+                    _buildHourlyPassengerCard(),
+                    const SizedBox(height: 24),
+                    _buildRevenueTrendCard(),
+                  ],
+                );
+              }
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: _buildHourlyPassengerCard()),
+                  const SizedBox(width: 24),
+                  Expanded(child: _buildRevenueTrendCard()),
+                ],
+              );
+            },
           ),
           const SizedBox(height: 24),
           _buildCongestionHeatmapCard(),
@@ -1893,7 +1863,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
   }
 
   // --------------------------------------------------------------------------
-  // TAB 4: REPORTS VIEW
+  // TAB 3: REPORTS VIEW
   // --------------------------------------------------------------------------
   Widget _buildReportsView() {
     final filtered = _filteredReports;
@@ -2166,8 +2136,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                     if (item.busId != null) ...[
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
                           color: const Color(0xFFEFF6FF),
                           borderRadius: BorderRadius.circular(6),
@@ -2254,7 +2223,216 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
   }
 
   // --------------------------------------------------------------------------
-  // TAB 7: AI PREDICTIONS VIEW (EXACT MATCH FOR USER SCREENSHOT)
+  // TAB 4: ROUTES VIEW
+  // --------------------------------------------------------------------------
+  Widget _buildRoutesView() {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(28.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text('Route Management', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
+                  SizedBox(height: 4),
+                  Text('City routes, stop frequency and live allocations', style: TextStyle(color: Color(0xFF64748B), fontSize: 13.5)),
+                ],
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('New Route Creation Wizard Opened'), backgroundColor: Color(0xFF2563EB)),
+                  );
+                },
+                icon: const Icon(Icons.add_rounded, size: 18, color: Colors.white),
+                label: const Text('Add Route', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF2563EB),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              Expanded(child: _buildRouteMetricCard('24', 'Total City Routes', const Color(0xFF2563EB))),
+              const SizedBox(width: 20),
+              Expanded(child: _buildRouteMetricCard('186', 'Active Transit Stops', const Color(0xFF10B981))),
+              const SizedBox(width: 20),
+              Expanded(child: _buildRouteMetricCard('342 km', 'Covered Network', const Color(0xFF8B5CF6))),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: const Color(0xFFF1F5F9)),
+            ),
+            child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                _buildRouteRow('Route 177', 'City Center → Airport', '14 Stops', '4 Buses', '15 min freq', 'Active', const Color(0xFF10B981)),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildRouteRow('Route 203', 'University → Downtown', '18 Stops', '6 Buses', '10 min freq', 'Active', const Color(0xFF10B981)),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildRouteRow('Route 101', 'Mall → Station', '10 Stops', '3 Buses', '20 min freq', 'Active', const Color(0xFF10B981)),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildRouteRow('Route 342', 'Station → University', '22 Stops', '5 Buses', '12 min freq', 'High Demand', const Color(0xFFF59E0B)),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildRouteRow('Route 056', 'North → South', '16 Stops', '2 Buses', '30 min freq', 'Maintenance', const Color(0xFFEF4444)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRouteMetricCard(String val, String lbl, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFF1F5F9))),
+      child: Column(
+        children: [
+          Text(val, style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: color)),
+          const SizedBox(height: 4),
+          Text(lbl, style: const TextStyle(fontSize: 12.5, color: Color(0xFF94A3B8))),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRouteRow(String code, String name, String stops, String buses, String freq, String status, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(color: const Color(0xFFEFF6FF), borderRadius: BorderRadius.circular(8)),
+            child: Text(code, style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF2563EB), fontSize: 13)),
+          ),
+          const SizedBox(width: 16),
+          Expanded(flex: 3, child: Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF0F172A)))),
+          Expanded(flex: 2, child: Text(stops, style: const TextStyle(color: Color(0xFF64748B), fontSize: 13))),
+          Expanded(flex: 2, child: Text(buses, style: const TextStyle(color: Color(0xFF64748B), fontSize: 13))),
+          Expanded(flex: 2, child: Text(freq, style: const TextStyle(color: Color(0xFF64748B), fontSize: 13))),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
+            child: Text(status, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --------------------------------------------------------------------------
+  // TAB 5: DRIVERS VIEW
+  // --------------------------------------------------------------------------
+  Widget _buildDriversView() {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(28.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text('Driver & Conductor Roster', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
+                  SizedBox(height: 4),
+                  Text('Duty allocation, shift roster and safety ratings', style: TextStyle(color: Color(0xFF64748B), fontSize: 13.5)),
+                ],
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Staff Registration Form Opened'), backgroundColor: Color(0xFF2563EB)),
+                  );
+                },
+                icon: const Icon(Icons.add_rounded, size: 18, color: Colors.white),
+                label: const Text('Add Staff', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF2563EB),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              Expanded(child: _buildRouteMetricCard('64', 'Total Active Personnel', const Color(0xFF2563EB))),
+              const SizedBox(width: 20),
+              Expanded(child: _buildRouteMetricCard('42', 'Currently On Duty', const Color(0xFF10B981))),
+              const SizedBox(width: 20),
+              Expanded(child: _buildRouteMetricCard('12', 'Shift Break / Off', const Color(0xFFF59E0B))),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Container(
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFF1F5F9))),
+            child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                _buildDriverRow('Rahul Kumar', 'Conductor', 'Bus B177', '6 AM - 2 PM', '4.9 ★', 'On Duty', const Color(0xFF10B981)),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildDriverRow('Priya Singh', 'Driver', 'Bus B203', '6 AM - 2 PM', '4.8 ★', 'On Duty', const Color(0xFF10B981)),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildDriverRow('Amit Sharma', 'Conductor', 'Bus B101', '2 PM - 10 PM', '4.7 ★', 'On Duty', const Color(0xFF10B981)),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildDriverRow('Neha Patel', 'Driver', 'Bus B342', '6 AM - 2 PM', '4.9 ★', 'On Duty', const Color(0xFF10B981)),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildDriverRow('Vikram Singh', 'Driver', 'Bus B056', '10 AM - 6 PM', '4.6 ★', 'On Break', const Color(0xFFF59E0B)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDriverRow(String name, String role, String bus, String shift, String rating, String status, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Row(
+        children: [
+          CircleAvatar(
+            backgroundColor: const Color(0xFF2563EB).withValues(alpha: 0.12),
+            child: Text(name[0], style: const TextStyle(color: Color(0xFF2563EB), fontWeight: FontWeight.bold)),
+          ),
+          const SizedBox(width: 14),
+          Expanded(flex: 3, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF0F172A))), Text(role, style: const TextStyle(color: Color(0xFF94A3B8), fontSize: 12))])),
+          Expanded(flex: 2, child: Text(bus, style: const TextStyle(color: Color(0xFF334155), fontSize: 13, fontWeight: FontWeight.w500))),
+          Expanded(flex: 2, child: Text(shift, style: const TextStyle(color: Color(0xFF64748B), fontSize: 13))),
+          Expanded(flex: 2, child: Text(rating, style: const TextStyle(color: Color(0xFFD97706), fontWeight: FontWeight.bold, fontSize: 13))),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
+            child: Text(status, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --------------------------------------------------------------------------
+  // TAB 6: AI PREDICTIONS VIEW
   // --------------------------------------------------------------------------
   Widget _buildAIPredictionsView() {
     return SingleChildScrollView(
@@ -2263,7 +2441,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Row: Title & Subtitle + AI Model Accuracy Badge
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -2291,7 +2468,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                   ),
                 ],
               ),
-              // AI Model Status Badge
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
@@ -2316,13 +2492,9 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
               ),
             ],
           ),
-
           const SizedBox(height: 24),
-
-          // Top Row: 3 Recommendation Metric Cards
           Row(
             children: [
-              // Card 1: 88% Predicted Peak Occupancy
               Expanded(
                 child: _buildAIPredictionCard(
                   icon: Icons.trending_up_rounded,
@@ -2336,7 +2508,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                 ),
               ),
               const SizedBox(width: 20),
-              // Card 2: 14 buses Expected Delays
               Expanded(
                 child: _buildAIPredictionCard(
                   icon: Icons.access_time_rounded,
@@ -2350,7 +2521,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                 ),
               ),
               const SizedBox(width: 20),
-              // Card 3: 6 buses Recommended Additions
               Expanded(
                 child: _buildAIPredictionCard(
                   icon: Icons.add_rounded,
@@ -2365,26 +2535,29 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
               ),
             ],
           ),
-
           const SizedBox(height: 24),
-
-          // Middle Section Card: Demand Forecast vs Actual Chart
           _buildDemandForecastCard(),
-
           const SizedBox(height: 24),
-
-          // Bottom Section: AI Insights (Left) + Weather Impact Analysis (Right)
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: _buildAIInsightsCard(),
-              ),
-              const SizedBox(width: 24),
-              Expanded(
-                child: _buildWeatherImpactCard(),
-              ),
-            ],
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth < 900) {
+                return Column(
+                  children: [
+                    _buildAIInsightsCard(),
+                    const SizedBox(height: 24),
+                    _buildWeatherImpactCard(),
+                  ],
+                );
+              }
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: _buildAIInsightsCard()),
+                  const SizedBox(width: 24),
+                  Expanded(child: _buildWeatherImpactCard()),
+                ],
+              );
+            },
           ),
         ],
       ),
@@ -2417,7 +2590,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
       ),
       child: Stack(
         children: [
-          // Pastel Corner Circle Accent
           Positioned(
             top: -20,
             right: -20,
@@ -2435,7 +2607,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Top Icon Box
                 Container(
                   width: 38,
                   height: 38,
@@ -2499,7 +2670,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title Header & Legend
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -2546,7 +2716,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
             ],
           ),
           const SizedBox(height: 24),
-          // Chart View
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -2722,7 +2891,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          // Rain Forecast Alert Banner
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -2766,10 +2934,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
               ],
             ),
           ),
-
           const SizedBox(height: 20),
-
-          // Weather Key Metrics List
           _buildWeatherMetricRow('Expected ETA Delay', '+8 min avg', const Color(0xFFD97706)),
           const SizedBox(height: 14),
           _buildWeatherMetricRow('Demand Increase', '+23%', const Color(0xFF2563EB)),
@@ -2807,100 +2972,69 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
   }
 
   // --------------------------------------------------------------------------
-  // OTHER DASHBOARD TABS
+  // TAB 7: SETTINGS VIEW
   // --------------------------------------------------------------------------
-  Widget _buildRoutesView() {
-    return Padding(
-      padding: const EdgeInsets.all(28.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('Route Management', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
-          const SizedBox(height: 4),
-          const Text('City routes and stop sequence configurations', style: TextStyle(color: Color(0xFF64748B))),
-          const SizedBox(height: 20),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFE2E8F0))),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('Active City Routes (Route 177, 204, 342, 102, 305)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  Spacer(),
-                  Center(child: Text('Route Editor & Stop Frequency Stepper Visualizer', style: TextStyle(color: Color(0xFF64748B)))),
-                  Spacer(),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDriversView() {
-    return Padding(
-      padding: const EdgeInsets.all(28.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('Driver & Conductor Roster', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
-          const SizedBox(height: 4),
-          const Text('Duty allocation and shift statuses', style: TextStyle(color: Color(0xFF64748B))),
-          const SizedBox(height: 20),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFE2E8F0))),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('Conductor Rahul Kumar · Active Shift (Bus 177)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  Spacer(),
-                  Center(child: Text('Personnel & Shift Allocation Roster Table', style: TextStyle(color: Color(0xFF64748B)))),
-                  Spacer(),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildSettingsView() {
-    return Padding(
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.all(28.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Authority Settings', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
+          const Text('Authority Settings', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
           const SizedBox(height: 4),
-          const Text('System parameters and notification controls', style: TextStyle(color: Color(0xFF64748B))),
-          const SizedBox(height: 20),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFE2E8F0))),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('System API & Fleet GPS Sync Configuration', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  Spacer(),
-                  Center(child: Text('Settings Panel', style: TextStyle(color: Color(0xFF64748B)))),
-                  Spacer(),
-                ],
-              ),
+          const Text('System parameters, GPS sync rate and notification alerts', style: TextStyle(color: Color(0xFF64748B), fontSize: 13.5)),
+          const SizedBox(height: 24),
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFF1F5F9))),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Telemetry & GPS Sync', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
+                const SizedBox(height: 16),
+                _buildSettingToggleTile('Real-time GPS Fleet Telemetry', 'Sync bus positions every 5 seconds', true),
+                const Divider(height: 24),
+                _buildSettingToggleTile('AI Overcrowding Auto-Dispatch Alerts', 'Notify when route demand exceeds 80%', true),
+                const Divider(height: 24),
+                _buildSettingToggleTile('SMS Breakdown Alerts to Control Center', 'Dispatch emergency support automatically', true),
+              ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSettingToggleTile(String title, String subtitle, bool initialVal) {
+    return StatefulBuilder(
+      builder: (context, setTileState) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF0F172A))),
+                const SizedBox(height: 2),
+                Text(subtitle, style: const TextStyle(fontSize: 12.5, color: Color(0xFF94A3B8))),
+              ],
+            ),
+            Switch(
+              value: initialVal,
+              activeColor: const Color(0xFF2563EB),
+              onChanged: (val) {
+                setTileState(() => initialVal = val);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
 
-// Model for Bus Fleet Items
+// Models
 class _BusModel {
   String id;
   String route;
@@ -2917,7 +3051,6 @@ class _BusModel {
   });
 }
 
-// Model for Community Report Items
 class _ReportItemModel {
   String type;
   String? busId;
@@ -2936,7 +3069,7 @@ class _ReportItemModel {
   });
 }
 
-// Custom Painter for AI Demand Forecast vs Actual Chart
+// Painters
 class _DemandForecastPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -3040,7 +3173,6 @@ class _DemandForecastPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-// Custom Painters for Dashboard & Analytics
 class _HourlyPassengerChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
