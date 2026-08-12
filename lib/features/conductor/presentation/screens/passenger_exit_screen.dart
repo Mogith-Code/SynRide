@@ -70,8 +70,22 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
         _capacity > 0 ? ((_onBoard / _capacity) * 100).round() : 0;
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
-        title: const Text('Passenger Exit Counter'),
+        backgroundColor: const Color(0xFFF8FAFC),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF0F172A)),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'Passenger Exit',
+          style: TextStyle(
+            color: Color(0xFF0F172A),
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -80,7 +94,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top Blue/Teal Card: On Board Passengers
+              // Top Blue-Teal Hero Gradient Card: On Board Passengers
               _buildOnBoardCard(_onBoard),
 
               const SizedBox(height: 24),
@@ -110,50 +124,57 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
     );
   }
 
-  // Top Card
+  // Top Card: Gradient Hero Banner matching design mockup
   Widget _buildOnBoardCard(int count) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(vertical: 28.0, horizontal: 20.0),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.5)),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF2563EB),
+            Color(0xFF0EA5E9),
+            Color(0xFF0D9488),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.15),
+            color: const Color(0xFF0D9488).withValues(alpha: 0.25),
             blurRadius: 18,
             spreadRadius: 1,
-            offset: const Offset(0, 6),
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Column(
         children: [
-          const Text(
+          Text(
             'On Board',
             style: TextStyle(
-              color: AppColors.textSecondary,
-              fontSize: 13.5,
+              color: Colors.white.withValues(alpha: 0.85),
+              fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           Text(
             '$count',
             style: const TextStyle(
-              color: AppColors.primary,
-              fontSize: 48,
+              color: Colors.white,
+              fontSize: 52,
               fontWeight: FontWeight.bold,
               letterSpacing: -1,
               height: 1.1,
             ),
           ),
           const SizedBox(height: 2),
-          const Text(
+          Text(
             'passengers',
             style: TextStyle(
-              color: AppColors.textSecondary,
+              color: Colors.white.withValues(alpha: 0.85),
               fontSize: 13,
               fontWeight: FontWeight.w400,
             ),
@@ -163,7 +184,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
     );
   }
 
-  // Interactive Plus / Minus Controller Row
+  // Interactive Plus / Minus Controller Row matching design mockup
   Widget _buildCounterControlRow({
     required int availableSeats,
     required VoidCallback onIncrement,
@@ -173,21 +194,21 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // Minus Button (-)
+        // Minus Button (-) Soft Pink Tint
         GestureDetector(
           onTap: onDecrement,
           child: Container(
             width: 72,
             height: 72,
             decoration: BoxDecoration(
-              color: AppColors.danger.withValues(alpha: 0.15),
+              color: const Color(0xFFFEF2F2),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.danger.withValues(alpha: 0.3)),
+              border: Border.all(color: const Color(0xFFFECACA)),
             ),
             child: const Center(
               child: Icon(
                 Icons.remove_rounded,
-                color: AppColors.danger,
+                color: Color(0xFFEF4444),
                 size: 32,
               ),
             ),
@@ -202,36 +223,36 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
               style: TextStyle(
                 fontSize: 12.5,
                 fontWeight: FontWeight.w500,
-                color: AppColors.textSecondary,
+                color: Color(0xFF94A3B8),
               ),
             ),
             const SizedBox(height: 4),
             Text(
               '$availableSeats',
               style: const TextStyle(
-                fontSize: 28,
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: AppColors.success,
+                color: Color(0xFF10B981),
               ),
             ),
           ],
         ),
 
-        // Plus Button (+)
+        // Plus Button (+) Soft Mint Green Tint
         GestureDetector(
           onTap: onIncrement,
           child: Container(
             width: 72,
             height: 72,
             decoration: BoxDecoration(
-              color: AppColors.success.withValues(alpha: 0.15),
+              color: const Color(0xFFECFDF5),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.success.withValues(alpha: 0.3)),
+              border: Border.all(color: const Color(0xFFA7F3D0)),
             ),
             child: const Center(
               child: Icon(
                 Icons.add_rounded,
-                color: AppColors.success,
+                color: Color(0xFF10B981),
                 size: 32,
               ),
             ),
@@ -246,9 +267,16 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
     return Container(
       padding: const EdgeInsets.all(18.0),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.surfaceLight.withValues(alpha: 0.5)),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -260,7 +288,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
                 style: TextStyle(
                   fontSize: 14.5,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
+                  color: Color(0xFF0F172A),
                 ),
               ),
               Text(
@@ -268,7 +296,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
                 style: const TextStyle(
                   fontSize: 13.5,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textSecondary,
+                  color: Color(0xFF94A3B8),
                 ),
               ),
             ],
@@ -279,9 +307,9 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
             child: LinearProgressIndicator(
               value: (percent / 100).clamp(0.0, 1.0),
               minHeight: 10,
-              backgroundColor: AppColors.surfaceLight,
+              backgroundColor: const Color(0xFFF1F5F9),
               valueColor: const AlwaysStoppedAnimation<Color>(
-                AppColors.warning,
+                Color(0xFFF59E0B),
               ),
             ),
           ),
@@ -300,7 +328,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
               child: _buildMetricCard(
                 value: '$_boardedToday',
                 label: 'Boarded Today',
-                valueColor: AppColors.primary,
+                valueColor: const Color(0xFF2563EB),
               ),
             ),
             const SizedBox(width: 12),
@@ -308,7 +336,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
               child: _buildMetricCard(
                 value: '$_exitedToday',
                 label: 'Exited Today',
-                valueColor: AppColors.success,
+                valueColor: const Color(0xFF10B981),
               ),
             ),
           ],
@@ -320,7 +348,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
               child: _buildMetricCard(
                 value: 'University',
                 label: 'Next Stop',
-                valueColor: AppColors.warning,
+                valueColor: const Color(0xFFF59E0B),
               ),
             ),
             const SizedBox(width: 12),
@@ -328,7 +356,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
               child: _buildMetricCard(
                 value: '3/6',
                 label: 'Stops Done',
-                valueColor: AppColors.accent,
+                valueColor: const Color(0xFF10B981),
               ),
             ),
           ],
@@ -345,9 +373,16 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.surfaceLight.withValues(alpha: 0.5)),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -369,7 +404,7 @@ class _PassengerExitScreenState extends State<PassengerExitScreen> {
             style: const TextStyle(
               fontSize: 11.5,
               fontWeight: FontWeight.w500,
-              color: AppColors.textSecondary,
+              color: Color(0xFF94A3B8),
             ),
           ),
         ],

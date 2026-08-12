@@ -1,45 +1,97 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.build/
-.buildlog/
-.history
-.svn/
-.swiftpm/
-migrate_working_dir/
+# =====================================================================
+# SyncRide - .gitignore
+# Standard ignored files for Flutter, Dart, Android, iOS, IDEs & OS
+# =====================================================================
 
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
-
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
+# Flutter / Dart / Pub dependencies & generated build files
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
+.packages
 .pub-cache/
 .pub/
 /build/
 /coverage/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.framework
 
-# Symbolication related
+# Symbolication & Obfuscation
 app.*.symbols
-
-# Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
+# Build Artifacts
+*.apk
+*.aab
+*.app
+*.ipa
+*.dex
+*.class
+
+# Android Studio & Gradle
+.gradle/
+/android/.gradle/
+/android/captures/
+/android/local.properties
 /android/app/debug
 /android/app/profile
 /android/app/release
+/android/.externalNativeBuild/
+/android/.cxx/
+
+# Xcode / iOS / macOS
+**/ios/Pods/
+**/ios/Podfile.lock
+**/ios/Runner.xcworkspace/
+*.xcuserdata
+*.xcworkspace
+DerivedData/
+
+# Web
+/web/build/
+
+# IntelliJ & Android Studio IDE
+*.iml
+*.ipr
+*.iws
+.idea/
+.idea_modules/
+
+# VS Code
+.vscode/
+
+# Eclipse / Other IDEs
+.project
+.classpath
+.settings/
+.atom/
+.history/
+.svn/
+.swiftpm/
+
+# Environment & Secrets
+.env
+.env.*
+
+# Logs & Temporary Files
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Miscellaneous
+.build/
+.buildlog/
+migrate_working_dir/

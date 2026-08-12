@@ -23,7 +23,7 @@ class TicketCounterWidget extends StatelessWidget {
           children: [
             const Text(
               'Quick Boarding:',
-              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+              style: TextStyle(fontSize: 12, color: Color(0xFF94A3B8)),
             ),
             const SizedBox(width: 8),
             _buildPill(context, '+1', 1),
@@ -40,7 +40,7 @@ class TicketCounterWidget extends StatelessWidget {
             Expanded(
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.danger.withValues(alpha: 0.9),
+                  backgroundColor: const Color(0xFFEF4444),
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 18),
                   shape: RoundedRectangleBorder(
@@ -60,7 +60,7 @@ class TicketCounterWidget extends StatelessWidget {
             Expanded(
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.success,
+                  backgroundColor: const Color(0xFF10B981),
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 18),
                   shape: RoundedRectangleBorder(
@@ -91,14 +91,14 @@ class TicketCounterWidget extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: AppColors.surfaceLight,
+            color: const Color(0xFFECFDF5),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.primary.withValues(alpha: 0.4)),
+            border: Border.all(color: const Color(0xFFA7F3D0)),
           ),
           child: Text(
             label,
             style: const TextStyle(
-              color: AppColors.primary,
+              color: const Color(0xFF10B981),
               fontWeight: FontWeight.bold,
               fontSize: 13,
             ),

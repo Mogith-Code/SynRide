@@ -37,8 +37,22 @@ class _OfflineSyncQueueScreenState extends State<OfflineSyncQueueScreen> {
     final isOnline = _repository.isOnline;
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
-        title: const Text('Offline Queue Sync Engine'),
+        backgroundColor: const Color(0xFFF8FAFC),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF0F172A)),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'Offline Queue Sync Engine',
+          style: TextStyle(
+            color: Color(0xFF0F172A),
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -49,19 +63,26 @@ class _OfflineSyncQueueScreenState extends State<OfflineSyncQueueScreen> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: isOnline ? AppColors.success : AppColors.warning,
+                  color: isOnline ? const Color(0xFF10B981) : const Color(0xFFF59E0B),
                   width: 1.5,
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.03),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
               child: Row(
                 children: [
                   Icon(
                     isOnline ? Icons.cloud_done : Icons.cloud_off,
                     size: 36,
-                    color: isOnline ? AppColors.success : AppColors.warning,
+                    color: isOnline ? const Color(0xFF10B981) : const Color(0xFFF59E0B),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -73,7 +94,7 @@ class _OfflineSyncQueueScreenState extends State<OfflineSyncQueueScreen> {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: isOnline ? AppColors.success : AppColors.warning,
+                            color: isOnline ? const Color(0xFF10B981) : const Color(0xFFF59E0B),
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -83,7 +104,7 @@ class _OfflineSyncQueueScreenState extends State<OfflineSyncQueueScreen> {
                               : '${pendingTickets.length} ticket(s) waiting in local SQLite queue.',
                           style: const TextStyle(
                             fontSize: 12,
-                            color: AppColors.textSecondary,
+                            color: Color(0xFF94A3B8),
                           ),
                         ),
                       ],
@@ -100,11 +121,11 @@ class _OfflineSyncQueueScreenState extends State<OfflineSyncQueueScreen> {
               children: [
                 const Text(
                   'Pending Queue Payloads',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.textPrimary),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF0F172A)),
                 ),
                 Text(
                   '${pendingTickets.length} items',
-                  style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                  style: const TextStyle(color: Color(0xFF94A3B8), fontSize: 13),
                 ),
               ],
             ),
@@ -116,16 +137,16 @@ class _OfflineSyncQueueScreenState extends State<OfflineSyncQueueScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.check_circle_outline, size: 64, color: AppColors.success),
+                          Icon(Icons.check_circle_outline, size: 64, color: Color(0xFF10B981)),
                           SizedBox(height: 12),
                           Text(
                             'Local Queue is Clear!',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
                           ),
                           SizedBox(height: 4),
                           Text(
                             'All issued tickets are safely stored in the cloud.',
-                            style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                            style: TextStyle(color: Color(0xFF94A3B8), fontSize: 12),
                           ),
                         ],
                       ),
@@ -135,33 +156,33 @@ class _OfflineSyncQueueScreenState extends State<OfflineSyncQueueScreen> {
                       itemBuilder: (context, index) {
                         final ticket = pendingTickets[index];
                         return Card(
-                          color: AppColors.surface,
+                          color: Colors.white,
                           elevation: 0,
                           margin: const EdgeInsets.only(bottom: 10),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
-                            side: BorderSide(
-                              color: AppColors.surfaceLight.withValues(alpha: 0.5),
+                            side: const BorderSide(
+                              color: Color(0xFFF1F5F9),
                             ),
                           ),
                           child: ListTile(
                             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                             leading: CircleAvatar(
-                              backgroundColor: AppColors.warning.withValues(alpha: 0.15),
-                              child: const Icon(Icons.sync_problem, color: AppColors.warning, size: 20),
+                              backgroundColor: const Color(0xFFFEF3C7),
+                              child: const Icon(Icons.sync_problem, color: Color(0xFFD97706), size: 20),
                             ),
                             title: Text(
                               ticket.ticketNumber,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.textPrimary,
+                                color: Color(0xFF0F172A),
                                 fontSize: 15,
                               ),
                             ),
                             subtitle: Text(
                               '${ticket.originStop} ➔ ${ticket.destinationStop}',
                               style: const TextStyle(
-                                color: AppColors.textSecondary,
+                                color: Color(0xFF94A3B8),
                                 fontSize: 13,
                               ),
                             ),
@@ -170,7 +191,7 @@ class _OfflineSyncQueueScreenState extends State<OfflineSyncQueueScreen> {
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
-                                color: AppColors.primary,
+                                color: Color(0xFF2563EB),
                               ),
                             ),
                           ),

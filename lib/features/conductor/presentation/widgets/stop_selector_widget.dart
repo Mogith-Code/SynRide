@@ -20,8 +20,16 @@ class StopSelectorWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,17 +39,17 @@ class StopSelectorWidget extends StatelessWidget {
             children: [
               const Row(
                 children: [
-                  Icon(Icons.location_on, color: AppColors.primary, size: 20),
+                  Icon(Icons.location_on, color: Color(0xFF10B981), size: 20),
                   SizedBox(width: 8),
                   Text(
                     'Route Stop Progress',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF0F172A)),
                   ),
                 ],
               ),
               Text(
                 'Stop ${currentStopIndex + 1} of ${stops.length}',
-                style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                style: const TextStyle(fontSize: 12, color: Color(0xFF94A3B8)),
               ),
             ],
           ),
@@ -62,15 +70,15 @@ class StopSelectorWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                       color: isCurrent
-                          ? AppColors.primary
-                          : (isPast ? AppColors.surfaceLight : AppColors.background),
+                          ? const Color(0xFF10B981)
+                          : (isPast ? const Color(0xFFECFDF5) : const Color(0xFFF8FAFC)),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: isCurrent
-                            ? AppColors.primary
+                            ? const Color(0xFF10B981)
                             : (isPast
-                                ? AppColors.surfaceLight
-                                : AppColors.textSecondary.withValues(alpha: 0.3)),
+                                ? const Color(0xFFA7F3D0)
+                                : const Color(0xFFE2E8F0)),
                       ),
                     ),
                     child: Row(
@@ -81,7 +89,7 @@ class StopSelectorWidget extends StatelessWidget {
                               ? Icons.directions_bus
                               : (isPast ? Icons.check_circle : Icons.circle_outlined),
                           size: 16,
-                          color: isCurrent ? Colors.white : (isPast ? AppColors.success : AppColors.textSecondary),
+                          color: isCurrent ? Colors.white : (isPast ? const Color(0xFF10B981) : const Color(0xFF94A3B8)),
                         ),
                         const SizedBox(width: 6),
                         Text(
@@ -89,7 +97,7 @@ class StopSelectorWidget extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
-                            color: isCurrent ? Colors.white : AppColors.textPrimary,
+                            color: isCurrent ? Colors.white : const Color(0xFF0F172A),
                           ),
                         ),
                       ],

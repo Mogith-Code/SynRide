@@ -17,15 +17,15 @@ class DigitalReceiptDialog extends StatelessWidget {
       insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: AppColors.surfaceLight,
+            color: const Color(0xFFE2E8F0),
             width: 1,
           ),
           boxShadow: const [
             BoxShadow(
-              color: Colors.black54,
+              color: Colors.black12,
               blurRadius: 20,
               offset: Offset(0, 10),
             ),
@@ -37,13 +37,13 @@ class DigitalReceiptDialog extends StatelessWidget {
             // Ticket Header Banner
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.surfaceLight.withValues(alpha: 0.5),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              decoration: const BoxDecoration(
+                color: Color(0xFFF8FAFC),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.confirmation_number, color: AppColors.primary),
+                  const Icon(Icons.confirmation_number, color: Color(0xFF10B981)),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
@@ -52,7 +52,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                         const Text(
                           'SYNCRIDE DIGITAL TICKET',
                           style: TextStyle(
-                            color: AppColors.textPrimary,
+                            color: Color(0xFF0F172A),
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                             letterSpacing: 1.0,
@@ -61,7 +61,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                         Text(
                           'Ticket #: ${ticket.ticketNumber}',
                           style: const TextStyle(
-                            color: AppColors.textSecondary,
+                            color: Color(0xFF64748B),
                             fontSize: 12,
                           ),
                         ),
@@ -69,7 +69,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close, color: AppColors.textSecondary),
+                    icon: const Icon(Icons.close, color: Color(0xFF64748B)),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -84,7 +84,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                   const Text(
                     '--- OFFICIAL BUS PASS ---',
                     style: TextStyle(
-                      color: AppColors.textSecondary,
+                      color: Color(0xFF64748B),
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.2,
                       fontSize: 12,
@@ -98,7 +98,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                   _buildReceiptRow('Conductor ID', ticket.conductorId),
                   _buildReceiptRow('Date & Time', dateFormat.format(ticket.issuedAt)),
 
-                  Divider(height: 24, color: AppColors.surfaceLight.withValues(alpha: 0.6), thickness: 1),
+                  const Divider(height: 24, color: Color(0xFFF1F5F9), thickness: 1),
 
                   // Travel Details
                   _buildReceiptRow('Origin', ticket.originStop),
@@ -107,7 +107,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                   _buildReceiptRow('Passengers', '${ticket.passengerCount} Person(s)'),
                   _buildReceiptRow('Payment Method', ticket.paymentMethod),
 
-                  Divider(height: 24, color: AppColors.surfaceLight.withValues(alpha: 0.6), thickness: 1),
+                  const Divider(height: 24, color: Color(0xFFF1F5F9), thickness: 1),
 
                   // Total Fare
                   Row(
@@ -116,7 +116,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                       const Text(
                         'TOTAL FARE',
                         style: TextStyle(
-                          color: AppColors.textPrimary,
+                          color: Color(0xFF0F172A),
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
@@ -124,7 +124,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                       Text(
                         'LKR ${ticket.fareAmount.toStringAsFixed(2)}',
                         style: const TextStyle(
-                          color: AppColors.primary,
+                          color: Color(0xFF10B981),
                           fontWeight: FontWeight.bold,
                           fontSize: 22,
                         ),
@@ -140,8 +140,9 @@ class DigitalReceiptDialog extends StatelessWidget {
                     height: 130,
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: const Color(0xFFF8FAFC),
                       borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -165,7 +166,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
-                      color: ticket.isSynced ? AppColors.success : AppColors.warning,
+                      color: ticket.isSynced ? const Color(0xFF10B981) : const Color(0xFFD97706),
                     ),
                   ),
                 ],
@@ -175,17 +176,17 @@ class DigitalReceiptDialog extends StatelessWidget {
             // Dialog Footer Action Buttons
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-              decoration: BoxDecoration(
-                color: AppColors.surfaceLight.withValues(alpha: 0.3),
-                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+              decoration: const BoxDecoration(
+                color: Color(0xFFF8FAFC),
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
               ),
               child: Row(
                 children: [
                   Expanded(
                     child: OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.textPrimary,
-                        side: const BorderSide(color: AppColors.surfaceLight),
+                        foregroundColor: const Color(0xFF0F172A),
+                        side: const BorderSide(color: Color(0xFFE2E8F0)),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -207,7 +208,7 @@ class DigitalReceiptDialog extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
+                        backgroundColor: const Color(0xFF10B981),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -235,12 +236,12 @@ class DigitalReceiptDialog extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+            style: const TextStyle(color: Color(0xFF64748B), fontSize: 13),
           ),
           Text(
             value,
             style: TextStyle(
-              color: AppColors.textPrimary,
+              color: const Color(0xFF0F172A),
               fontSize: 13,
               fontWeight: isBold ? FontWeight.bold : FontWeight.w600,
             ),

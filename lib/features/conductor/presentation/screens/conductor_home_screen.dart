@@ -47,11 +47,11 @@ class _ConductorHomeScreenView extends StatelessWidget {
         final int onBoardCount = shift.currentOccupancy;
         final int capacity = shift.totalCapacity;
         final int available = (capacity - onBoardCount).clamp(0, capacity);
-        final int occupancyPercent = capacity > 0
-            ? ((onBoardCount / capacity) * 100).round()
-            : 0;
+        final int occupancyPercent =
+            capacity > 0 ? ((onBoardCount / capacity) * 100).round() : 0;
 
         return Scaffold(
+          backgroundColor: const Color(0xFFF8FAFC),
           body: SafeArea(
             child: Column(
               children: [
@@ -77,8 +77,7 @@ class _ConductorHomeScreenView extends StatelessWidget {
                         // 2x2 Metric Cards Grid
                         _buildMetricsGrid(
                           passengersCount: onBoardCount,
-                          ticketsIssuedCount:
-                              shift.totalTicketsIssued,
+                          ticketsIssuedCount: shift.totalTicketsIssued,
                           tripProgressPercent: 50,
                           revenue: shift.totalRevenue,
                         ),
@@ -185,8 +184,7 @@ class _ConductorHomeScreenView extends StatelessWidget {
                                 label: 'Sync Queue',
                                 color: const Color(0xFFF59E0B),
                                 onTap: () => Navigator.pushNamed(
-                                    context,
-                                    '/conductor/sync-queue'),
+                                    context, '/conductor/sync-queue'),
                               ),
                             ),
                           ],
@@ -237,7 +235,8 @@ class _ConductorHomeScreenView extends StatelessWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
-                onPressed: () => Navigator.pushReplacementNamed(context, '/conductor/login'),
+                onPressed: () =>
+                    Navigator.pushReplacementNamed(context, '/conductor/login'),
                 tooltip: 'Back to Login',
               ),
               const Text(
@@ -252,7 +251,9 @@ class _ConductorHomeScreenView extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: Icon(
-                      state.isOnline ? Icons.wifi_rounded : Icons.wifi_off_rounded,
+                      state.isOnline
+                          ? Icons.wifi_rounded
+                          : Icons.wifi_off_rounded,
                       color: Colors.white,
                       size: 22,
                     ),
@@ -321,7 +322,8 @@ class _ConductorHomeScreenView extends StatelessWidget {
 
           // Active Bus Status Banner Card
           GestureDetector(
-            onTap: () => Navigator.pushNamed(context, '/conductor/trip-summary'),
+            onTap: () =>
+                Navigator.pushNamed(context, '/conductor/trip-summary'),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
@@ -377,35 +379,35 @@ class _ConductorHomeScreenView extends StatelessWidget {
                     ),
                   ),
 
-                // Right Status: On Time & 08:05 AM
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: const [
-                    Text(
-                      'On Time',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
+                  // Right Status: On Time & 08:05 AM
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: const [
+                      Text(
+                        'On Time',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 2),
-                    Text(
-                      '08:05 AM',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 11,
+                      SizedBox(height: 2),
+                      Text(
+                        '08:05 AM',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 11,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
   }
 
   // 2x2 Metric Cards Grid
@@ -577,7 +579,8 @@ class _ConductorHomeScreenView extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFEF3C7),
                     borderRadius: BorderRadius.circular(12),
@@ -594,79 +597,79 @@ class _ConductorHomeScreenView extends StatelessWidget {
               ],
             ),
 
-          const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-          // Gauge & Breakdown Row
-          Row(
-            children: [
-              // Ring Gauge Meter
-              SizedBox(
-                width: 86,
-                height: 86,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    SizedBox(
-                      width: 86,
-                      height: 86,
-                      child: CircularProgressIndicator(
-                        value: (percent / 100).clamp(0.0, 1.0),
-                        strokeWidth: 9,
-                        backgroundColor: const Color(0xFFF1F5F9),
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                          Color(0xFFF59E0B),
+            // Gauge & Breakdown Row
+            Row(
+              children: [
+                // Ring Gauge Meter
+                SizedBox(
+                  width: 86,
+                  height: 86,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox(
+                        width: 86,
+                        height: 86,
+                        child: CircularProgressIndicator(
+                          value: (percent / 100).clamp(0.0, 1.0),
+                          strokeWidth: 9,
+                          backgroundColor: const Color(0xFFF1F5F9),
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                            Color(0xFFF59E0B),
+                          ),
+                          strokeCap: StrokeCap.round,
                         ),
-                        strokeCap: StrokeCap.round,
                       ),
-                    ),
-                    Text(
-                      '$percent%',
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF0F172A),
+                      Text(
+                        '$percent%',
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF0F172A),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              const SizedBox(width: 24),
+                const SizedBox(width: 24),
 
-              // Occupancy Breakdown List
-              Expanded(
-                child: Column(
-                  children: [
-                    _buildOccupancyDetailRow('On board', '$onBoard'),
-                    const SizedBox(height: 6),
-                    _buildOccupancyDetailRow('Available', '$available'),
-                    const SizedBox(height: 6),
-                    _buildOccupancyDetailRow('Capacity', '$capacity'),
-                  ],
+                // Occupancy Breakdown List
+                Expanded(
+                  child: Column(
+                    children: [
+                      _buildOccupancyDetailRow('On board', '$onBoard'),
+                      const SizedBox(height: 6),
+                      _buildOccupancyDetailRow('Available', '$available'),
+                      const SizedBox(height: 6),
+                      _buildOccupancyDetailRow('Capacity', '$capacity'),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
 
-          const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-          // Bottom Bar Progress Indicator
-          ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: LinearProgressIndicator(
-              value: (percent / 100).clamp(0.0, 1.0),
-              minHeight: 8,
-              backgroundColor: const Color(0xFFF1F5F9),
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                Color(0xFFF59E0B),
+            // Bottom Bar Progress Indicator
+            ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: LinearProgressIndicator(
+                value: (percent / 100).clamp(0.0, 1.0),
+                minHeight: 8,
+                backgroundColor: const Color(0xFFF1F5F9),
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                  Color(0xFFF59E0B),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildOccupancyDetailRow(String label, String value) {
     return Row(
@@ -737,13 +740,20 @@ class _ConductorHomeScreenView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
-              Text('8AM', style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
-              Text('9AM', style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
-              Text('10AM', style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
-              Text('11AM', style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
-              Text('12PM', style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
-              Text('1PM', style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
-              Text('2PM', style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
+              Text('8AM',
+                  style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
+              Text('9AM',
+                  style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
+              Text('10AM',
+                  style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
+              Text('11AM',
+                  style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
+              Text('12PM',
+                  style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
+              Text('1PM',
+                  style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
+              Text('2PM',
+                  style: TextStyle(fontSize: 10.5, color: Color(0xFF94A3B8))),
             ],
           ),
         ],
