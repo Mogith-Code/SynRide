@@ -10,7 +10,7 @@ class AuthorityDashboardScreen extends StatefulWidget {
 }
 
 class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
-  int _selectedNavIndex = 3; // Default to Reports tab matching requested design image
+  int _selectedNavIndex = 6; // Default to AI Predictions tab matching requested design image
   String _selectedFilter = 'All';
   String _searchQuery = '';
   String _selectedAnalyticsPeriod = 'Weekly';
@@ -1893,7 +1893,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
   }
 
   // --------------------------------------------------------------------------
-  // TAB 4: REPORTS VIEW (EXACT IMPLEMENTATION MATCHING USER IMAGE)
+  // TAB 4: REPORTS VIEW
   // --------------------------------------------------------------------------
   Widget _buildReportsView() {
     final filtered = _filteredReports;
@@ -1904,7 +1904,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Row: Title & Subtitle
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
@@ -1928,10 +1927,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
               ),
             ],
           ),
-
           const SizedBox(height: 24),
-
-          // Top 4 Metric Summary Cards Row
           Row(
             children: [
               Expanded(
@@ -1967,10 +1963,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
               ),
             ],
           ),
-
           const SizedBox(height: 24),
-
-          // Main Community Reports Section Card
           Container(
             padding: const EdgeInsets.all(24.0),
             decoration: BoxDecoration(
@@ -1988,7 +1981,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header + Filter Pills
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -2011,10 +2003,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 20),
-
-                // Reports List
                 if (filtered.isEmpty)
                   const Padding(
                     padding: EdgeInsets.all(32.0),
@@ -2138,7 +2127,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
       statusBg = const Color(0xFFDCFCE7);
       statusText = const Color(0xFF16A34A);
     } else {
-      // Active
       statusBg = const Color(0xFFFEF3C7);
       statusText = const Color(0xFFD97706);
     }
@@ -2266,6 +2254,559 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
   }
 
   // --------------------------------------------------------------------------
+  // TAB 7: AI PREDICTIONS VIEW (EXACT MATCH FOR USER SCREENSHOT)
+  // --------------------------------------------------------------------------
+  Widget _buildAIPredictionsView() {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(28.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header Row: Title & Subtitle + AI Model Accuracy Badge
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'AI Prediction Dashboard',
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF0F172A),
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Real-time intelligence & demand forecasting',
+                    style: TextStyle(
+                      fontSize: 13.5,
+                      color: Color(0xFF64748B),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+              // AI Model Status Badge
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEEF2FF),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: const Color(0xFFC7D2FE)),
+                ),
+                child: Row(
+                  children: const [
+                    Icon(Icons.auto_awesome_rounded, color: Color(0xFF4F46E5), size: 16),
+                    SizedBox(width: 8),
+                    Text(
+                      'AI Model: Active · 94.2% accuracy',
+                      style: TextStyle(
+                        color: Color(0xFF4F46E5),
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 24),
+
+          // Top Row: 3 Recommendation Metric Cards
+          Row(
+            children: [
+              // Card 1: 88% Predicted Peak Occupancy
+              Expanded(
+                child: _buildAIPredictionCard(
+                  icon: Icons.trending_up_rounded,
+                  iconBgColor: const Color(0xFFFEE2E2),
+                  iconColor: const Color(0xFFEF4444),
+                  cornerColor: const Color(0xFFFEE2E2).withValues(alpha: 0.5),
+                  value: '88%',
+                  label: 'Predicted Peak Occupancy',
+                  footerText: 'Expected at 5:30 PM',
+                  footerColor: const Color(0xFFEA580C),
+                ),
+              ),
+              const SizedBox(width: 20),
+              // Card 2: 14 buses Expected Delays
+              Expanded(
+                child: _buildAIPredictionCard(
+                  icon: Icons.access_time_rounded,
+                  iconBgColor: const Color(0xFFFEF3C7),
+                  iconColor: const Color(0xFFD97706),
+                  cornerColor: const Color(0xFFFEF3C7).withValues(alpha: 0.5),
+                  value: '14 buses',
+                  label: 'Expected Delays',
+                  footerText: 'In next 2 hours',
+                  footerColor: const Color(0xFFD97706),
+                ),
+              ),
+              const SizedBox(width: 20),
+              // Card 3: 6 buses Recommended Additions
+              Expanded(
+                child: _buildAIPredictionCard(
+                  icon: Icons.add_rounded,
+                  iconBgColor: const Color(0xFFEFF6FF),
+                  iconColor: const Color(0xFF2563EB),
+                  cornerColor: const Color(0xFFEFF6FF).withValues(alpha: 0.5),
+                  value: '6 buses',
+                  label: 'Recommended Additions',
+                  footerText: 'Deploy by 4 PM',
+                  footerColor: const Color(0xFF2563EB),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 24),
+
+          // Middle Section Card: Demand Forecast vs Actual Chart
+          _buildDemandForecastCard(),
+
+          const SizedBox(height: 24),
+
+          // Bottom Section: AI Insights (Left) + Weather Impact Analysis (Right)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _buildAIInsightsCard(),
+              ),
+              const SizedBox(width: 24),
+              Expanded(
+                child: _buildWeatherImpactCard(),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAIPredictionCard({
+    required IconData icon,
+    required Color iconBgColor,
+    required Color iconColor,
+    required Color cornerColor,
+    required String value,
+    required String label,
+    required String footerText,
+    required Color footerColor,
+  }) {
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          // Pastel Corner Circle Accent
+          Positioned(
+            top: -20,
+            right: -20,
+            child: Container(
+              width: 75,
+              height: 75,
+              decoration: BoxDecoration(
+                color: cornerColor,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Top Icon Box
+                Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: iconBgColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(icon, color: iconColor, size: 20),
+                ),
+                const SizedBox(height: 18),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0F172A),
+                    letterSpacing: -0.6,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF94A3B8),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  footerText,
+                  style: TextStyle(
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.bold,
+                    color: footerColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDemandForecastCard() {
+    return Container(
+      padding: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Title Header & Legend
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Demand Forecast vs Actual',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF0F172A),
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'Today — predicted (dashed) vs actual (solid)',
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: Color(0xFF94A3B8),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Row(
+                    children: const [
+                      Icon(Icons.horizontal_rule_rounded, color: Color(0xFF2563EB), size: 20),
+                      SizedBox(width: 4),
+                      Text('Actual', style: TextStyle(fontSize: 12, color: Color(0xFF64748B))),
+                    ],
+                  ),
+                  const SizedBox(width: 16),
+                  Row(
+                    children: const [
+                      Icon(Icons.more_horiz_rounded, color: Color(0xFFF59E0B), size: 20),
+                      SizedBox(width: 4),
+                      Text('Predicted', style: TextStyle(fontSize: 12, color: Color(0xFF64748B))),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          // Chart View
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 180,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: const [
+                    Text('100%', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                    Text('75%', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                    Text('50%', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                    Text('25%', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                    Text('0%', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 180,
+                      child: CustomPaint(
+                        size: Size.infinite,
+                        painter: _DemandForecastPainter(),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text('10AM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('11AM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('12PM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('1PM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('2PM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('3PM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('4PM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('5PM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAIInsightsCard() {
+    return Container(
+      padding: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'AI Insights',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF0F172A),
+            ),
+          ),
+          const SizedBox(height: 20),
+          _buildAIInsightTile(
+            bgColor: const Color(0xFFF0F9FF),
+            borderColor: const Color(0xFFBAE6FD),
+            icon: Icons.trending_up_rounded,
+            iconColor: const Color(0xFF0284C7),
+            text: 'Increase frequency on Route 177 — demand spike predicted',
+          ),
+          const SizedBox(height: 12),
+          _buildAIInsightTile(
+            bgColor: const Color(0xFFF0FDF4),
+            borderColor: const Color(0xFFBBF7D0),
+            icon: Icons.directions_bus_outlined,
+            iconColor: const Color(0xFF16A34A),
+            text: 'Deploy 3 additional buses before 4:30 PM peak',
+          ),
+          const SizedBox(height: 12),
+          _buildAIInsightTile(
+            bgColor: const Color(0xFFFAF5FF),
+            borderColor: const Color(0xFFE9D5FF),
+            icon: Icons.water_drop_outlined,
+            iconColor: const Color(0xFF9333EA),
+            text: 'Rain impact: expect 15% slower ETAs on outer routes',
+          ),
+          const SizedBox(height: 12),
+          _buildAIInsightTile(
+            bgColor: const Color(0xFFFFFBEB),
+            borderColor: const Color(0xFFFDE68A),
+            icon: Icons.alt_route_rounded,
+            iconColor: const Color(0xFFD97706),
+            text: 'Route 342 needs alternate path — persistent congestion',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAIInsightTile({
+    required Color bgColor,
+    required Color borderColor,
+    required IconData icon,
+    required Color iconColor,
+    required String text,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: borderColor),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: iconColor, size: 20),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF0F172A),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWeatherImpactCard() {
+    return Container(
+      padding: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Weather Impact Analysis',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF0F172A),
+            ),
+          ),
+          const SizedBox(height: 20),
+          // Rain Forecast Alert Banner
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF0F9FF),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: const Color(0xFFE0F2FE)),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFBAE6FD).withValues(alpha: 0.4),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.water_drop_outlined, color: Color(0xFF0284C7), size: 22),
+                ),
+                const SizedBox(width: 14),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Rain Forecast',
+                      style: TextStyle(
+                        fontSize: 14.5,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0F172A),
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      '70% chance · 2:00 PM - 6:00 PM',
+                      style: TextStyle(
+                        fontSize: 12.5,
+                        color: Color(0xFF64748B),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          // Weather Key Metrics List
+          _buildWeatherMetricRow('Expected ETA Delay', '+8 min avg', const Color(0xFFD97706)),
+          const SizedBox(height: 14),
+          _buildWeatherMetricRow('Demand Increase', '+23%', const Color(0xFF2563EB)),
+          const SizedBox(height: 14),
+          _buildWeatherMetricRow('Routes Affected', '14 routes', const Color(0xFFEF4444)),
+          const SizedBox(height: 14),
+          _buildWeatherMetricRow('Recommended Action', 'Pre-deploy buses', const Color(0xFF16A34A)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWeatherMetricRow(String label, String value, Color valueColor) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 13.5,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF64748B),
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 13.5,
+            fontWeight: FontWeight.bold,
+            color: valueColor,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // --------------------------------------------------------------------------
   // OTHER DASHBOARD TABS
   // --------------------------------------------------------------------------
   Widget _buildRoutesView() {
@@ -2318,36 +2859,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                   Text('Conductor Rahul Kumar · Active Shift (Bus 177)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   Spacer(),
                   Center(child: Text('Personnel & Shift Allocation Roster Table', style: TextStyle(color: Color(0xFF64748B)))),
-                  Spacer(),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAIPredictionsView() {
-    return Padding(
-      padding: const EdgeInsets.all(28.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('AI Predictive Dispatch', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
-          const SizedBox(height: 4),
-          const Text('Machine learning overcrowding forecasts', style: TextStyle(color: Color(0xFF64748B))),
-          const SizedBox(height: 20),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFE2E8F0))),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('Predicted High Demand Alert: Deploy 3 Reserve Buses on Route 177 at 5:00 PM', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2563EB))),
-                  Spacer(),
-                  Center(child: Text('SyncRide ML Engine Forecasting Engine', style: TextStyle(color: Color(0xFF64748B)))),
                   Spacer(),
                 ],
               ),
@@ -2423,6 +2934,110 @@ class _ReportItemModel {
     required this.status,
     required this.flagColorType,
   });
+}
+
+// Custom Painter for AI Demand Forecast vs Actual Chart
+class _DemandForecastPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final gridPaint = Paint()
+      ..color = const Color(0xFFE2E8F0)
+      ..strokeWidth = 1
+      ..style = PaintingStyle.stroke;
+
+    for (int i = 0; i <= 4; i++) {
+      final y = size.height * (i / 4);
+      _drawDashedLine(canvas, Offset(0, y), Offset(size.width, y), gridPaint);
+    }
+
+    final actualPoints = [
+      Offset(0, size.height * (1.0 - 0.42)),
+      Offset(size.width * (1 / 7), size.height * (1.0 - 0.38)),
+      Offset(size.width * (2 / 7), size.height * (1.0 - 0.56)),
+      Offset(size.width * (3 / 7), size.height * (1.0 - 0.62)),
+    ];
+
+    final predictedPoints = [
+      Offset(0, size.height * (1.0 - 0.42)),
+      Offset(size.width * (1 / 7), size.height * (1.0 - 0.38)),
+      Offset(size.width * (2 / 7), size.height * (1.0 - 0.56)),
+      Offset(size.width * (3 / 7), size.height * (1.0 - 0.62)),
+      Offset(size.width * (4 / 7), size.height * (1.0 - 0.68)),
+      Offset(size.width * (5 / 7), size.height * (1.0 - 0.74)),
+      Offset(size.width * (6 / 7), size.height * (1.0 - 0.82)),
+      Offset(size.width, size.height * (1.0 - 0.88)),
+    ];
+
+    final predPath = Path();
+    predPath.moveTo(predictedPoints[0].dx, predictedPoints[0].dy);
+    for (int i = 0; i < predictedPoints.length - 1; i++) {
+      final p0 = predictedPoints[i];
+      final p1 = predictedPoints[i + 1];
+      final control1 = Offset(p0.dx + (p1.dx - p0.dx) / 2, p0.dy);
+      final control2 = Offset(p0.dx + (p1.dx - p0.dx) / 2, p1.dy);
+      predPath.cubicTo(control1.dx, control1.dy, control2.dx, control2.dy, p1.dx, p1.dy);
+    }
+
+    final predPaint = Paint()
+      ..color = const Color(0xFFF59E0B)
+      ..strokeWidth = 2.5
+      ..style = PaintingStyle.stroke;
+
+    _drawDashedPath(canvas, predPath, predPaint);
+
+    final actPath = Path();
+    actPath.moveTo(actualPoints[0].dx, actualPoints[0].dy);
+    for (int i = 0; i < actualPoints.length - 1; i++) {
+      final p0 = actualPoints[i];
+      final p1 = actualPoints[i + 1];
+      final control1 = Offset(p0.dx + (p1.dx - p0.dx) / 2, p0.dy);
+      final control2 = Offset(p0.dx + (p1.dx - p0.dx) / 2, p1.dy);
+      actPath.cubicTo(control1.dx, control1.dy, control2.dx, control2.dy, p1.dx, p1.dy);
+    }
+
+    final actPaint = Paint()
+      ..color = const Color(0xFF2563EB)
+      ..strokeWidth = 3.0
+      ..style = PaintingStyle.stroke;
+
+    canvas.drawPath(actPath, actPaint);
+
+    final dotPaint = Paint()..color = const Color(0xFF2563EB);
+    final innerDotPaint = Paint()..color = Colors.white;
+    for (final pt in actualPoints) {
+      canvas.drawCircle(pt, 5, dotPaint);
+      canvas.drawCircle(pt, 2.5, innerDotPaint);
+    }
+  }
+
+  void _drawDashedLine(Canvas canvas, Offset p1, Offset p2, Paint paint) {
+    const dashWidth = 4.0;
+    const dashSpace = 4.0;
+    double startX = p1.dx;
+    while (startX < p2.dx) {
+      canvas.drawLine(
+        Offset(startX, p1.dy),
+        Offset((startX + dashWidth).clamp(p1.dx, p2.dx), p1.dy),
+        paint,
+      );
+      startX += dashWidth + dashSpace;
+    }
+  }
+
+  void _drawDashedPath(Canvas canvas, Path path, Paint paint) {
+    for (final metric in path.computeMetrics()) {
+      double distance = 0.0;
+      while (distance < metric.length) {
+        final length = 6.0;
+        final extractPath = metric.extractPath(distance, distance + length);
+        canvas.drawPath(extractPath, paint);
+        distance += length + 4.0;
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 // Custom Painters for Dashboard & Analytics
