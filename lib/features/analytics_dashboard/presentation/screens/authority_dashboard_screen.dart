@@ -10,7 +10,7 @@ class AuthorityDashboardScreen extends StatefulWidget {
 }
 
 class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
-  int _selectedNavIndex = 6; // Active tab default: AI Predictions
+  int _selectedNavIndex = 6; // Default to AI Predictions tab matching requested design image
   String _selectedFilter = 'All';
   String _searchQuery = '';
   String _selectedAnalyticsPeriod = 'Weekly';
@@ -590,6 +590,308 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
     );
   }
 
+  Widget _buildKPICardsGrid() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isSmall = constraints.maxWidth < 900;
+        final cardWidth = isSmall ? (constraints.maxWidth - 16) / 2 : (constraints.maxWidth - 48) / 4;
+        return Wrap(
+          spacing: 16,
+          runSpacing: 16,
+          children: [
+            SizedBox(
+              width: cardWidth,
+              child: _buildKPICard('Active Fleet', '42 / 48', '+4 from yesterday', Icons.directions_bus_rounded, const Color(0xFF2563EB), const Color(0xFFEFF6FF)),
+            ),
+            SizedBox(
+              width: cardWidth,
+              child: _buildKPICard('Daily Passengers', '24,890', '+12% vs last week', Icons.people_alt_rounded, const Color(0xFF10B981), const Color(0xFFECFDF5)),
+            ),
+            SizedBox(
+              width: cardWidth,
+              child: _buildKPICard('On-Time Rate', '94.2%', '+1.8% efficiency', Icons.timer_outlined, const Color(0xFF8B5CF6), const Color(0xFFF5F3FF)),
+            ),
+            SizedBox(
+              width: cardWidth,
+              child: _buildKPICard('Active Delays', '3 routes', '2 buses maintenance', Icons.warning_amber_rounded, const Color(0xFFF59E0B), const Color(0xFFFFFBEB)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildKPICard(String label, String value, String subtext, IconData icon, Color iconColor, Color bgColor) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Color(0xFF64748B))),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
+                child: Icon(icon, color: iconColor, size: 18),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(value, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
+          const SizedBox(height: 4),
+          Text(subtext, style: TextStyle(fontSize: 12, color: iconColor, fontWeight: FontWeight.w600)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDailyPassengersChartCard() {
+    return Container(
+      padding: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text('Daily Passengers Trend', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
+                  SizedBox(height: 2),
+                  Text('Ridership over the last 7 days', style: TextStyle(fontSize: 12.5, color: Color(0xFF94A3B8))),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(color: const Color(0xFFEFF6FF), borderRadius: BorderRadius.circular(12)),
+                child: const Text('Live Feed', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold, color: Color(0xFF2563EB))),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            height: 180,
+            child: CustomPaint(
+              size: Size.infinite,
+              painter: _DailyPassengersChartPainter(),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text('Mon', style: TextStyle(fontSize: 11.5, color: Color(0xFF94A3B8))),
+              Text('Tue', style: TextStyle(fontSize: 11.5, color: Color(0xFF94A3B8))),
+              Text('Wed', style: TextStyle(fontSize: 11.5, color: Color(0xFF94A3B8))),
+              Text('Thu', style: TextStyle(fontSize: 11.5, color: Color(0xFF94A3B8))),
+              Text('Fri', style: TextStyle(fontSize: 11.5, color: Color(0xFF94A3B8))),
+              Text('Sat', style: TextStyle(fontSize: 11.5, color: Color(0xFF94A3B8))),
+              Text('Sun', style: TextStyle(fontSize: 11.5, color: Color(0xFF94A3B8))),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFleetStatusDonutCard() {
+    return Container(
+      padding: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Fleet Status Breakdown', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
+          const SizedBox(height: 24),
+          Center(
+            child: SizedBox(
+              width: 140,
+              height: 140,
+              child: CustomPaint(
+                painter: _FleetStatusDonutPainter(),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text('48', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
+                      Text('Total Fleet', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+          _buildDonutLegendRow('On Time (38)', const Color(0xFF10B981)),
+          const SizedBox(height: 8),
+          _buildDonutLegendRow('Delayed (5)', const Color(0xFFF59E0B)),
+          const SizedBox(height: 8),
+          _buildDonutLegendRow('Breakdown (2)', const Color(0xFFEF4444)),
+          const SizedBox(height: 8),
+          _buildDonutLegendRow('Depot Idle (3)', const Color(0xFF94A3B8)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDonutLegendRow(String label, Color color) {
+    return Row(
+      children: [
+        Container(width: 10, height: 10, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+        const SizedBox(width: 10),
+        Text(label, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w500, color: Color(0xFF475569))),
+      ],
+    );
+  }
+
+  Widget _buildLiveFleetMapCard() {
+    return Container(
+      padding: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text('Live GPS Fleet Map', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
+              Text('Pune City Sector 1 - 4', style: TextStyle(fontSize: 12, color: Color(0xFF64748B))),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Container(
+            height: 220,
+            decoration: BoxDecoration(
+              color: const Color(0xFFF8FAFC),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: const Color(0xFFE2E8F0)),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Stack(
+                children: [
+                  CustomPaint(size: Size.infinite, painter: _MapGridPainter()),
+                  const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.map_rounded, size: 40, color: Color(0xFF94A3B8)),
+                        SizedBox(height: 8),
+                        Text('Real-time GPS Tracking Radar Active', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF475569), fontSize: 13)),
+                        Text('42 buses broadcasting location telemetry', style: TextStyle(color: Color(0xFF94A3B8), fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActiveAlertsCard() {
+    return Container(
+      padding: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Active Dispatch Alerts', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
+          const SizedBox(height: 16),
+          _buildAlertItem('Bus B342 Delayed', 'MG Road traffic congestion (+12m)', const Color(0xFFFEF3C7), const Color(0xFFD97706)),
+          const SizedBox(height: 10),
+          _buildAlertItem('Bus B056 Engine Check', 'Ring Road Jn breakdown reported', const Color(0xFFFEE2E2), const Color(0xFFEF4444)),
+          const SizedBox(height: 10),
+          _buildAlertItem('Route 177 Peak Demand', '91% occupancy reached at 5:00 PM', const Color(0xFFEFF6FF), const Color(0xFF2563EB)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAlertItem(String title, String desc, Color bg, Color textCol) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(12)),
+      child: Row(
+        children: [
+          Icon(Icons.warning_amber_rounded, color: textCol, size: 18),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: textCol)),
+                Text(desc, style: const TextStyle(fontSize: 11.5, color: Color(0xFF475569))),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   // --------------------------------------------------------------------------
   // TAB 1: LIVE BUSES VIEW
   // --------------------------------------------------------------------------
@@ -654,7 +956,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
             ],
           ),
           const SizedBox(height: 24),
-          // Responsive Filters & Search Row
           Wrap(
             alignment: WrapAlignment.spaceBetween,
             crossAlignment: WrapCrossAlignment.center,
