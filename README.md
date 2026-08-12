@@ -2,47 +2,38 @@
 
 ---
 
-## 📌 Project Overview
+## 🛠️ Tech Stack Used
 
-**SyncRide** is an AI-driven public transport intelligence and occupancy prediction mobile application built using **Flutter**.
-
-Instead of relying on expensive hardware or optical sensors, **SyncRide leverages the existing conductor digital ticketing workflow**. Every ticket issued updates the cloud platform in real time, giving waiting passengers live crowd-density visibility, AI-predicted Estimated Time of Arrival (ETA), seat availability predictions, and smart multimodal route recommendations.
-
----
-
-## 👥 Task Allocation & Responsibilities
-
-The development of the SyncRide system is divided among the 4 team members:
-
-| Member Name | Role | Primary Responsibility |
-|---|---|---|
-| **Mogith** | System Architect & State Management Lead | Flutter core architecture, BLoC state management, API services & cloud data integration |
-| **Renujaan** | Passenger Mobile App & UI/UX Lead | Passenger hub screens, Google Maps live bus tracking, occupancy badges & FCM alert integration |
-| **Rubashalini** | Conductor Mobile Module Lead | Digital ticketing UI, real-time ticket issuance sync, SQLite offline queue & cloud sync engine |
-| **Asvinitha** | AI/ML & Analytics Dashboard Lead | AI ETA prediction integration, smart boarding algorithms, and Authority Analytics Dashboard views |
+* **Frontend / Cross-Platform Mobile & Web Application**: Flutter SDK `3.19+`, Dart `3.3+`
+* **State Management & Architecture**: BLoC Pattern (`flutter_bloc`, `Cubit`), Clean Architecture
+* **Backend & Real-Time Sync Engine**: Firebase Realtime Database, Firestore, WebSockets (`web_socket_channel`), REST APIs (`http`)
+* **Offline Local Storage**: SQLite (`sqflite`) for offline conductor ticket transaction queuing
+* **Mapping & Spatial Radar Visualization**: Google Maps API (`google_maps_flutter`), Flutter Vector `CustomPainter` renderers
+* **Machine Learning & AI Intelligence**: Python FastAPI / TFLite service for ETA predictions and occupancy forecasting ([eta_prediction_service.dart](file:///d:/SynRIDE/lib/features/ai_prediction/data/services/eta_prediction_service.dart))
 
 ---
 
-## 🏗️ Flutter Project Structure
+## 📂 Codebase Folder Structure
 
 ```text
 SynRIDE/
-├── pubspec.yaml                  # Flutter dependencies configuration
+├── pubspec.yaml                        # Flutter dependencies & project configuration
+├── README.md                           # Project documentation & judging guide
 ├── lib/
-│   ├── main.dart                 # Application entry point
-│   ├── app.dart                  # Material app configuration & routing
-│   ├── core/
+│   ├── main.dart                       # Application entry point & service initialization
+│   ├── app.dart                        # MaterialApp configuration, routing & dark theme
+│   ├── core/                           # Core infrastructure & global constants
 │   │   ├── constants/
-│   │   │   ├── app_colors.dart   # Design system color tokens
-│   │   │   ├── app_constants.dart# Global app constants
-│   │   │   └── api_endpoints.dart# Backend API & Firebase routes
+│   │   │   ├── app_colors.dart         # Design tokens & dark slate palette
+│   │   │   ├── app_constants.dart      # Application constants & threshold values
+│   │   │   └── api_endpoints.dart      # API & Firebase Realtime Database endpoints
 │   │   ├── network/
-│   │   │   ├── api_client.dart   # HTTP REST client service
-│   │   │   └── websocket_client.dart # WebSocket real-time connection manager
+│   │   │   ├── api_client.dart         # HTTP REST network client
+│   │   │   └── websocket_client.dart   # WebSocket real-time channel manager
 │   │   └── theme/
-│   │       └── app_theme.dart    # Dark theme visual styling
-│   ├── features/
-│   │   ├── passenger/            # Passenger Experience Module (Renujaan)
+│   │       └── app_theme.dart          # Dark theme visual styling system
+│   ├── features/                       # Modular Clean Architecture feature modules
+│   │   ├── passenger/                  # Passenger Experience & Live Map Feature
 │   │   │   ├── data/
 │   │   │   │   ├── models/
 │   │   │   │   │   ├── bus_model.dart
@@ -61,7 +52,7 @@ SynRIDE/
 │   │   │       └── widgets/
 │   │   │           ├── occupancy_indicator_widget.dart
 │   │   │           └── eta_card_widget.dart
-│   │   ├── conductor/            # Conductor Ticketing Module (Rubashalini)
+│   │   ├── conductor/                  # Digital Ticketing & Offline Sync Feature
 │   │   │   ├── data/
 │   │   │   │   ├── models/
 │   │   │   │   │   └── ticket_model.dart
@@ -77,7 +68,7 @@ SynRIDE/
 │   │   │       │   └── ticket_issuance_screen.dart
 │   │   │       └── widgets/
 │   │   │           └── ticket_counter_widget.dart
-│   │   ├── analytics_dashboard/  # Transport Authority Module (Asvinitha)
+│   │   ├── analytics_dashboard/        # Transport Authority Admin Dashboard Feature
 │   │   │   ├── data/
 │   │   │   │   └── models/
 │   │   │   │       └── analytics_model.dart
@@ -87,122 +78,136 @@ SynRIDE/
 │   │   │       └── widgets/
 │   │   │           ├── occupancy_heatmap_chart.dart
 │   │   │           └── demand_forecast_chart.dart
-│   │   └── ai_prediction/        # AI & ETA Service Module (Mogith & Asvinitha)
+│   │   └── ai_prediction/              # AI Engine & ETA Forecasting Feature
 │   │       └── data/
 │   │           └── services/
 │   │               └── eta_prediction_service.dart
-│   └── shared_widgets/
-│       ├── custom_button.dart
-│       └── loading_indicator.dart
-└── README.md
+│   └── shared_widgets/                 # Reusable UI components & branding assets
+│       ├── app_logo.dart               # SyncRide branding logo widget
+│       ├── custom_button.dart          # Styled action button widget
+│       ├── google_logo.dart            # Google SSO icon widget
+│       └── loading_indicator.dart      # Custom loading spinner widget
 ```
 
 ---
 
-## 🗺️ Step-by-Step Approach to Develop the Application (using Flutter)
+## 🚀 Deployment Details
 
-The development roadmap is structured into 6 sequential phases, with explicit task assignments for **Mogith**, **Renujaan**, **Rubashalini**, and **Asvinitha**:
+* **Web Admin Command Center**: Compiled via Flutter Web (`flutter build web --web-renderer canvaskit`) and deployed to cloud web hosting (Firebase Hosting / Vercel).
+* **Mobile Passenger & Conductor Apps**: Compiled as standalone cross-platform binaries (`Android APK / App Bundle` & `iOS IPA`).
+* **Local Development Command**:
+  ```bash
+  flutter run -d chrome --web-renderer canvaskit
+  ```
 
+---
+
+## 🏗️ Architecture / System Overview
+
+```mermaid
+flowchart TD
+    subgraph IoT & Data Ingestion
+        A1[IR Passenger Counter Sensor] -->|JSON over MQTT| B[Cloud Ingest Broker]
+        A2[Conductor Digital Ticket App] -->|WebSocket / Realtime DB| B
+        A3[GPS OBD-II Transponder] -->|JSON telemetry| B
+    end
+
+    subgraph Core Pipeline & AI Engine
+        B --> C[SQLite Local Cache / Sync Manager]
+        C --> D[Firebase Realtime Database]
+        D --> E[AI Prediction Engine / ML Pipeline]
+        E -->|Demand Forecast & Weather Impact| F[SyncRide Central State]
+    end
+
+    subgraph Client Applications
+        F --> G[Passenger Mobile App - Live Tracking & ETA]
+        F --> H[Conductor Mobile App - Offline Ticket Sync]
+        F --> I[Transport Authority Analytics Dashboard]
+    end
 ```
-Phase 1: Project Setup ──> Phase 2: Ticket Sync ──> Phase 3: Passenger App ──> Phase 4: AI & ETA ──> Phase 5: Authority Dash ──> Phase 6: Integration & Polish
-```
 
-### **Phase 1: Core Flutter Setup & State Architecture**
-* Initialize Flutter application project structure and configure `pubspec.yaml` dependencies (`flutter_bloc`, `google_maps_flutter`, `firebase_core`, `firebase_database`, `fl_chart`, `sqflite`).
-* Establish theme tokens (`AppColors`, `AppTheme`) and network connection interfaces (`ApiClient`, `WebSocketClient`).
-* **Task Assignments:**
-  * **Mogith**: Set up BLoC architecture framework, router setup, and core Firebase / REST communication interfaces.
-  * **Renujaan**: Create UI theme guidelines, shared widgets, and scaffold initial passenger application routes.
-  * **Rubashalini**: Configure SQLite local storage schema for conductor ticketing caching.
-  * **Asvinitha**: Define analytics models and API response contracts for AI predictions.
+### Explanation
+SyncRide forms an end-to-end real-time transit intelligence loop. As conductors issue digital tickets or onboard automated sensors trigger, passenger count delta events are broadcast over WebSocket / Firebase sockets to the AI Engine. The machine learning pipeline correlates live occupancy, GPS speed, historical trip logs, and rain weather forecasts to predict downstream seat availability and vehicle ETAs, rendering live insights on both Passenger mobile apps and the Transport Authority Dashboard.
 
----
+### Hardware / IoT Data Simulation & Integration
+In real-world deployment, automated IR beam passenger counters (APC) mounted at bus doors and GPS OBD-II vehicle transponders stream telemetry directly into the software pipeline.
 
-### **Phase 2: Conductor Digital Ticket Sync Module**
-* Build the ticket issuance workflow interface for bus conductors.
-* Implement instantaneous increment/decrement triggers for bus passenger count.
-* Wire offline-first local queue (SQLite) with automatic cloud sync upon reconnection.
-* **Task Assignments:**
-  * **Rubashalini (Lead)**: Build `ConductorHomeScreen`, `TicketIssuanceScreen`, and `TicketRepository`. Implement SQLite local caching and cloud sync listeners.
-  * **Mogith**: Construct BLoC state management (`ConductorCubit`) and configure sub-second Firebase Realtime Database triggers.
-
----
-
-### **Phase 3: Passenger App & Live Real-Time Tracking**
-* Develop the passenger UI dashboard, search bar, and approaches list.
-* Integrate Google Maps API for live bus marker updates and route polylines.
-* Display visual crowd-density indicators (Low, Moderate, Standing Only, Overcrowded).
-* **Task Assignments:**
-  * **Renujaan (Lead)**: Implement `PassengerHomeScreen`, `LiveMapScreen`, and `OccupancyIndicatorWidget`. Integrate Google Maps Flutter SDK and live marker animations.
-  * **Mogith**: Connect live bus state streams from Firebase to `PassengerCubit` for smooth real-time map updates.
+* **Expected Data Format**: Standardized JSON telemetry payload:
+  ```json
+  {
+    "bus_id": "B177",
+    "timestamp": 1786538620,
+    "location": { "lat": 18.5204, "lng": 73.8567 },
+    "passenger_boarded": 3,
+    "passenger_alighted": 1,
+    "current_occupancy": 45,
+    "speed_kmh": 42.5
+  }
+  ```
+* **Communication Protocol**: MQTT over TLS (Port 8883) or WebSocket Secure (`wss://`) with automatic keep-alive pinging.
+* **Code Injection Point**: In this demonstration codebase, hardware sensor values are simulated and injected into the software pipeline in:
+  - [bus_repository.dart](file:///d:/SynRIDE/lib/features/passenger/data/repositories/bus_repository.dart) (simulated live GPS bus streams)
+  - [ticket_repository.dart](file:///d:/SynRIDE/lib/features/conductor/data/repositories/ticket_repository.dart) (simulated ticket passenger deltas)
+  - [authority_dashboard_screen.dart](file:///d:/SynRIDE/lib/features/analytics_dashboard/presentation/screens/authority_dashboard_screen.dart) (simulated radar grid and AI demand forecast models)
 
 ---
 
-### **Phase 4: AI Engine Integration & Smart Seating Predictions**
-* Connect Flutter client with the Python machine learning backend services.
-* Render AI-predicted Estimated Time of Arrival (ETA) badges based on live traffic, weather, and historical trip logs.
-* Implement smart seating availability predictions at downstream stops.
-* **Task Assignments:**
-  * **Asvinitha (Lead)**: Build `EtaPredictionService`, seat availability prediction parser, and client models.
-  * **Renujaan**: Render `EtaCardWidget` and seating availability indicators inside the passenger route cards.
+## 💡 Technical Challenges & Creative Solutions
+
+1. **Sub-Second Offline-First Ticket Sync**:
+   * *Challenge*: Bus conductors operating in underground terminals or low-connectivity rural routes experience network disconnects, threatening live passenger count accuracy.
+   * *Solution*: Implemented an SQLite transaction queue that caches ticket issuances locally and automatically flushes queued updates over WebSockets upon network restoration with optimistic UI updates.
+   * *Implementation*: [ticket_repository.dart](file:///d:/SynRIDE/lib/features/conductor/data/repositories/ticket_repository.dart)
+
+2. **Zero-Lag Vector Visualizations & Custom Painters**:
+   * *Challenge*: Heavy external chart libraries caused visual stutter and layout overflow errors across responsive desktop and mobile screens.
+   * *Solution*: Built pure Flutter `CustomPainter` renderers (`_DemandForecastPainter`, `_HourlyPassengerChartPainter`, `_FleetStatusDonutPainter`, `_MapGridPainter`) wrapped in adaptive `LayoutBuilder` widgets for zero-dependency vector graphics.
+   * *Implementation*: [authority_dashboard_screen.dart](file:///d:/SynRIDE/lib/features/analytics_dashboard/presentation/screens/authority_dashboard_screen.dart)
+
+3. **Dual-Curve AI Demand Forecasting vs. Actual Ridership**:
+   * *Challenge*: Downstream rush-hour overcrowding requires comparing real-time conductor ticketing speed against predicted passenger curves.
+   * *Solution*: Engineered a dual-curve custom painter engine that plots real-time solid actual ridership points against dashed ML predicted curves, highlighting overcrowding alerts before they occur.
+   * *Implementation*: [eta_prediction_service.dart](file:///d:/SynRIDE/lib/features/ai_prediction/data/services/eta_prediction_service.dart)
+
+4. **Adaptive Multi-Pane Admin Dashboard Layout**:
+   * *Challenge*: Displaying complex operational metrics, donut charts, maps, and table views without triggering `RenderFlex` pixel overflows on smaller screens.
+   * *Solution*: Created a responsive layout architecture combining `Wrap`, `LayoutBuilder`, and `SingleChildScrollView` to auto-reflow metric cards into 2-column or 4-column grids depending on viewport width.
+   * *Implementation*: [authority_dashboard_screen.dart](file:///d:/SynRIDE/lib/features/analytics_dashboard/presentation/screens/authority_dashboard_screen.dart)
 
 ---
 
-### **Phase 5: Multimodal Route Recommendations & Authority Dashboard**
-* Implement graph-based alternative route recommendations (suggesting faster buses or nearby trains when a line is delayed).
-* Construct the Flutter-based Transportation Authority Dashboard featuring interactive charts (`fl_chart`) and congestion metrics.
-* **Task Assignments:**
-  * **Asvinitha (Lead)**: Develop `AuthorityDashboardScreen`, `OccupancyHeatmapChart`, and demand forecasting charts.
-  * **Mogith**: Implement the `RouteRecommendationScreen` logic for multimodal alternative routing when buses are overcrowded.
+## 🎯 Scope Delivered
+
+### Fully Implemented Features
+* ✅ **Live GPS Bus Tracking & Radar View**: Interactive map radar with simulated live bus telemetry.
+* ✅ **Conductor Digital Ticketing Sync**: Instantaneous passenger count updates with offline transaction queuing.
+* ✅ **Transport Authority Analytics Dashboard**: 8 fully operational navigation views (**Dashboard**, **Live Buses**, **Analytics**, **Reports**, **Routes**, **Drivers**, **AI Predictions**, **Settings**).
+* ✅ **AI Prediction Dashboard**: 94.2% accuracy model badge, 3 recommendation KPI cards, dual-curve Demand Forecast chart, AI Insights, and Weather Impact Analysis.
+* ✅ **Community Incident Reporting System**: Active incident feed (Traffic, Breakdown, Overcrowding) with status filtering and action menus.
+
+### Partially Implemented Features
+* 🟡 **Multimodal Route Recommendations**: Alternative bus/train routes are displayed on the UI; graph path computation currently utilizes simulated distance matrix data rather than live external OpenStreetMap routing APIs.
+
+### Not Implemented by Choice
+* ❌ **Optical Camera Passenger Counting**: Intentionally omitted in favor of conductor digital ticketing sync to eliminate high hardware maintenance costs and privacy/GDPR compliance issues for transit authorities.
+
+### Deliberate Deviations from Original Proposal
+* ➕ **Added AI Weather Impact Analysis**: Added rain forecast impact metrics (+8 min ETA delay prediction) to provide proactive dispatch recommendations during adverse weather events.
+* ➕ **Added Full Route & Driver Roster Management**: Added dedicated Routes and Drivers administrative management tabs to provide transport authorities with complete operational control.
 
 ---
 
-### **Phase 6: Cross-Platform Testing, Polish & Deployment**
-* Perform end-to-end field testing of ticket issuance sync under variable network bandwidth conditions.
-* Refine micro-animations, glassmorphic UI cards, dark mode consistency, and screen responsiveness.
-* Compile and build release packages (`apk`, `bundle`, `web`).
-* **Task Assignments:**
-  * **Mogith**: Conduct load and stress testing on WebSocket/Firebase real-time sync.
-  * **Renujaan**: Audit UI design aesthetics, micro-interactions, and map performance.
-  * **Rubashalini**: Verify offline ticket sync handling and low-latency button triggers.
-  * **Asvinitha**: Verify chart render performance and prediction response latency.
+## 📌 Anything Else Judges Should Note
+
+* **Environment Setup**: For optimal vector chart rendering on web browsers, launch with the CanvasKit web renderer: `flutter run -d chrome --web-renderer canvaskit`.
+* **Simulated Telemetry Inputs**: To ensure 100% stable offline demo presentation for judges, all bus telemetry, passenger counts, and weather parameters utilize robust mock data generators located in [authority_dashboard_screen.dart](file:///d:/SynRIDE/lib/features/analytics_dashboard/presentation/screens/authority_dashboard_screen.dart).
+* **Responsive Design**: Tested across viewports ranging from 360px mobile phones up to 4K Ultra-wide monitors.
 
 ---
 
-## 🎯 Key Features Implemented
+## 🎬 Video Submission Link
 
-| Feature | Description | Member Lead |
-|---|---|---|
-| ⚡ **Real-Time Occupancy Monitoring** | Live bus passenger count syncs via conductor ticket issuance. | **Rubashalini & Mogith** |
-| 🤖 **AI-Powered ETA Prediction** | ML models predict bus arrival times accurately. | **Asvinitha & Renujaan** |
-| 🔀 **Smart Multimodal Recommendations** | AI suggests faster alternative bus or train routes when delays occur. | **Mogith** |
-| 📊 **Authority Analytics Dashboard** | Real-time fleet metrics, congestion heatmaps, and demand charts. | **Asvinitha** |
-| 🪑 **Smart Boarding Prediction** | Seat availability predictions before the bus reaches a stop. | **Asvinitha & Renujaan** |
-
----
-
-## 💻 Quick Start Guide for Developers
-
-### Prerequisites
-* **Flutter SDK**: `3.16+`
-* **Dart SDK**: `3.0+`
-
-### Setup Instructions
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/SyncRide/SyncRide.git
-   cd SyncRide
-   ```
-
-2. Install dependencies:
-   ```bash
-   flutter pub get
-   ```
-
-3. Run the application:
-   ```bash
-   flutter run
-   ```
+`[Insert Video Demo Link Here]`
 
 ---
 *SyncRide — AI-Powered Smart Public Transport Intelligence Platform built with Flutter.*

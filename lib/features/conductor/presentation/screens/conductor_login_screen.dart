@@ -179,9 +179,11 @@ class _ConductorLoginScreenState extends State<ConductorLoginScreen> {
         child: Center(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 28.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 28.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(24),
@@ -439,8 +441,7 @@ class _ConductorLoginScreenState extends State<ConductorLoginScreen> {
                           borderRadius: BorderRadius.circular(16),
                         ),
                         elevation: 6,
-                        shadowColor:
-                            const Color(0xFF10B981).withOpacity(0.4),
+                        shadowColor: const Color(0xFF10B981).withOpacity(0.4),
                       ),
                       child: Ink(
                         decoration: BoxDecoration(

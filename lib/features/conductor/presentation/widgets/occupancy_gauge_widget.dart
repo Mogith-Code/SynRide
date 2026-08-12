@@ -35,7 +35,7 @@ class OccupancyGaugeWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: statusColor.withValues(alpha: 0.3),
@@ -43,7 +43,7 @@ class OccupancyGaugeWidget extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: statusColor.withValues(alpha: 0.1),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 16,
             spreadRadius: 2,
           ),
@@ -60,7 +60,7 @@ class OccupancyGaugeWidget extends StatelessWidget {
                 child: CircularProgressIndicator(
                   value: percentage.clamp(0.0, 1.0),
                   strokeWidth: 14,
-                  backgroundColor: AppColors.surfaceLight,
+                  backgroundColor: const Color(0xFFF1F5F9),
                   valueColor: AlwaysStoppedAnimation<Color>(statusColor),
                   strokeCap: StrokeCap.round,
                 ),
@@ -81,7 +81,7 @@ class OccupancyGaugeWidget extends StatelessWidget {
                     'of $totalCapacity Seats',
                     style: const TextStyle(
                       fontSize: 13,
-                      color: AppColors.textSecondary,
+                      color: Color(0xFF94A3B8),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
