@@ -10,7 +10,11 @@ class AuthorityDashboardScreen extends StatefulWidget {
 }
 
 class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
-  int _selectedNavIndex = 0;
+  int _selectedNavIndex = 2; // Default to Analytics tab matching requested design image
+  String _selectedFilter = 'All';
+  String _searchQuery = '';
+  String _selectedAnalyticsPeriod = 'Weekly';
+  final TextEditingController _searchController = TextEditingController();
 
   final List<String> _navTitles = [
     'Dashboard',
@@ -22,6 +26,80 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
     'AI Predictions',
     'Settings',
   ];
+
+  final List<_BusModel> _buses = [
+    _BusModel(
+        id: 'B177',
+        route: 'City Center → Airport',
+        driver: 'Rahul Kumar',
+        occupancyPercent: 45,
+        status: 'On Time'),
+    _BusModel(
+        id: 'B203',
+        route: 'University → Downtown',
+        driver: 'Priya Singh',
+        occupancyPercent: 78,
+        status: 'On Time'),
+    _BusModel(
+        id: 'B101',
+        route: 'Mall → Station',
+        driver: 'Amit Sharma',
+        occupancyPercent: 22,
+        status: 'On Time'),
+    _BusModel(
+        id: 'B342',
+        route: 'Station → University',
+        driver: 'Neha Patel',
+        occupancyPercent: 91,
+        status: 'Delayed'),
+    _BusModel(
+        id: 'B215',
+        route: 'Hospital → Beach',
+        driver: 'Ravi Kumar',
+        occupancyPercent: 35,
+        status: 'On Time'),
+    _BusModel(
+        id: 'B087',
+        route: 'Market → Airport',
+        driver: 'Sanjay Rao',
+        occupancyPercent: 65,
+        status: 'On Time'),
+    _BusModel(
+        id: 'B412',
+        route: 'Depot → Central',
+        driver: 'Meera Singh',
+        occupancyPercent: 88,
+        status: 'Delayed'),
+    _BusModel(
+        id: 'B056',
+        route: 'North → South',
+        driver: 'Vijay Kumar',
+        occupancyPercent: 12,
+        status: 'Breakdown'),
+  ];
+
+  List<_BusModel> get _filteredBuses {
+    return _buses.where((bus) {
+      if (_selectedFilter == 'On Time' && bus.status != 'On Time') return false;
+      if (_selectedFilter == 'Delayed' && bus.status != 'Delayed') return false;
+      if (_selectedFilter == 'Breakdown' && bus.status != 'Breakdown') return false;
+
+      if (_searchQuery.isNotEmpty) {
+        final query = _searchQuery.toLowerCase();
+        final matchesId = bus.id.toLowerCase().contains(query);
+        final matchesRoute = bus.route.toLowerCase().contains(query);
+        final matchesDriver = bus.driver.toLowerCase().contains(query);
+        return matchesId || matchesRoute || matchesDriver;
+      }
+      return true;
+    }).toList();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +153,9 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.08),
+                color: Colors.white.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white.withOpacity(0.12)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
               ),
               child: Row(
                 children: const [
@@ -99,43 +177,15 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
           // System Operational Tag & Profile Actions
           Row(
             children: [
-              // Web Browser Access Badge
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF8B5CF6).withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                      color: const Color(0xFF8B5CF6).withOpacity(0.35)),
-                ),
-                child: Row(
-                  children: const [
-                    Icon(Icons.language_rounded, color: Color(0xFFA78BFA), size: 14),
-                    SizedBox(width: 6),
-                    Text(
-                      'Web Browser Portal',
-                      style: TextStyle(
-                        color: Color(0xFFA78BFA),
-                        fontSize: 12.5,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(width: 12),
-
               // All Systems Operational Badge
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF10B981).withOpacity(0.12),
+                  color: const Color(0xFF10B981).withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                      color: const Color(0xFF10B981).withOpacity(0.3)),
+                      color: const Color(0xFF10B981).withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: const [
@@ -171,7 +221,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
 
               const SizedBox(width: 8),
 
-              // Admin Avatar
+              // Admin Avatar Circle
               Container(
                 width: 34,
                 height: 34,
@@ -258,7 +308,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
             ),
           ),
 
-          // Bottom Admin Profile User Card
+          // Bottom Admin Profile User Card (Matches image: Admin / Pune Transport Auth)
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
@@ -288,15 +338,15 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text(
-                          'Admin Officer',
+                          'Admin',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 13,
+                            fontSize: 13.5,
                           ),
                         ),
                         Text(
-                          'Transit Authority',
+                          'Pune Transport Auth',
                           style: TextStyle(
                             color: Color(0xFF94A3B8),
                             fontSize: 11,
@@ -347,13 +397,13 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? Colors.white.withValues(alpha: 0.2)
-                      : const Color(0xFF1E293B),
+                      : const Color(0xFFEF4444),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   '$badgeCount',
-                  style: TextStyle(
-                    color: isSelected ? Colors.white : const Color(0xFF94A3B8),
+                  style: const TextStyle(
+                    color: Colors.white,
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
                   ),
@@ -365,13 +415,37 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
   }
 
   Widget _buildMainContentBody() {
+    switch (_selectedNavIndex) {
+      case 1:
+        return _buildLiveBusesView();
+      case 2:
+        return _buildAnalyticsView();
+      case 3:
+        return _buildReportsView();
+      case 4:
+        return _buildRoutesView();
+      case 5:
+        return _buildDriversView();
+      case 6:
+        return _buildAIPredictionsView();
+      case 7:
+        return _buildSettingsView();
+      case 0:
+      default:
+        return _buildOperationsDashboardView();
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // TAB 1: OPERATIONS DASHBOARD VIEW
+  // --------------------------------------------------------------------------
+  Widget _buildOperationsDashboardView() {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.all(28.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header title & action buttons
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -464,49 +538,32 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
               ),
             ],
           ),
-
           const SizedBox(height: 28),
-
-          // Top 6 KPI Metric Cards (2 rows of 3)
           _buildKPICardsGrid(),
-
           const SizedBox(height: 24),
-
-          // Middle Charts Section: Daily Passengers Line Chart + Fleet Status Donut
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Left Column: Daily Passengers Line Chart Card
               Expanded(
                 flex: 7,
                 child: _buildDailyPassengersChartCard(),
               ),
-
               const SizedBox(width: 24),
-
-              // Right Column: Fleet Status Donut Chart Card
               Expanded(
                 flex: 4,
                 child: _buildFleetStatusDonutCard(),
               ),
             ],
           ),
-
           const SizedBox(height: 24),
-
-          // Bottom Section: Live Fleet Map + Active Alerts
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Left Column: Live Fleet Map Card
               Expanded(
                 flex: 7,
                 child: _buildLiveFleetMapCard(),
               ),
-
               const SizedBox(width: 24),
-
-              // Right Column: Active Alerts Card
               Expanded(
                 flex: 4,
                 child: _buildActiveAlertsCard(),
@@ -518,178 +575,237 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
     );
   }
 
-  // Top 6 KPI Cards Grid
-  Widget _buildKPICardsGrid() {
-    return Column(
-      children: [
-        // Row 1 (3 Cards)
-        Row(
-          children: [
-            Expanded(
-              child: _buildKPICard(
-                icon: Icons.directions_bus_outlined,
-                iconBgColor: const Color(0xFFEFF6FF),
-                iconColor: const Color(0xFF3B82F6),
-                badgeText: '+2',
-                badgeBgColor: const Color(0xFFDCFCE7),
-                badgeTextColor: const Color(0xFF16A34A),
-                value: '124',
-                label: 'Total Buses',
-              ),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: _buildKPICard(
-                icon: Icons.show_chart_rounded,
-                iconBgColor: const Color(0xFFECFDF5),
-                iconColor: const Color(0xFF10B981),
-                badgeText: '79%',
-                badgeBgColor: const Color(0xFFDCFCE7),
-                badgeTextColor: const Color(0xFF16A34A),
-                value: '98',
-                label: 'Active Buses',
-              ),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: _buildKPICard(
-                icon: Icons.people_outline_rounded,
-                iconBgColor: const Color(0xFFECFDF5),
-                iconColor: const Color(0xFF06B6D4),
-                badgeText: '+8.4%',
-                badgeBgColor: const Color(0xFFDCFCE7),
-                badgeTextColor: const Color(0xFF16A34A),
-                value: '47,823',
-                label: 'Passengers Today',
-              ),
-            ),
-          ],
-        ),
+  // --------------------------------------------------------------------------
+  // TAB 2: LIVE BUSES VIEW
+  // --------------------------------------------------------------------------
+  Widget _buildLiveBusesView() {
+    final filtered = _filteredBuses;
+    final totalCount = _buses.length;
+    final onTimeCount = _buses.where((b) => b.status == 'On Time').length;
+    final delayedCount = _buses.where((b) => b.status == 'Delayed').length;
+    final breakdownCount = _buses.where((b) => b.status == 'Breakdown').length;
 
-        const SizedBox(height: 20),
-
-        // Row 2 (3 Cards)
-        Row(
-          children: [
-            Expanded(
-              child: _buildKPICard(
-                icon: Icons.warning_amber_rounded,
-                iconBgColor: const Color(0xFFFFFBEB),
-                iconColor: const Color(0xFFF59E0B),
-                badgeText: '-3',
-                badgeBgColor: const Color(0xFFFEE2E2),
-                badgeTextColor: const Color(0xFFDC2626),
-                value: '12',
-                label: 'Delayed Buses',
-              ),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: _buildKPICard(
-                icon: Icons.bar_chart_rounded,
-                iconBgColor: const Color(0xFFF3E8FF),
-                iconColor: const Color(0xFF8B5CF6),
-                badgeText: '+4%',
-                badgeBgColor: const Color(0xFFDCFCE7),
-                badgeTextColor: const Color(0xFF16A34A),
-                value: '67%',
-                label: 'Avg Occupancy',
-              ),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: _buildKPICard(
-                icon: Icons.payments_outlined,
-                iconBgColor: const Color(0xFFECFDF5),
-                iconColor: const Color(0xFF10B981),
-                badgeText: '+12%',
-                badgeBgColor: const Color(0xFFDCFCE7),
-                badgeTextColor: const Color(0xFF16A34A),
-                value: 'LKR 240K',
-                label: 'Daily Revenue',
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  // Individual KPI Card Widget
-  Widget _buildKPICard({
-    required IconData icon,
-    required Color iconBgColor,
-    required Color iconColor,
-    required String badgeText,
-    required Color badgeBgColor,
-    required Color badgeTextColor,
-    required String value,
-    required String label,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(20.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(28.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: iconBgColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icon, color: iconColor, size: 22),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Live Buses',
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF0F172A),
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '$totalCount buses tracked in real-time',
+                    style: const TextStyle(
+                      fontSize: 13.5,
+                      color: Color(0xFF64748B),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: badgeBgColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  badgeText,
+              ElevatedButton.icon(
+                onPressed: _showAddBusDialog,
+                icon: const Icon(Icons.add, size: 18, color: Colors.white),
+                label: const Text(
+                  'Add Bus',
                   style: TextStyle(
-                    fontSize: 11.5,
                     fontWeight: FontWeight.bold,
-                    color: badgeTextColor,
+                    fontSize: 13.5,
+                    color: Colors.white,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF2563EB),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 18),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF0F172A),
-              letterSpacing: -0.6,
-            ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  _buildFilterPill('All ($totalCount)', 'All'),
+                  const SizedBox(width: 10),
+                  _buildFilterPill('On Time', 'On Time'),
+                  const SizedBox(width: 10),
+                  _buildFilterPill('Delayed ($delayedCount)', 'Delayed'),
+                  const SizedBox(width: 10),
+                  _buildFilterPill('Breakdown ($breakdownCount)', 'Breakdown'),
+                ],
+              ),
+              Container(
+                width: 250,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: (val) {
+                    setState(() {
+                      _searchQuery = val;
+                    });
+                  },
+                  style: const TextStyle(fontSize: 13, color: Color(0xFF0F172A)),
+                  decoration: const InputDecoration(
+                    hintText: 'Search bus...',
+                    hintStyle: TextStyle(fontSize: 13, color: Color(0xFF94A3B8)),
+                    prefixIcon: Icon(Icons.search_rounded, color: Color(0xFF94A3B8), size: 18),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(vertical: 9),
+                  ),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF94A3B8),
+          const SizedBox(height: 20),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: const Color(0xFFF1F5F9)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.02),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                    color: const Color(0xFFFAFAFA),
+                    child: Row(
+                      children: const [
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            'BUS ID',
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF64748B),
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                            'ROUTE',
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF64748B),
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                            'DRIVER',
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF64748B),
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                            'OCCUPANCY',
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF64748B),
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            'STATUS',
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF64748B),
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 110,
+                          child: Text(
+                            'ACTIONS',
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF64748B),
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                  if (filtered.isEmpty)
+                    const Padding(
+                      padding: EdgeInsets.all(40.0),
+                      child: Center(
+                        child: Text(
+                          'No buses match your filter or search criteria',
+                          style: TextStyle(color: Color(0xFF94A3B8), fontSize: 14),
+                        ),
+                      ),
+                    )
+                  else
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: filtered.length,
+                      separatorBuilder: (context, index) =>
+                          const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                      itemBuilder: (context, index) {
+                        final bus = filtered[index];
+                        return _buildBusTableRow(bus);
+                      },
+                    ),
+                ],
+              ),
             ),
           ),
         ],
@@ -697,55 +813,567 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
     );
   }
 
-  // Daily Passengers Line Chart Card
-  Widget _buildDailyPassengersChartCard() {
+  Widget _buildBusTableRow(_BusModel bus) {
+    Color occColor;
+    if (bus.occupancyPercent > 70) {
+      occColor = const Color(0xFFEF4444);
+    } else if (bus.occupancyPercent >= 40) {
+      occColor = const Color(0xFFF59E0B);
+    } else {
+      occColor = const Color(0xFF10B981);
+    }
+
+    Color statusBgColor;
+    Color statusTextColor;
+    if (bus.status == 'Delayed') {
+      statusBgColor = const Color(0xFFFEF3C7);
+      statusTextColor = const Color(0xFFD97706);
+    } else if (bus.status == 'Breakdown') {
+      statusBgColor = const Color(0xFFFEE2E2);
+      statusTextColor = const Color(0xFFDC2626);
+    } else {
+      statusBgColor = const Color(0xFFDCFCE7);
+      statusTextColor = const Color(0xFF16A34A);
+    }
+
     return Container(
-      padding: const EdgeInsets.all(24.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+      color: Colors.white,
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Row(
+              children: [
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEFF6FF),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.directions_bus_rounded,
+                    color: Color(0xFF3B82F6),
+                    size: 17,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  bus.id,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0F172A),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              bus.route,
+              style: const TextStyle(
+                fontSize: 13.5,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF334155),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              bus.driver,
+              style: const TextStyle(
+                fontSize: 13.5,
+                color: Color(0xFF64748B),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                Container(
+                  width: 60,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF1F5F9),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                  child: FractionallySizedBox(
+                    alignment: Alignment.centerLeft,
+                    widthFactor: (bus.occupancyPercent / 100).clamp(0.0, 1.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: occColor,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  '${bus.occupancyPercent}%',
+                  style: TextStyle(
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.bold,
+                    color: occColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: statusBgColor,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Text(
+                  bus.status,
+                  style: TextStyle(
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.bold,
+                    color: statusTextColor,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 110,
+            child: Row(
+              children: [
+                InkWell(
+                  onTap: () => _showViewBusModal(bus),
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                    width: 28,
+                    height: 28,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFEFF6FF),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.remove_red_eye_outlined,
+                      color: Color(0xFF3B82F6),
+                      size: 15,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
+                InkWell(
+                  onTap: () => _showEditBusDialog(bus),
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                    width: 28,
+                    height: 28,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFECFDF5),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.edit_outlined,
+                      color: Color(0xFF10B981),
+                      size: 15,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
+                InkWell(
+                  onTap: () => _showDeleteBusDialog(bus),
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                    width: 28,
+                    height: 28,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFFEE2E2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.close_rounded,
+                      color: Color(0xFFEF4444),
+                      size: 15,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildFilterPill(String label, String value) {
+    final isSelected = _selectedFilter == value;
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _selectedFilter = value;
+        });
+      },
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF2563EB) : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: isSelected
+              ? null
+              : Border.all(color: const Color(0xFFE2E8F0)),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+            color: isSelected ? Colors.white : const Color(0xFF475569),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showAddBusDialog() {
+    final idController = TextEditingController(text: 'B${100 + _buses.length * 12}');
+    final routeController = TextEditingController();
+    final driverController = TextEditingController();
+    final occController = TextEditingController(text: '45');
+    String selectedStatus = 'On Time';
+
+    showDialog(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setDialogState) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            title: Row(
+              children: const [
+                Icon(Icons.directions_bus_rounded, color: Color(0xFF2563EB)),
+                SizedBox(width: 10),
+                Text('Add New Bus', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              ],
+            ),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: idController,
+                    decoration: const InputDecoration(labelText: 'Bus ID (e.g. B105)', border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: routeController,
+                    decoration: const InputDecoration(labelText: 'Route (e.g. Station → Airport)', border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: driverController,
+                    decoration: const InputDecoration(labelText: 'Driver Name', border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: occController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'Occupancy % (0 - 100)', border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(height: 12),
+                  DropdownButtonFormField<String>(
+                    value: selectedStatus,
+                    decoration: const InputDecoration(labelText: 'Status', border: OutlineInputBorder()),
+                    items: const [
+                      DropdownMenuItem(value: 'On Time', child: Text('On Time')),
+                      DropdownMenuItem(value: 'Delayed', child: Text('Delayed')),
+                      DropdownMenuItem(value: 'Breakdown', child: Text('Breakdown')),
+                    ],
+                    onChanged: (val) {
+                      if (val != null) {
+                        setDialogState(() => selectedStatus = val);
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('Cancel', style: TextStyle(color: Color(0xFF64748B))),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF2563EB),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                onPressed: () {
+                  if (routeController.text.isEmpty || driverController.text.isEmpty) {
+                    return;
+                  }
+                  final newBus = _BusModel(
+                    id: idController.text.trim(),
+                    route: routeController.text.trim(),
+                    driver: driverController.text.trim(),
+                    occupancyPercent: int.tryParse(occController.text) ?? 45,
+                    status: selectedStatus,
+                  );
+                  setState(() {
+                    _buses.add(newBus);
+                  });
+                  Navigator.pop(ctx);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Bus ${newBus.id} added to live fleet tracking!'),
+                      backgroundColor: const Color(0xFF10B981),
+                    ),
+                  );
+                },
+                child: const Text('Add Bus', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  void _showViewBusModal(_BusModel bus) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFEFF6FF),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(Icons.directions_bus_rounded, color: Color(0xFF2563EB)),
+            ),
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Bus Telemetry ${bus.id}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                Text(bus.route, style: const TextStyle(fontSize: 12, color: Color(0xFF64748B))),
+              ],
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildTelemetryTile(Icons.person, 'Driver', bus.driver),
+            _buildTelemetryTile(Icons.pie_chart_outline, 'Live Occupancy', '${bus.occupancyPercent}% capacity'),
+            _buildTelemetryTile(Icons.speed, 'Current Speed', '42 km/h (GPS signal active)'),
+            _buildTelemetryTile(Icons.alt_route, 'Current Status', bus.status),
+            _buildTelemetryTile(Icons.local_gas_station_outlined, 'Fuel Level', '84% remaining'),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF2563EB),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Close', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTelemetryTile(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: const Color(0xFF64748B)),
+          const SizedBox(width: 10),
+          Text('$label: ', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+          Text(value, style: const TextStyle(fontSize: 13, color: Color(0xFF334155))),
+        ],
+      ),
+    );
+  }
+
+  void _showEditBusDialog(_BusModel bus) {
+    final routeController = TextEditingController(text: bus.route);
+    final driverController = TextEditingController(text: bus.driver);
+    final occController = TextEditingController(text: bus.occupancyPercent.toString());
+    String selectedStatus = bus.status;
+
+    showDialog(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setDialogState) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            title: Text('Edit Bus ${bus.id}', style: const TextStyle(fontWeight: FontWeight.bold)),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: routeController,
+                    decoration: const InputDecoration(labelText: 'Route', border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: driverController,
+                    decoration: const InputDecoration(labelText: 'Driver Name', border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: occController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'Occupancy %', border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(height: 12),
+                  DropdownButtonFormField<String>(
+                    value: selectedStatus,
+                    decoration: const InputDecoration(labelText: 'Status', border: OutlineInputBorder()),
+                    items: const [
+                      DropdownMenuItem(value: 'On Time', child: Text('On Time')),
+                      DropdownMenuItem(value: 'Delayed', child: Text('Delayed')),
+                      DropdownMenuItem(value: 'Breakdown', child: Text('Breakdown')),
+                    ],
+                    onChanged: (val) {
+                      if (val != null) {
+                        setDialogState(() => selectedStatus = val);
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF2563EB)),
+                onPressed: () {
+                  setState(() {
+                    bus.route = routeController.text.trim();
+                    bus.driver = driverController.text.trim();
+                    bus.occupancyPercent = int.tryParse(occController.text) ?? bus.occupancyPercent;
+                    bus.status = selectedStatus;
+                  });
+                  Navigator.pop(ctx);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Bus ${bus.id} details updated!'),
+                      backgroundColor: const Color(0xFF2563EB),
+                    ),
+                  );
+                },
+                child: const Text('Save Changes', style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  void _showDeleteBusDialog(_BusModel bus) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text('Remove Bus ${bus.id}?', style: const TextStyle(fontWeight: FontWeight.bold)),
+        content: Text('Are you sure you want to remove Bus ${bus.id} (${bus.route}) from active tracking fleet?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFEF4444)),
+            onPressed: () {
+              setState(() {
+                _buses.remove(bus);
+              });
+              Navigator.pop(ctx);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Bus ${bus.id} removed from fleet.'),
+                  backgroundColor: const Color(0xFFEF4444),
+                ),
+              );
+            },
+            child: const Text('Remove Bus', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --------------------------------------------------------------------------
+  // TAB 3: ANALYTICS VIEW (EXACT IMPLEMENTATION MATCHING USER IMAGE)
+  // --------------------------------------------------------------------------
+  Widget _buildAnalyticsView() {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(28.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header Row: Title & Subtitle + Period Toggle Pills (Daily, Weekly, Monthly)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
                   Text(
-                    'Daily Passengers',
+                    'Analytics',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF0F172A),
+                      letterSpacing: -0.5,
                     ),
                   ),
-                  SizedBox(height: 2),
+                  SizedBox(height: 4),
                   Text(
-                    'This week',
+                    'Transportation insights & trends',
                     style: TextStyle(
-                      fontSize: 12.5,
-                      color: Color(0xFF94A3B8),
+                      fontSize: 13.5,
+                      color: Color(0xFF64748B),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
               ),
-              const Text(
-                '+8.4% vs last week',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF10B981),
+              // Period Toggle Pills (Daily, Weekly, Monthly)
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                ),
+                child: Row(
+                  children: [
+                    _buildAnalyticsPeriodPill('Daily'),
+                    _buildAnalyticsPeriodPill('Weekly'),
+                    _buildAnalyticsPeriodPill('Monthly'),
+                  ],
                 ),
               ),
             ],
@@ -753,37 +1381,62 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
 
           const SizedBox(height: 24),
 
-          // Custom Line Chart Painter
-          SizedBox(
-            height: 180,
-            width: double.infinity,
-            child: CustomPaint(
-              painter: _DailyPassengersChartPainter(),
-            ),
-          ),
-
-          const SizedBox(height: 12),
-
-          // X-Axis Days Labels
+          // Top Row: Hourly Passenger Distribution + Revenue Trend
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text('Mon', style: TextStyle(fontSize: 12, color: Color(0xFF94A3B8))),
-              Text('Tue', style: TextStyle(fontSize: 12, color: Color(0xFF94A3B8))),
-              Text('Wed', style: TextStyle(fontSize: 12, color: Color(0xFF94A3B8))),
-              Text('Thu', style: TextStyle(fontSize: 12, color: Color(0xFF94A3B8))),
-              Text('Fri', style: TextStyle(fontSize: 12, color: Color(0xFF94A3B8))),
-              Text('Sat', style: TextStyle(fontSize: 12, color: Color(0xFF94A3B8))),
-              Text('Sun', style: TextStyle(fontSize: 12, color: Color(0xFF94A3B8))),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _buildHourlyPassengerCard(),
+              ),
+              const SizedBox(width: 24),
+              Expanded(
+                child: _buildRevenueTrendCard(),
+              ),
             ],
           ),
+
+          const SizedBox(height: 24),
+
+          // Middle Section: Congestion Heatmap Card
+          _buildCongestionHeatmapCard(),
+
+          const SizedBox(height: 24),
+
+          // Bottom Section: Top Routes by Ridership Card
+          _buildTopRoutesCard(),
         ],
       ),
     );
   }
 
-  // Fleet Status Donut Chart Card
-  Widget _buildFleetStatusDonutCard() {
+  Widget _buildAnalyticsPeriodPill(String period) {
+    final isSelected = _selectedAnalyticsPeriod == period;
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _selectedAnalyticsPeriod = period;
+        });
+      },
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF2563EB) : Colors.transparent,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(
+          period,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+            color: isSelected ? Colors.white : const Color(0xFF64748B),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHourlyPassengerCard() {
     return Container(
       padding: const EdgeInsets.all(24.0),
       decoration: BoxDecoration(
@@ -792,7 +1445,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
         border: Border.all(color: const Color(0xFFF1F5F9)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -802,7 +1455,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Fleet Status',
+            'Hourly Passenger Distribution',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -811,246 +1464,66 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
           ),
           const SizedBox(height: 2),
           const Text(
-            '124 total buses',
+            'Peak hours: 8AM & 5PM',
             style: TextStyle(
               fontSize: 12.5,
               color: Color(0xFF94A3B8),
             ),
           ),
-
           const SizedBox(height: 24),
-
-          // Donut Chart Graphic
-          Center(
-            child: SizedBox(
-              width: 140,
-              height: 140,
-              child: CustomPaint(
-                painter: _FleetStatusDonutPainter(),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
-          // Legend Metrics List
-          _buildDonutLegendRow(
-              color: const Color(0xFF10B981), label: 'On Time', percent: '72%'),
-          const SizedBox(height: 8),
-          _buildDonutLegendRow(
-              color: const Color(0xFFF59E0B), label: 'Delayed', percent: '12%'),
-          const SizedBox(height: 8),
-          _buildDonutLegendRow(
-              color: const Color(0xFFEF4444), label: 'Breakdown', percent: '5%'),
-          const SizedBox(height: 8),
-          _buildDonutLegendRow(
-              color: const Color(0xFF94A3B8), label: 'Idle', percent: '11%'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDonutLegendRow(
-      {required Color color, required String label, required String percent}) {
-    return Row(
-      children: [
-        Container(
-          width: 8,
-          height: 8,
-          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Text(
-            label,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF64748B),
-            ),
-          ),
-        ),
-        Text(
-          percent,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF0F172A),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // Live Fleet Map Card
-  Widget _buildLiveFleetMapCard() {
-    return Container(
-      padding: const EdgeInsets.all(24.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Live Fleet Map',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF0F172A),
+              SizedBox(
+                height: 160,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: const [
+                    Text('10k', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                    Text('8k', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                    Text('5k', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                    Text('3k', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                    Text('0k', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                  ],
                 ),
               ),
-              Row(
-                children: const [
-                  Icon(Icons.circle, color: Color(0xFF10B981), size: 8),
-                  SizedBox(width: 6),
-                  Text(
-                    'Live',
-                    style: TextStyle(
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF10B981),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 160,
+                      child: CustomPaint(
+                        size: Size.infinite,
+                        painter: _HourlyPassengerChartPainter(),
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text('6AM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('8AM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('10AM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('12PM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('2PM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('4PM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('6PM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('8PM', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-
-          const SizedBox(height: 16),
-
-          // Interactive Map Simulation Box
-          Container(
-            height: 220,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: const Color(0xFFE2E8F0).withOpacity(0.4),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Stack(
-              children: [
-                // Street Grid Layout
-                CustomPaint(
-                  size: const Size(double.infinity, 220),
-                  painter: _MapGridPainter(),
-                ),
-
-                // Bus Pins on Map
-                _buildMapBusPin(top: 40, left: 120, busId: 'B 412', statusColor: const Color(0xFFF59E0B)),
-                _buildMapBusPin(top: 85, left: 240, busId: 'B 056', statusColor: const Color(0xFFEF4444)),
-                _buildMapBusPin(top: 45, left: 360, busId: 'B 342', statusColor: const Color(0xFFF59E0B)),
-                _buildMapBusPin(top: 110, left: 160, busId: 'B 177', statusColor: const Color(0xFF10B981)),
-                _buildMapBusPin(top: 135, left: 400, busId: 'B 215', statusColor: const Color(0xFF10B981)),
-                _buildMapBusPin(top: 140, left: 320, busId: 'B 203', statusColor: const Color(0xFF10B981)),
-                _buildMapBusPin(top: 175, left: 120, busId: 'B 101', statusColor: const Color(0xFF10B981)),
-                _buildMapBusPin(top: 185, left: 260, busId: 'B 087', statusColor: const Color(0xFF10B981)),
-
-                // Legend Pill Box at Bottom Right
-                Positioned(
-                  bottom: 12,
-                  right: 12,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.08),
-                          blurRadius: 8,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(Icons.circle, color: Color(0xFF10B981), size: 7),
-                        SizedBox(width: 4),
-                        Text('On Time', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600)),
-                        SizedBox(width: 8),
-                        Icon(Icons.circle, color: Color(0xFFF59E0B), size: 7),
-                        SizedBox(width: 4),
-                        Text('Delayed', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600)),
-                        SizedBox(width: 8),
-                        Icon(Icons.circle, color: Color(0xFFEF4444), size: 7),
-                        SizedBox(width: 4),
-                        Text('Breakdown', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
   }
 
-  Widget _buildMapBusPin(
-      {required double top,
-      required double left,
-      required String busId,
-      required Color statusColor}) {
-    return Positioned(
-      top: top,
-      left: left,
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: statusColor,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: statusColor.withOpacity(0.4),
-                  blurRadius: 6,
-                  spreadRadius: 1,
-                ),
-              ],
-            ),
-            child: const Icon(
-              Icons.directions_bus_rounded,
-              color: Colors.white,
-              size: 11,
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              busId,
-              style: const TextStyle(
-                fontSize: 8.5,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF0F172A),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Active Alerts Card
-  Widget _buildActiveAlertsCard() {
+  Widget _buildRevenueTrendCard() {
     return Container(
       padding: const EdgeInsets.all(24.0),
       decoration: BoxDecoration(
@@ -1059,7 +1532,7 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
         border: Border.all(color: const Color(0xFFF1F5F9)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -1069,200 +1542,317 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Active Alerts',
+            'Revenue Trend',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
               color: Color(0xFF0F172A),
             ),
           ),
-
-          const SizedBox(height: 16),
-
-          // Alert Items List
-          _buildAlertItem(
-            icon: Icons.warning_amber_rounded,
-            color: const Color(0xFFF59E0B),
-            text: 'Bus B342 delayed 7 min — MG Road congestion',
-          ),
-          const SizedBox(height: 10),
-          _buildAlertItem(
-            icon: Icons.close_rounded,
-            color: const Color(0xFFEF4444),
-            text: 'Bus B056 breakdown reported — Ring Road',
-          ),
-          const SizedBox(height: 10),
-          _buildAlertItem(
-            icon: Icons.grid_view_rounded,
-            color: const Color(0xFF3B82F6),
-            text: 'Peak demand predicted 5PM — deploy reserves',
-          ),
-          const SizedBox(height: 10),
-          _buildAlertItem(
-            icon: Icons.groups_outlined,
-            color: const Color(0xFF06B6D4),
-            text: 'Route 203 showing 91% avg occupancy',
-          ),
-          const SizedBox(height: 10),
-          _buildAlertItem(
-            icon: Icons.thunderstorm_outlined,
-            color: const Color(0xFF8B5CF6),
-            text: 'Weather: Rain expected — ETA impacts likely',
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAlertItem(
-      {required IconData icon, required Color color, required String text}) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.06),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: color.withOpacity(0.15)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: color, size: 18),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontSize: 12.5,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF334155),
-              ),
+          const SizedBox(height: 2),
+          const Text(
+            '6-month revenue growth',
+            style: TextStyle(
+              fontSize: 12.5,
+              color: Color(0xFF94A3B8),
             ),
           ),
+          const SizedBox(height: 24),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 160,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: const [
+                    Text('₹260k', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                    Text('₹195k', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                    Text('₹130k', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                    Text('₹65k', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                    Text('₹0k', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 160,
+                      child: CustomPaint(
+                        size: Size.infinite,
+                        painter: _RevenueTrendChartPainter(),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text('Feb', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('Mar', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('Apr', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('May', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('Jun', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                        Text('Jul', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 
-  // --------------------------------------------------------------------------
-  // TAB 2: LIVE BUSES VIEW
-  // --------------------------------------------------------------------------
-  Widget _buildLiveBusesView() {
-    return Padding(
-      padding: const EdgeInsets.all(28.0),
+  Widget _buildCongestionHeatmapCard() {
+    final days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+    final List<List<int>> matrix = [
+      [3, 3, 3, 3, 3, 3, 3],
+      [2, 2, 2, 2, 2, 2, 2],
+      [2, 2, 2, 2, 2, 2, 2],
+      [3, 2, 3, 2, 3, 3, 1],
+      [0, 1, 0, 1, 0, 1, 1],
+      [2, 2, 2, 3, 2, 2, 2],
+      [2, 2, 2, 2, 2, 2, 2],
+      [1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1],
+      [2, 3, 3, 2, 2, 3, 3],
+      [2, 2, 2, 2, 2, 2, 2],
+      [2, 2, 2, 2, 2, 2, 2],
+    ];
+
+    Color getShadeColor(int level) {
+      switch (level) {
+        case 0:
+          return const Color(0xFFE0E7FF);
+        case 1:
+          return const Color(0xFF93C5FD);
+        case 2:
+          return const Color(0xFF60A5FA);
+        case 3:
+        default:
+          return const Color(0xFF2563EB);
+      }
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Live Bus Fleet Tracking',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
-          ),
-          const SizedBox(height: 4),
-          const Text('12 Active Buses with live telemetry', style: TextStyle(color: Color(0xFF64748B))),
-          const SizedBox(height: 20),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: const Color(0xFFE2E8F0)),
-              ),
-              child: ListView(
-                padding: const EdgeInsets.all(16),
-                children: [
-                  _buildBusRow('Bus 177', 'City Center → Airport', 'Rahul Kumar', 'On Time', '46% (23/50)', const Color(0xFF10B981)),
-                  const Divider(),
-                  _buildBusRow('Bus 204', 'Express Route 4', 'Amit Sharma', 'On Time', '84% (42/50)', const Color(0xFF10B981)),
-                  const Divider(),
-                  _buildBusRow('Bus 342', 'MG Road Link', 'Priya Patel', 'Delayed (7m)', '92% (46/50)', const Color(0xFFF59E0B)),
-                  const Divider(),
-                  _buildBusRow('Bus 056', 'Ring Road Outer', 'Vikram Singh', 'Breakdown', '0% (0/50)', const Color(0xFFEF4444)),
-                  const Divider(),
-                  _buildBusRow('Bus 102', 'Metro Link North', 'Suresh Roy', 'On Time', '50% (25/50)', const Color(0xFF10B981)),
-                  const Divider(),
-                  _buildBusRow('Bus 305', 'University Express', 'Kavita Das', 'On Time', '68% (34/50)', const Color(0xFF10B981)),
-                ],
-              ),
+            'Congestion Heatmap',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF0F172A),
             ),
+          ),
+          const SizedBox(height: 2),
+          const Text(
+            'Passenger density across routes — darker = higher density',
+            style: TextStyle(
+              fontSize: 12.5,
+              color: Color(0xFF94A3B8),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Row(
+            children: days.map((day) {
+              return Expanded(
+                child: Center(
+                  child: Text(
+                    day,
+                    style: const TextStyle(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF94A3B8),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 10),
+          Column(
+            children: List.generate(matrix.length, (rowIndex) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 6.0),
+                child: Row(
+                  children: List.generate(7, (colIndex) {
+                    final shade = matrix[rowIndex][colIndex];
+                    return Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: getShadeColor(shade),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              );
+            }),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Text('Low', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+              const SizedBox(width: 8),
+              Container(width: 14, height: 14, decoration: BoxDecoration(color: getShadeColor(0), borderRadius: BorderRadius.circular(3))),
+              const SizedBox(width: 4),
+              Container(width: 14, height: 14, decoration: BoxDecoration(color: getShadeColor(1), borderRadius: BorderRadius.circular(3))),
+              const SizedBox(width: 4),
+              Container(width: 14, height: 14, decoration: BoxDecoration(color: getShadeColor(2), borderRadius: BorderRadius.circular(3))),
+              const SizedBox(width: 4),
+              Container(width: 14, height: 14, decoration: BoxDecoration(color: getShadeColor(3), borderRadius: BorderRadius.circular(3))),
+              const SizedBox(width: 8),
+              const Text('High', style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8))),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBusRow(String busId, String route, String driver, String status, String occupancy, Color statusColor) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(color: statusColor.withOpacity(0.12), borderRadius: BorderRadius.circular(12)),
-            child: Icon(Icons.directions_bus, color: statusColor, size: 22),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(busId, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                Text(route, style: const TextStyle(color: Color(0xFF64748B), fontSize: 12)),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text('Driver: $driver', style: const TextStyle(fontSize: 13, color: Color(0xFF334155))),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text('Occupancy: $occupancy', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(color: statusColor.withOpacity(0.15), borderRadius: BorderRadius.circular(10)),
-            child: Text(status, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: statusColor)),
+  Widget _buildTopRoutesCard() {
+    return Container(
+      padding: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-    );
-  }
-
-  // --------------------------------------------------------------------------
-  // TAB 3: ANALYTICS VIEW
-  // --------------------------------------------------------------------------
-  Widget _buildAnalyticsView() {
-    return Padding(
-      padding: const EdgeInsets.all(28.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Transit Analytics & Insights', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
-          const SizedBox(height: 4),
-          const Text('Ridership trends and peak congestion patterns', style: TextStyle(color: Color(0xFF64748B))),
-          const SizedBox(height: 20),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFE2E8F0))),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('Hourly Passenger Volume vs Capacity', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  Spacer(),
-                  Center(child: Text('Analytics Chart Visualizer (47,823 Passengers Today · Peak 8AM & 5PM)', style: TextStyle(color: Color(0xFF64748B)))),
-                  Spacer(),
-                ],
-              ),
+          const Text(
+            'Top Routes by Ridership',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF0F172A),
             ),
+          ),
+          const SizedBox(height: 24),
+          _buildRouteProgressRow(
+            routeName: 'City Center → Airport',
+            countStr: '12,480',
+            barColor: const Color(0xFF2563EB),
+            factor: 0.85,
+          ),
+          const SizedBox(height: 16),
+          _buildRouteProgressRow(
+            routeName: 'University → Downtown',
+            countStr: '9,240',
+            barColor: const Color(0xFF14B8A6),
+            factor: 0.65,
+          ),
+          const SizedBox(height: 16),
+          _buildRouteProgressRow(
+            routeName: 'Mall → Station',
+            countStr: '7,820',
+            barColor: const Color(0xFF10B981),
+            factor: 0.50,
+          ),
+          const SizedBox(height: 16),
+          _buildRouteProgressRow(
+            routeName: 'Hospital → Beach',
+            countStr: '5,430',
+            barColor: const Color(0xFFF59E0B),
+            factor: 0.35,
           ),
         ],
       ),
     );
   }
 
+  Widget _buildRouteProgressRow({
+    required String routeName,
+    required String countStr,
+    required Color barColor,
+    required double factor,
+  }) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 180,
+          child: Text(
+            routeName,
+            style: const TextStyle(
+              fontSize: 13.5,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF334155),
+            ),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Container(
+            height: 8,
+            decoration: BoxDecoration(
+              color: const Color(0xFFF1F5F9),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: FractionallySizedBox(
+              alignment: Alignment.centerLeft,
+              widthFactor: factor,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: barColor,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 20),
+        SizedBox(
+          width: 60,
+          child: Text(
+            countStr,
+            textAlign: TextAlign.right,
+            style: const TextStyle(
+              fontSize: 13.5,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF0F172A),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   // --------------------------------------------------------------------------
-  // TAB 4: REPORTS VIEW
+  // OTHER DASHBOARD TABS
   // --------------------------------------------------------------------------
   Widget _buildReportsView() {
     return Padding(
@@ -1294,9 +1884,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
     );
   }
 
-  // --------------------------------------------------------------------------
-  // TAB 5: ROUTES VIEW
-  // --------------------------------------------------------------------------
   Widget _buildRoutesView() {
     return Padding(
       padding: const EdgeInsets.all(28.0),
@@ -1327,9 +1914,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
     );
   }
 
-  // --------------------------------------------------------------------------
-  // TAB 6: DRIVERS VIEW
-  // --------------------------------------------------------------------------
   Widget _buildDriversView() {
     return Padding(
       padding: const EdgeInsets.all(28.0),
@@ -1360,9 +1944,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
     );
   }
 
-  // --------------------------------------------------------------------------
-  // TAB 7: AI PREDICTIONS VIEW
-  // --------------------------------------------------------------------------
   Widget _buildAIPredictionsView() {
     return Padding(
       padding: const EdgeInsets.all(28.0),
@@ -1393,9 +1974,6 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
     );
   }
 
-  // --------------------------------------------------------------------------
-  // TAB 8: SETTINGS VIEW
-  // --------------------------------------------------------------------------
   Widget _buildSettingsView() {
     return Padding(
       padding: const EdgeInsets.all(28.0),
@@ -1427,7 +2005,159 @@ class _AuthorityDashboardScreenState extends State<AuthorityDashboardScreen> {
   }
 }
 
-// Custom Painter for Daily Passengers Line Chart
+// Model for Bus Fleet Items
+class _BusModel {
+  String id;
+  String route;
+  String driver;
+  int occupancyPercent;
+  String status;
+
+  _BusModel({
+    required this.id,
+    required this.route,
+    required this.driver,
+    required this.occupancyPercent,
+    required this.status,
+  });
+}
+
+// Custom Painters for Dashboard & Analytics
+class _HourlyPassengerChartPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final gridPaint = Paint()
+      ..color = const Color(0xFFE2E8F0)
+      ..strokeWidth = 1
+      ..style = PaintingStyle.stroke;
+
+    for (int i = 0; i <= 4; i++) {
+      final y = size.height * (i / 4);
+      _drawDashedLine(canvas, Offset(0, y), Offset(size.width, y), gridPaint);
+    }
+
+    final values = [
+      0.10, 0.45, 0.92, 0.75, 0.42, 0.38, 0.50, 0.55, 0.42, 0.45, 0.68, 0.95, 0.76, 0.46, 0.35
+    ];
+
+    final barCount = values.length;
+    final totalSpacing = size.width * 0.35;
+    final barWidth = (size.width - totalSpacing) / barCount;
+    final gap = totalSpacing / (barCount - 1);
+
+    final barPaint = Paint()
+      ..color = const Color(0xFF14B8A6)
+      ..style = PaintingStyle.fill;
+
+    for (int i = 0; i < barCount; i++) {
+      final x = i * (barWidth + gap);
+      final barHeight = size.height * values[i];
+      final y = size.height - barHeight;
+
+      final rect = RRect.fromRectAndRadius(
+        Rect.fromLTWH(x, y, barWidth, barHeight),
+        const Radius.circular(4),
+      );
+
+      canvas.drawRRect(rect, barPaint);
+    }
+  }
+
+  void _drawDashedLine(Canvas canvas, Offset p1, Offset p2, Paint paint) {
+    const dashWidth = 4.0;
+    const dashSpace = 4.0;
+    double startX = p1.dx;
+    while (startX < p2.dx) {
+      canvas.drawLine(
+        Offset(startX, p1.dy),
+        Offset((startX + dashWidth).clamp(p1.dx, p2.dx), p1.dy),
+        paint,
+      );
+      startX += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _RevenueTrendChartPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final gridPaint = Paint()
+      ..color = const Color(0xFFE2E8F0)
+      ..strokeWidth = 1
+      ..style = PaintingStyle.stroke;
+
+    for (int i = 0; i <= 4; i++) {
+      final y = size.height * (i / 4);
+      _drawDashedLine(canvas, Offset(0, y), Offset(size.width, y), gridPaint);
+    }
+
+    final points = [
+      Offset(0, size.height * (1.0 - 180 / 260)),
+      Offset(size.width * 0.2, size.height * (1.0 - 195 / 260)),
+      Offset(size.width * 0.4, size.height * (1.0 - 220 / 260)),
+      Offset(size.width * 0.6, size.height * (1.0 - 215 / 260)),
+      Offset(size.width * 0.8, size.height * (1.0 - 250 / 260)),
+      Offset(size.width, size.height * (1.0 - 245 / 260)),
+    ];
+
+    final path = Path();
+    path.moveTo(points[0].dx, points[0].dy);
+
+    for (int i = 0; i < points.length - 1; i++) {
+      final p0 = points[i];
+      final p1 = points[i + 1];
+      final controlPoint1 = Offset(p0.dx + (p1.dx - p0.dx) / 2, p0.dy);
+      final controlPoint2 = Offset(p0.dx + (p1.dx - p0.dx) / 2, p1.dy);
+      path.cubicTo(controlPoint1.dx, controlPoint1.dy, controlPoint2.dx, controlPoint2.dy, p1.dx, p1.dy);
+    }
+
+    final fillPath = Path.from(path)
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
+
+    final fillPaint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          const Color(0xFF10B981).withValues(alpha: 0.18),
+          const Color(0xFF10B981).withValues(alpha: 0.0),
+        ],
+      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
+
+    canvas.drawPath(fillPath, fillPaint);
+
+    final linePaint = Paint()
+      ..color = const Color(0xFF10B981)
+      ..strokeWidth = 3.5
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+
+    canvas.drawPath(path, linePaint);
+  }
+
+  void _drawDashedLine(Canvas canvas, Offset p1, Offset p2, Paint paint) {
+    const dashWidth = 4.0;
+    const dashSpace = 4.0;
+    double startX = p1.dx;
+    while (startX < p2.dx) {
+      canvas.drawLine(
+        Offset(startX, p1.dy),
+        Offset((startX + dashWidth).clamp(p1.dx, p2.dx), p1.dy),
+        paint,
+      );
+      startX += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
 class _DailyPassengersChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -1453,7 +2183,6 @@ class _DailyPassengersChartPainter extends CustomPainter {
           controlPoint2.dy, p1.dx, p1.dy);
     }
 
-    // Gradient Fill
     final fillPath = Path.from(path)
       ..lineTo(size.width, size.height)
       ..lineTo(0, size.height)
@@ -1464,14 +2193,13 @@ class _DailyPassengersChartPainter extends CustomPainter {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          const Color(0xFF2563EB).withOpacity(0.15),
-          const Color(0xFF2563EB).withOpacity(0.0),
+          const Color(0xFF2563EB).withValues(alpha: 0.15),
+          const Color(0xFF2563EB).withValues(alpha: 0.0),
         ],
       ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
 
     canvas.drawPath(fillPath, fillPaint);
 
-    // Blue Line Stroke
     final linePaint = Paint()
       ..color = const Color(0xFF2563EB)
       ..strokeWidth = 3
@@ -1485,7 +2213,6 @@ class _DailyPassengersChartPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-// Custom Painter for Fleet Status Donut Chart
 class _FleetStatusDonutPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -1498,7 +2225,6 @@ class _FleetStatusDonutPainter extends CustomPainter {
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.butt;
 
-    // Segment 1: On Time (72%)
     paint.color = const Color(0xFF10B981);
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius - strokeWidth / 2),
@@ -1508,7 +2234,6 @@ class _FleetStatusDonutPainter extends CustomPainter {
       paint,
     );
 
-    // Segment 2: Delayed (12%)
     paint.color = const Color(0xFFF59E0B);
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius - strokeWidth / 2),
@@ -1518,7 +2243,6 @@ class _FleetStatusDonutPainter extends CustomPainter {
       paint,
     );
 
-    // Segment 3: Breakdown (5%)
     paint.color = const Color(0xFFEF4444);
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius - strokeWidth / 2),
@@ -1528,7 +2252,6 @@ class _FleetStatusDonutPainter extends CustomPainter {
       paint,
     );
 
-    // Segment 4: Idle (11%)
     paint.color = const Color(0xFF94A3B8);
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius - strokeWidth / 2),
@@ -1543,21 +2266,18 @@ class _FleetStatusDonutPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-// Custom Painter for Live Map Grid Simulation
 class _MapGridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFFCBD5E1).withOpacity(0.6)
+      ..color = const Color(0xFFCBD5E1).withValues(alpha: 0.6)
       ..strokeWidth = 12
       ..style = PaintingStyle.stroke;
 
-    // Horizontal Streets
     canvas.drawLine(Offset(0, size.height * 0.25), Offset(size.width, size.height * 0.25), paint);
     canvas.drawLine(Offset(0, size.height * 0.55), Offset(size.width, size.height * 0.55), paint);
     canvas.drawLine(Offset(0, size.height * 0.85), Offset(size.width, size.height * 0.85), paint);
 
-    // Vertical Avenues
     canvas.drawLine(Offset(size.width * 0.25, 0), Offset(size.width * 0.25, size.height), paint);
     canvas.drawLine(Offset(size.width * 0.55, 0), Offset(size.width * 0.55, size.height), paint);
     canvas.drawLine(Offset(size.width * 0.85, 0), Offset(size.width * 0.85, size.height), paint);
