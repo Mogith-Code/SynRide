@@ -13,6 +13,84 @@
 
 ---
 
+## 📂 Codebase Folder Structure
+
+```text
+SynRIDE/
+├── pubspec.yaml                        # Flutter dependencies & project configuration
+├── README.md                           # Project documentation & judging guide
+├── lib/
+│   ├── main.dart                       # Application entry point & service initialization
+│   ├── app.dart                        # MaterialApp configuration, routing & dark theme
+│   ├── core/                           # Core infrastructure & global constants
+│   │   ├── constants/
+│   │   │   ├── app_colors.dart         # Design tokens & dark slate palette
+│   │   │   ├── app_constants.dart      # Application constants & threshold values
+│   │   │   └── api_endpoints.dart      # API & Firebase Realtime Database endpoints
+│   │   ├── network/
+│   │   │   ├── api_client.dart         # HTTP REST network client
+│   │   │   └── websocket_client.dart   # WebSocket real-time channel manager
+│   │   └── theme/
+│   │       └── app_theme.dart          # Dark theme visual styling system
+│   ├── features/                       # Modular Clean Architecture feature modules
+│   │   ├── passenger/                  # Passenger Experience & Live Map Feature
+│   │   │   ├── data/
+│   │   │   │   ├── models/
+│   │   │   │   │   ├── bus_model.dart
+│   │   │   │   │   └── route_model.dart
+│   │   │   │   └── repositories/
+│   │   │   │       └── bus_repository.dart
+│   │   │   ├── logic/
+│   │   │   │   └── passenger_cubit/
+│   │   │   │       ├── passenger_cubit.dart
+│   │   │   │       └── passenger_state.dart
+│   │   │   └── presentation/
+│   │   │       ├── screens/
+│   │   │       │   ├── passenger_home_screen.dart
+│   │   │       │   ├── live_map_screen.dart
+│   │   │       │   └── route_recommendation_screen.dart
+│   │   │       └── widgets/
+│   │   │           ├── occupancy_indicator_widget.dart
+│   │   │           └── eta_card_widget.dart
+│   │   ├── conductor/                  # Digital Ticketing & Offline Sync Feature
+│   │   │   ├── data/
+│   │   │   │   ├── models/
+│   │   │   │   │   └── ticket_model.dart
+│   │   │   │   └── repositories/
+│   │   │   │       └── ticket_repository.dart
+│   │   │   ├── logic/
+│   │   │   │   └── conductor_cubit/
+│   │   │   │       ├── conductor_cubit.dart
+│   │   │   │       └── conductor_state.dart
+│   │   │   └── presentation/
+│   │   │       ├── screens/
+│   │   │       │   ├── conductor_home_screen.dart
+│   │   │       │   └── ticket_issuance_screen.dart
+│   │   │       └── widgets/
+│   │   │           └── ticket_counter_widget.dart
+│   │   ├── analytics_dashboard/        # Transport Authority Admin Dashboard Feature
+│   │   │   ├── data/
+│   │   │   │   └── models/
+│   │   │   │       └── analytics_model.dart
+│   │   │   └── presentation/
+│   │   │       ├── screens/
+│   │   │       │   └── authority_dashboard_screen.dart
+│   │   │       └── widgets/
+│   │   │           ├── occupancy_heatmap_chart.dart
+│   │   │           └── demand_forecast_chart.dart
+│   │   └── ai_prediction/              # AI Engine & ETA Forecasting Feature
+│   │       └── data/
+│   │           └── services/
+│   │               └── eta_prediction_service.dart
+│   └── shared_widgets/                 # Reusable UI components & branding assets
+│       ├── app_logo.dart               # SyncRide branding logo widget
+│       ├── custom_button.dart          # Styled action button widget
+│       ├── google_logo.dart            # Google SSO icon widget
+│       └── loading_indicator.dart      # Custom loading spinner widget
+```
+
+---
+
 ## 🚀 Deployment Details
 
 * **Web Admin Command Center**: Compiled via Flutter Web (`flutter build web --web-renderer canvaskit`) and deployed to cloud web hosting (Firebase Hosting / Vercel).
