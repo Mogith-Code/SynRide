@@ -207,7 +207,7 @@ In real-world deployment, automated IR beam passenger counters (APC) mounted at 
 
 ## 🎬 Video Submission Link
 
-`[Insert Video Demo Link Here]`
+`https://youtu.be/QkEubKV4SHs`
 
 ---
 *SyncRide — AI-Powered Smart Public Transport Intelligence Platform built with Flutter.*
